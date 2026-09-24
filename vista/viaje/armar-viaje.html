@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MIRAVIA | Arma tu viaje</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="../../lib/leaflet.css">
+
+    <link rel="stylesheet"
+          href="../../estilo/armar-viaje.css?v=miravia-mapa-13">
+
+</head>
+
+<body>
+
+    <main id="armarViaje">
+
+        <header class="cabecera">
+
+            <button class="btn-volver" type="button"
+                onclick="history.length > 1 ? history.back() : (location.href = '../estados/estado.html?estado=' + encodeURIComponent(new URLSearchParams(location.search).get('estado') || ''))">
+                ← Volver
+            </button>
+
+            <div class="logo" id="logoMiravia" title="Inicio">
+                MIRAVIA
+            </div>
+
+            <p class="destino-elegido" id="destinoElegido">
+                Preparando tu viaje...
+            </p>
+
+        </header>
+
+        <section class="pasos-indicador">
+
+            <div class="paso-ind" data-paso="1">
+                <span class="paso-num">1</span>
+                <span class="paso-nombre">Hospedaje</span>
+            </div>
+
+            <div class="paso-ind" data-paso="2">
+                <span class="paso-num">2</span>
+                <span class="paso-nombre">Comida</span>
+            </div>
+
+            <div class="paso-ind" data-paso="3">
+                <span class="paso-num">3</span>
+                <span class="paso-nombre">Lugares</span>
+            </div>
+
+            <div class="paso-ind" data-paso="4">
+                <span class="paso-num">4</span>
+                <span class="paso-nombre">Resumen</span>
+            </div>
+
+        </section>
+
+        <section class="contenedor-paso">
+
+            <div class="paso" id="paso1" hidden>
+
+                <h2>Paso 1 · ¿En dónde te vas a hospedar?</h2>
+
+                <p class="paso-descripcion">Elige el hospedaje perfecto para tu viaje.</p>
+
+                <div class="tarjetas" id="tarjetasHoteles"></div>
+
+            </div>
+
+            <div class="paso" id="paso2" hidden>
+
+                <h2>Paso 2 · ¿Qué quieres comer?</h2>
+
+                <p class="paso-descripcion">Elige un restaurante para probar el sabor del estado.</p>
+
+                <div class="tarjetas" id="tarjetasRestaurantes"></div>
+
+            </div>
+
+            <div class="paso" id="paso3" hidden>
+
+                <h2>Paso 3 · ¿Qué lugares vas a conocer?</h2>
+
+                <p class="paso-descripcion">Elige hasta 3 lugares turísticos (toca para marcar o desmarcar).</p>
+
+                <div class="tarjetas" id="tarjetasLugares"></div>
+
+            </div>
+
+            <div class="paso" id="paso4" hidden>
+
+                <h2>Paso 4 · Tu viaje a <span id="resumenEstado">...</span> está listo</h2>
+
+                <p class="paso-descripcion">Así se ve tu viaje armado paso a paso.</p>
+
+                <div class="mini-mapa" id="miniMapa"></div>
+
+                <div class="itinerario" id="itinerario"></div>
+
+                <div class="acciones-finales">
+
+                    <button class="btn btn-grad" id="btnVerEstado" type="button">
+                        Ver página completa del estado
+                    </button>
+
+                    <button class="btn btn-suave" id="btnOtroViaje" type="button">
+                        Armar otro viaje
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer class="navegacion">
+
+            <button class="btn btn-suave" id="btnAtras" type="button" disabled>
+                Atrás
+            </button>
+
+            <div class="navegacion-centro">
+
+                <p class="total-barra" id="totalBarra">
+                    💰 Total hasta ahora: $0
+                </p>
+
+                <p class="aviso-seleccion" id="avisoSeleccion"></p>
+
+            </div>
+
+            <button class="btn btn-grad" id="btnSiguiente" type="button">
+                Siguiente
+            </button>
+
+        </footer>
+
+    </main>
+
+    <script src="../../lib/leaflet.js"></script>
+    <script src="../js/datos-estados.js?v=miravia-mun-18"></script>
+    <script src="../../js/chatbot.js"></script>
+    <script src="armar-viaje.js?v=miravia-wiz-17"></script>
+
+</body>
+
+</html>

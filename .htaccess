@@ -1,0 +1,9 @@
+# MIRAVIA: sin caché durante el desarrollo.
+# Así cada recarga (F5) trae la versión nueva
+# de las páginas, estilos y scripts.
+
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-store, no-cache, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</IfModule>

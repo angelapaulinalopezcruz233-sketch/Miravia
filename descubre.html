@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MIRAVIA | Descubre México</title>
+
+    <!-- CSS PRINCIPAL -->
+    <link rel="stylesheet" href="estilo/estilos.css">
+
+    <!-- ELIMINADO: CSS DE LA TIERRA 3D -->
+
+    <!-- LEAFLET CSS -->
+    <link rel="stylesheet" href="lib/leaflet.css" />
+
+</head>
+
+
+<body>
+
+
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+
+        <div class="logo" id="logoMiravia" title="Inicio">
+
+            <div class="logo-icon">
+                🌴
+            </div>
+
+            <div class="logo-text">
+                <strong>MIRAVIA</strong>
+            </div>
+
+        </div>
+
+
+
+        <nav class="menu">
+
+            <a href="inicio.html?destinos=1" class="activo">
+                Destinos
+            </a>
+
+            <a href="#">
+                Hospedaje
+            </a>
+
+            <a href="#">
+                Comida
+            </a>
+
+            <a href="#">
+                Atracciones
+            </a>
+
+            <a href="#">
+                Mis viajes
+            </a>
+
+        </nav>
+
+
+
+        <button
+            class="perfil"
+            aria-label="Perfil de usuario">
+
+            👤
+
+        </button>
+
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTENIDO PRINCIPAL
+    ====================================================== -->
+
+    <main>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="hero">
+
+
+            <div class="hero-contenido">
+
+
+                <span class="hero-etiqueta">
+
+                    🇲🇽 DESCUBRE MÉXICO
+
+                </span>
+
+
+
+                <h1>
+
+                    Descubre México
+
+                    <br>
+
+                    <span>a tu manera</span> 🇲🇽
+
+                </h1>
+
+
+
+                <p>
+
+                    Explora destinos, encuentra dónde hospedarte,
+                    disfruta la gastronomía y descubre experiencias únicas.
+
+                </p>
+
+
+
+                <!-- BUSCADOR -->
+
+                <div class="hero-buscador">
+
+
+                    <div class="buscador-icono">
+                        🔎
+                    </div>
+
+
+                    <input
+                        type="text"
+                        placeholder="Buscar destino, estado o municipio..."
+                        aria-label="Buscar destino">
+
+
+                    <a href="inicio.html?destinos=1">
+
+                        <button type="button">
+
+                            Explorar destinos
+
+                        </button>
+
+                    </a>
+
+
+                </div>
+
+
+
+                <!-- CATEGORÍAS -->
+
+                <div class="hero-categorias">
+
+                    <span>🏖️ Playa</span>
+
+                    <span>🌲 Naturaleza</span>
+
+                    <span>🏛️ Cultura</span>
+
+                    <span>🍴 Gastronomía</span>
+
+                    <span>🎢 Aventura</span>
+
+                    <span>🏘️ Pueblos Mágicos</span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ELEMENTO VISUAL -->
+
+            <div class="hero-visual">
+
+
+                <div class="hero-circulo grande"></div>
+
+                <div class="hero-circulo mediano"></div>
+
+
+                <div class="hero-tarjeta">
+
+
+                    <div
+                        class="location-card"
+                        id="locationCard">
+
+
+                        <div class="location-icon">
+                            📍
+                        </div>
+
+
+                        <div class="location-info">
+
+
+                            <span class="location-label">
+                                TU UBICACIÓN
+                            </span>
+
+
+                            <h3 id="locationCity">
+                                Detectando ubicación...
+                            </h3>
+
+
+                            <p id="locationState">
+                                Permite el acceso a tu ubicación
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="hero-icono">
+                    🌎
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DESTINOS DESTACADOS
+        ================================================== -->
+
+        <section class="destinos" id="destinos">
+
+
+            <div class="titulo-seccion">
+
+
+                <div>
+
+                    <span class="seccion-etiqueta">
+                        DESCUBRE LUGARES INCREÍBLES
+                    </span>
+
+
+                    <h2>
+                        🔥 Destinos más visitados
+                    </h2>
+
+
+                    <p>
+                        Conoce algunos de los lugares favoritos
+                        de los viajeros en México.
+                    </p>
+
+                </div>
+
+
+                <a href="#">
+                    Ver todos →
+                </a>
+
+
+            </div>
+
+
+
+            <div class="destinos-grid">
+
+
+                <!-- CANCÚN -->
+
+                <article class="destino-card">
+
+
+                    <div class="imagen-card">
+
+                        <img
+                            src="imagenes/cancun.webp"
+                            alt="Cancún">
+
+
+                        <span class="destino-badge">
+                            Popular
+                        </span>
+
+
+                        <button
+                            class="favorito"
+                            aria-label="Agregar a favoritos">
+
+                            ♡
+
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="destino-info">
+
+
+                        <div class="destino-titulo">
+
+                            <h3>
+                                🌴 Cancún
+                            </h3>
+
+
+                            <div class="rating">
+                                ★ 4.8
+                            </div>
+
+                        </div>
+
+
+                        <p class="estado">
+                            Quintana Roo
+                        </p>
+
+
+                        <p class="descripcion">
+                            Playas de aguas cristalinas
+                            y experiencias inolvidables.
+                        </p>
+
+
+                        <a href="#" class="link-explorar">
+                            Explorar destino →
+                        </a>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- OAXACA -->
+
+                <article class="destino-card">
+
+
+                    <div class="imagen-card">
+
+                        <img
+                            src="imagenes/oaxaca.jpg"
+                            alt="Oaxaca de Juárez">
+
+
+                        <span class="destino-badge">
+                            Recomendado
+                        </span>
+
+
+                        <button
+                            class="favorito"
+                            aria-label="Agregar a favoritos">
+
+                            ♡
+
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="destino-info">
+
+
+                        <div class="destino-titulo">
+
+                            <h3>
+                                🏛️ Oaxaca
+                            </h3>
+
+
+                            <div class="rating">
+                                ★ 4.7
+                            </div>
+
+                        </div>
+
+
+                        <p class="estado">
+                            Oaxaca
+                        </p>
+
+
+                        <p class="descripcion">
+                            Cultura, gastronomía y tradiciones
+                            que hacen único este destino.
+                        </p>
+
+
+                        <a
+                            href="vista/pagina/oaxaca-de-juarez.html"
+                            class="link-explorar">
+
+                            Explorar destino →
+
+                        </a>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- GUANAJUATO -->
+
+                <article class="destino-card">
+
+
+                    <div class="imagen-card">
+
+                        <img
+                            src="imagenes/guanajuato.jpg"
+                            alt="Guanajuato">
+
+
+                        <button
+                            class="favorito"
+                            aria-label="Agregar a favoritos">
+
+                            ♡
+
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="destino-info">
+
+
+                        <div class="destino-titulo">
+
+                            <h3>
+                                🏘️ Guanajuato
+                            </h3>
+
+
+                            <div class="rating">
+                                ★ 4.6
+                            </div>
+
+                        </div>
+
+
+                        <p class="estado">
+                            Guanajuato
+                        </p>
+
+
+                        <p class="descripcion">
+                            Calles históricas, arquitectura
+                            y grandes experiencias culturales.
+                        </p>
+
+
+                        <a href="#" class="link-explorar">
+                            Explorar destino →
+                        </a>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- SAN MIGUEL -->
+
+                <article class="destino-card">
+
+
+                    <div class="imagen-card">
+
+                        <img
+                            src="imagenes/san-miguel.jpg"
+                            alt="San Miguel de Allende">
+
+
+                        <button
+                            class="favorito"
+                            aria-label="Agregar a favoritos">
+
+                            ♡
+
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="destino-info">
+
+
+                        <div class="destino-titulo">
+
+                            <h3>
+                                🏘️ San Miguel
+                            </h3>
+
+
+                            <div class="rating">
+                                ★ 4.6
+                            </div>
+
+                        </div>
+
+
+                        <p class="estado">
+                            Guanajuato
+                        </p>
+
+
+                        <p class="descripcion">
+                            Arquitectura colonial, arte
+                            y pueblos llenos de historia.
+                        </p>
+
+
+                        <a href="#" class="link-explorar">
+                            Explorar destino →
+                        </a>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             EXPLORA MÉXICO / MAPA
+        ================================================== -->
+
+        <section class="explora-mexico">
+
+
+            <div class="seccion-cabecera">
+
+
+                <span class="seccion-etiqueta">
+                    EXPLORACIÓN
+                </span>
+
+
+                <h2>
+                    📍 Explora México
+                </h2>
+
+
+                <p>
+                    Selecciona un estado y descubre los destinos
+                    que tiene para ofrecer.
+                </p>
+
+
+            </div>
+
+
+
+            <div class="explorador-contenido">
+
+
+                <!-- PANEL -->
+
+                <div class="filtros-panel">
+
+
+                    <!-- UBICACIÓN -->
+
+                    <div class="ubicacion-box">
+
+
+                        <div class="ubicacion-titulo">
+
+
+                            <span class="ubicacion-icono">
+                                📍
+                            </span>
+
+
+                            <strong>
+                                Tu ubicación actual
+                            </strong>
+
+
+                        </div>
+
+
+                        <p id="textoCiudadGPS">
+                            Ciudad de México, CDMX
+                        </p>
+
+
+                        <div class="ubicacion-actual">
+
+
+                            <span class="punto-activo"></span>
+
+
+                            <span id="textoEstatusGPS">
+                                Tú estás aquí
+                            </span>
+
+
+                        </div>
+                        
+                        <div id="mapaSistema" style="width: 100%; height: 250px; border-radius: 15px; margin-top: 15px; z-index: 1;"></div>
+
+
+                    </div>
+
+
+
+                    <!-- SELECCIÓN -->
+
+                    <div class="seleccion-box">
+
+
+                        <h3>
+                            ¿A dónde quieres viajar?
+                        </h3>
+
+
+                        <p class="texto-ayuda">
+                            Selecciona tu destino para comenzar.
+                        </p>
+
+
+
+                        <!-- ESTADO -->
+
+                        <label for="estado">
+                            Estado
+                        </label>
+
+
+                        <select id="estado">
+
+
+                            <option value="">
+                                Selecciona un estado
+                            </option>
+
+
+                            <option value="oaxaca">
+                                Oaxaca
+                            </option>
+
+
+                            <option value="quintana-roo">
+                                Quintana Roo
+                            </option>
+
+
+                            <option value="guanajuato">
+                                Guanajuato
+                            </option>
+
+
+                            <option value="jalisco">
+                                Jalisco
+                            </option>
+
+
+                            <option value="yucatan">
+                                Yucatán
+                            </option>
+
+
+                            <option value="puebla">
+                                Puebla
+                            </option>
+
+
+                            <option value="chiapas">
+                                Chiapas
+                            </option>
+
+
+                        </select>
+
+
+
+                        <!-- MUNICIPIO -->
+
+                        <label for="municipio">
+                            Municipio
+                        </label>
+
+
+                        <select id="municipio">
+
+
+                            <option value="">
+                                Selecciona un municipio
+                            </option>
+
+
+                        </select>
+
+
+
+                        <!-- BOTÓN -->
+
+                        <a
+                            href="vista/pagina/oaxaca-de-juarez.html"
+                            id="btnExplorar"
+                            class="btn-explorar">
+
+                            Explorar destino
+
+                            <span>
+                                →
+                            </span>
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- MAPA -->
+
+                <div class="mapa">
+
+
+                    <iframe
+                        src="https://www.openstreetmap.org/export/embed.html?bbox=-99.30%2C19.30%2C-98.95%2C19.55&layer=mapnik&marker=19.4326%2C-99.1332"
+                        title="Mapa interactivo de México">
+                    </iframe>
+
+
+                    <div class="mapa-etiqueta">
+                        📍 Tu ubicación
+                    </div>
+
+
+                    <div class="controles-mapa">
+
+
+                        <button type="button">
+                            +
+                        </button>
+
+
+                        <button type="button">
+                            −
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             EXPERIENCIAS
+        ================================================== -->
+
+        <section class="experiencias" id="experiencias">
+
+
+            <div class="titulo-seccion">
+
+
+                <div>
+
+
+                    <span class="seccion-etiqueta">
+                        ENCUENTRA TU ESTILO
+                    </span>
+
+
+                    <h2>
+                        ✨ ¿Qué tipo de experiencia buscas?
+                    </h2>
+
+
+                    <p>
+                        Elige una experiencia y comienza
+                        a descubrir nuevos lugares.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="experiencias-grid">
+
+
+                <a href="#" class="experiencia-card">
+
+                    <div class="experiencia-icono">
+                        🏖️
+                    </div>
+
+                    <h3>
+                        Playa
+                    </h3>
+
+                    <p>
+                        Sol, mar y arena
+                    </p>
+
+                    <span>
+                        Explorar →
+                    </span>
+
+                </a>
+
+
+
+                <a href="#" class="experiencia-card">
+
+                    <div class="experiencia-icono">
+                        🌲
+                    </div>
+
+                    <h3>
+                        Naturaleza
+                    </h3>
+
+                    <p>
+                        Paisajes y aventuras
+                    </p>
+
+                    <span>
+                        Explorar →
+                    </span>
+
+                </a>
+
+
+
+                <a href="#" class="experiencia-card">
+
+                    <div class="experiencia-icono">
+                        🏛️
+                    </div>
+
+                    <h3>
+                        Cultura
+                    </h3>
+
+                    <p>
+                        Historia y tradiciones
+                    </p>
+
+                    <span>
+                        Explorar →
+                    </span>
+
+                </a>
+
+
+
+                <a href="#" class="experiencia-card">
+
+                    <div class="experiencia-icono">
+                        🍴
+                    </div>
+
+                    <h3>
+                        Gastronomía
+                    </h3>
+
+                    <p>
+                        Sabores de México
+                    </p>
+
+                    <span>
+                        Explorar →
+                    </span>
+
+                </a>
+
+
+
+                <a href="#" class="experiencia-card">
+
+                    <div class="experiencia-icono">
+                        🎢
+                    </div>
+
+                    <h3>
+                        Aventura
+                    </h3>
+
+                    <p>
+                        Vive nuevas emociones
+                    </p>
+
+                    <span>
+                        Explorar →
+                    </span>
+
+                </a>
+
+
+
+                <a href="#" class="experiencia-card">
+
+                    <div class="experiencia-icono">
+                        🏘️
+                    </div>
+
+                    <h3>
+                        Pueblos Mágicos
+                    </h3>
+
+                    <p>
+                        Lugares con encanto
+                    </p>
+
+                    <span>
+                        Explorar →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             NO SÉ A DÓNDE VIAJAR
+        ================================================== -->
+
+        <section class="descubre-destino">
+
+
+            <div class="descubre-icono">
+                🤔
+            </div>
+
+
+            <div class="descubre-contenido">
+
+
+                <span>
+                    ¿NECESITAS INSPIRACIÓN?
+                </span>
+
+
+                <h2>
+                    ¿No sabes a dónde viajar?
+                </h2>
+
+
+                <p>
+                    Descubre destinos que se adapten a tus gustos
+                    y disfruta México a tu manera.
+                </p>
+
+
+            </div>
+
+
+            <a
+                href="#"
+                class="btn-secundario">
+
+                Encontrar mi destino
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             HOSPEDAJE
+        ================================================== -->
+
+        <section class="hospedaje">
+
+
+            <div class="titulo-seccion">
+
+
+                <div>
+
+
+                    <span class="seccion-etiqueta">
+                        HOSPEDAJE
+                    </span>
+
+
+                    <h2>
+                        🏨 Encuentra dónde hospedarte
+                    </h2>
+
+
+                    <p>
+                        Opciones para descansar durante tu viaje.
+                    </p>
+
+
+                </div>
+
+
+                <a href="#">
+                    Ver hospedajes →
+                </a>
+
+
+            </div>
+
+
+
+            <div class="hospedaje-grid">
+
+
+                <!-- HOTEL -->
+
+                <article class="hospedaje-card">
+
+
+                    <div class="hospedaje-imagen">
+
+
+                        <img
+                            src="imagenes/hotel-oaxaca-1.jpg"
+                            alt="Hotel">
+
+
+                        <span>
+                            Hotel
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="hospedaje-info">
+
+
+                        <h3>
+                            Hotel
+                        </h3>
+
+
+                        <p>
+                            Hospedaje cómodo para viajeros.
+                        </p>
+
+
+                        <strong>
+                            Desde $1,200 MXN
+                        </strong>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- HOTEL BOUTIQUE -->
+
+                <article class="hospedaje-card">
+
+
+                    <div class="hospedaje-imagen">
+
+
+                        <img
+                            src="imagenes/hotel-oaxaca-2.jpg"
+                            alt="Hotel Boutique">
+
+
+                        <span>
+                            Boutique
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="hospedaje-info">
+
+
+                        <h3>
+                            Hotel Boutique
+                        </h3>
+
+
+                        <p>
+                            Espacios únicos y una experiencia especial.
+                        </p>
+
+
+                        <strong>
+                            Desde $1,500 MXN
+                        </strong>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- CABAÑA -->
+
+                <article class="hospedaje-card">
+
+
+                    <div class="hospedaje-imagen">
+
+
+                        <img
+                            src="imagenes/cabana.jpg"
+                            alt="Cabaña">
+
+
+                        <span>
+                            Naturaleza
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="hospedaje-info">
+
+
+                        <h3>
+                            Cabaña
+                        </h3>
+
+
+                        <p>
+                            Descansa rodeado de naturaleza.
+                        </p>
+
+
+                        <strong>
+                            Desde $900 MXN
+                        </strong>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- RESORT -->
+
+                <article class="hospedaje-card">
+
+
+                    <div class="hospedaje-imagen">
+
+
+                        <img
+                            src="imagenes/resort.jpg"
+                            alt="Resort">
+
+
+                        <span>
+                            Resort
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="hospedaje-info">
+
+
+                        <h3>
+                            Resort
+                        </h3>
+
+
+                        <p>
+                            Relájate y disfruta de una experiencia completa.
+                        </p>
+
+
+                        <strong>
+                            Desde $2,000 MXN
+                        </strong>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             GASTRONOMÍA
+        ================================================== -->
+
+        <section class="gastronomia">
+
+
+            <div class="titulo-seccion">
+
+
+                <div>
+
+
+                    <span class="seccion-etiqueta">
+                        SABORES DE MÉXICO
+                    </span>
+
+
+                    <h2>
+                        🍴 Sabores de México
+                    </h2>
+
+
+                    <p>
+                        Descubre la gastronomía que hace único
+                        a cada rincón del país.
+                    </p>
+
+
+                </div>
+
+
+                <a href="#">
+                    Descubrir gastronomía →
+                </a>
+
+
+            </div>
+
+
+
+            <div class="comida-grid">
+
+
+                <a href="#" class="comida-card">
+
+                    <span>
+                        🌮
+                    </span>
+
+                    <h3>
+                        Tacos
+                    </h3>
+
+                    <p>
+                        Un clásico que nunca puede faltar.
+                    </p>
+
+                </a>
+
+
+
+                <a href="#" class="comida-card">
+
+                    <span>
+                        🥘
+                    </span>
+
+                    <h3>
+                        Mole
+                    </h3>
+
+                    <p>
+                        Tradición y sabor mexicano.
+                    </p>
+
+                </a>
+
+
+
+                <a href="#" class="comida-card">
+
+                    <span>
+                        🫔
+                    </span>
+
+                    <h3>
+                        Tamales
+                    </h3>
+
+                    <p>
+                        Sabores tradicionales de México.
+                    </p>
+
+                </a>
+
+
+
+                <a href="#" class="comida-card">
+
+                    <span>
+                        🌯
+                    </span>
+
+                    <h3>
+                        Cochinita Pibil
+                    </h3>
+
+                    <p>
+                        Un sabor tradicional de Yucatán.
+                    </p>
+
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MIS VIAJES
+        ================================================== -->
+
+        <section class="mis-viajes">
+
+
+            <div class="mis-viajes-icono">
+                ❤️
+            </div>
+
+
+            <div>
+
+
+                <span>
+                    ORGANIZA TU AVENTURA
+                </span>
+
+
+                <h2>
+                    Planea tu próximo viaje
+                </h2>
+
+
+                <p>
+                    Guarda tus destinos favoritos y crea
+                    tu propio itinerario.
+                </p>
+
+
+            </div>
+
+
+            <a
+                href="#"
+                class="btn-viaje">
+
+                Crear mi viaje
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             LUGARES TURÍSTICOS
+        ================================================== -->
+
+        <section class="lugares-turisticos">
+
+
+            <div class="seccion-titulo">
+
+
+                <div>
+
+
+                    <span class="etiqueta">
+                        DESCUBRE EL DESTINO
+                    </span>
+
+
+                    <h2 id="tituloLugares">
+                        Lugares turísticos de Chiapas
+                    </h2>
+
+
+                    <p id="descripcionLugares">
+                        Selecciona un municipio para descubrir
+                        sus lugares más visitados.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div
+                class="grid-lugares"
+                id="gridLugares">
+
+                <!--
+                    Aquí aparecerán las tarjetas
+                    mediante JavaScript.
+                -->
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+
+        <div class="footer-contenido">
+
+
+            <div class="footer-marca">
+
+
+                <div class="logo">
+
+
+                    <div class="logo-icon">
+                        🌴
+                    </div>
+
+
+                    <div class="logo-text">
+                        <span>Viaja</span><strong>MX</strong>
+                    </div>
+
+
+                </div>
+
+
+                <p>
+                    Tu guía para descubrir México,
+                    planear tus viajes y vivir nuevas experiencias.
+                </p>
+
+
+            </div>
+
+
+
+            <div class="footer-columna">
+
+
+                <h3>
+                    Explora
+                </h3>
+
+
+                <a href="inicio.html?destinos=1">
+                    Destinos
+                </a>
+
+
+                <a href="#">
+                    Hospedaje
+                </a>
+
+
+                <a href="#">
+                    Gastronomía
+                </a>
+
+
+                <a href="#">
+                    Atracciones
+                </a>
+
+
+            </div>
+
+
+
+            <div class="footer-columna">
+
+
+                <h3>
+                    MIRAVIA
+                </h3>
+
+
+                <a href="#">
+                    Mis viajes
+                </a>
+
+
+                <a href="#">
+                    Sobre nosotros
+                </a>
+
+
+                <a href="#">
+                    Ayuda
+                </a>
+
+
+                <a href="#">
+                    Contacto
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="footer-final">
+
+            © 2026 MIRAVIA · Todos los derechos reservados
+
+        </div>
+
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+
+    <!-- LIBRERÍAS EXTERNAS -->
+    <script src="lib/leaflet.js"></script>
+
+    <!-- SCRIPT DEL MAPA EN EL SISTEMA -->
+    <script src="js/mapa-sistema.js"></script>
+    <script src="js/app.js?v=miravia-destinos-5"></script>
+    <script src="js/chatbot.js"></script>
+
+</body>
+
+</html>

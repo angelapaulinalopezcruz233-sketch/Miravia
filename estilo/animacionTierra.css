@@ -1,0 +1,295 @@
+/* =========================================
+   PANTALLA TIERRA 3D
+========================================= */
+
+#pantallaTierra {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100vh;
+
+    z-index: 9999;
+
+    background: #000;
+
+    overflow: hidden;
+
+    transition:
+        opacity 1.5s ease,
+        visibility 1.5s ease;
+}
+
+
+/* =========================================
+   ESCENA
+========================================= */
+
+#escena {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo-tierra {
+
+    position: absolute;
+
+    top: 35px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 10;
+
+    color: white;
+
+    font-size: 32px;
+
+    font-weight: bold;
+
+    letter-spacing: 9px;
+
+    text-shadow:
+        0 0 15px rgba(255,255,255,0.5),
+        0 0 30px rgba(152,255,152,0.6);
+}
+
+
+/* =========================================
+   INFORMACIÓN
+========================================= */
+
+.informacion-tierra {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 90px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 10;
+
+    text-align: center;
+
+    color: white;
+
+    width: 90%;
+}
+
+
+.informacion-tierra h1 {
+
+    font-size: 40px;
+
+    margin-bottom: 12px;
+
+    font-weight: 600;
+}
+
+
+.informacion-tierra p {
+
+    font-size: 17px;
+
+    opacity: 0.75;
+}
+
+
+/* =========================================
+   UBICACIÓN
+========================================= */
+
+.ubicacion {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 30px;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 20px;
+
+    border-radius: 40px;
+
+    color: white;
+
+    background:
+        rgba(0,0,0,0.55);
+
+    border:
+        1px solid rgba(255,255,255,0.2);
+
+    backdrop-filter:
+        blur(10px);
+
+    opacity: 1;
+}
+
+
+/* =========================================
+   PUNTO
+========================================= */
+
+.punto {
+
+    width: 12px;
+
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #ffb347;
+
+    box-shadow:
+        0 0 10px #ffb347,
+        0 0 20px #ffb347;
+
+    animation:
+        pulsar 1.5s infinite;
+}
+
+
+@keyframes pulsar {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+
+/* =========================================
+   OCULTAR PANTALLA
+========================================= */
+
+#pantallaTierra.ocultar {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+/* =========================================
+   CONTENEDOR DEL MAPA Y BOTÓN ENTRAR
+========================================= */
+
+#contenedorMapa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 2s ease;
+}
+
+#contenedorMapa.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.boton-entrar {
+    position: absolute;
+    left: 50%;
+    bottom: 110px;
+    transform: translateX(-50%);
+    padding: 15px 35px;
+    border: none;
+    border-radius: 30px;
+    background: #ffb347;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 30;
+    box-shadow: 0 5px 15px rgba(255, 179, 71, 0.4);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.boton-entrar.visible {
+    opacity: 1;
+}
+
+.boton-entrar:hover {
+    transform: translateX(-50%) scale(1.05);
+    background: #ffc266;
+}
+
+/* Para ocultar la interfaz 3D cuando entra el mapa */
+.ocultar-interfaz {
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 600px) {
+
+    .logo-tierra {
+
+        font-size: 24px;
+
+        letter-spacing: 6px;
+    }
+
+
+    .informacion-tierra h1 {
+
+        font-size: 28px;
+    }
+
+
+    .informacion-tierra p {
+
+        font-size: 14px;
+    }
+
+}

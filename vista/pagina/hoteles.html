@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Hoteles | ViajaMX</title>
+
+    <link rel="stylesheet"
+          href="../../estilo/hoteles.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVBAR
+========================================= -->
+
+<header class="encabezado">
+
+    <a href="#" class="logo">
+        🌴 <span>Viaja</span>MX
+    </a>
+
+
+    <nav class="menu">
+
+        <!-- Conserva aquí las rutas existentes de tu MVC -->
+
+        <a href="../../inicio.html?destinos=1">Destinos</a>
+
+        <a href="#" class="activo">
+            Hospedaje
+        </a>
+
+        <a href="#">Comida</a>
+
+        <a href="#">Atracciones</a>
+
+        <a href="#">Mis viajes</a>
+
+    </nav>
+
+
+    <button class="btn-usuario">
+
+        👤
+
+    </button>
+
+</header>
+
+
+
+<!-- =========================================
+     CONTENIDO PRINCIPAL
+========================================= -->
+
+<main class="contenedor">
+
+
+    <!-- VOLVER -->
+
+    <a href="#" class="volver">
+
+        ← Volver a Oaxaca de Juárez
+
+    </a>
+
+
+
+    <!-- =====================================
+         ENCABEZADO
+    ====================================== -->
+
+    <section class="encabezado-pagina">
+
+        <div>
+
+            <span class="etiqueta">
+                🏨 HOSPEDAJE
+            </span>
+
+            <h1>
+                Hoteles en Oaxaca de Juárez
+            </h1>
+
+            <p>
+                Encuentra el lugar ideal para hospedarte
+                durante tu visita a Oaxaca de Juárez.
+            </p>
+
+        </div>
+
+
+        <div class="resultado">
+
+            <strong>24</strong>
+
+            <span>
+                alojamientos encontrados
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         CONTENIDO
+    ====================================== -->
+
+    <section class="contenido-hoteles">
+
+
+        <!-- =================================
+             FILTROS
+        ================================== -->
+
+        <aside class="filtros">
+
+
+            <div class="filtros-header">
+
+                <div>
+
+                    <span class="icono-filtro">
+                        ⚙️
+                    </span>
+
+                    <div>
+
+                        <h2>
+                            Filtrar resultados
+                        </h2>
+
+                        <p>
+                            Encuentra lo que buscas
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button class="limpiar">
+                    Limpiar
+                </button>
+
+            </div>
+
+
+
+            <!-- BUSCADOR -->
+
+            <div class="filtro">
+
+                <label>
+                    Buscar hotel
+                </label>
+
+                <div class="input-busqueda">
+
+                    <span>🔎</span>
+
+                    <input
+                        type="text"
+                        placeholder="Nombre del hotel...">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TIPO -->
+
+            <div class="filtro">
+
+                <label>
+                    Tipo de hospedaje
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span>
+                        Hotel
+                    </span>
+
+                    <small>
+                        12
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span>
+                        Hotel Boutique
+                    </span>
+
+                    <small>
+                        5
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span>
+                        Hostal
+                    </span>
+
+                    <small>
+                        4
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span>
+                        Cabaña
+                    </span>
+
+                    <small>
+                        2
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span>
+                        Resort
+                    </span>
+
+                    <small>
+                        1
+                    </small>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- PRECIO -->
+
+            <div class="filtro">
+
+                <label>
+                    Precio por noche
+                </label>
+
+
+                <div class="precios">
+
+                    <span>
+                        $500
+                    </span>
+
+                    <span>
+                        $5,000
+                    </span>
+
+                </div>
+
+
+                <input
+                    type="range"
+                    min="500"
+                    max="5000"
+                    value="3000"
+                    class="rango">
+
+            </div>
+
+
+
+            <!-- HABITACIONES -->
+
+            <div class="filtro">
+
+                <label>
+                    Número de habitaciones
+                </label>
+
+
+                <select>
+
+                    <option>
+                        Cualquier cantidad
+                    </option>
+
+                    <option>
+                        1 - 10 habitaciones
+                    </option>
+
+                    <option>
+                        11 - 30 habitaciones
+                    </option>
+
+                    <option>
+                        31 - 50 habitaciones
+                    </option>
+
+                    <option>
+                        Más de 50 habitaciones
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- CALIFICACIÓN -->
+
+            <div class="filtro">
+
+                <label>
+                    Calificación
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span class="estrellas">
+                        ★★★★★
+                    </span>
+
+                    <small>
+                        5.0
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span class="estrellas">
+                        ★★★★☆
+                    </span>
+
+                    <small>
+                        4.0+
+                    </small>
+
+                </label>
+
+
+                <label class="checkbox">
+
+                    <input
+                        type="checkbox">
+
+                    <span class="estrellas">
+                        ★★★☆☆
+                    </span>
+
+                    <small>
+                        3.0+
+                    </small>
+
+                </label>
+
+            </div>
+
+
+
+            <button class="btn-aplicar">
+
+                Aplicar filtros
+
+            </button>
+
+        </aside>
+
+
+
+        <!-- =================================
+             LISTADO DE HOTELES
+        ================================== -->
+
+        <div class="lista-hoteles">
+
+
+            <!-- BARRA SUPERIOR -->
+
+            <div class="barra-resultados">
+
+                <div>
+
+                    <strong>
+                        Hoteles disponibles
+                    </strong>
+
+                    <span>
+                        Oaxaca de Juárez, Oaxaca
+                    </span>
+
+                </div>
+
+
+                <select class="ordenar">
+
+                    <option>
+                        Recomendados
+                    </option>
+
+                    <option>
+                        Precio menor
+                    </option>
+
+                    <option>
+                        Precio mayor
+                    </option>
+
+                    <option>
+                        Mejor calificación
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =================================
+                 HOTEL 1
+            ================================== -->
+
+            <article class="hotel-card">
+
+
+                <div class="hotel-imagen">
+
+                    <img
+                        src="img/hotel-oaxaca.jpg"
+                        alt="Hotel Casa Oaxaca">
+
+                    <span class="hotel-favorito">
+                        ♡
+                    </span>
+
+                    <span class="hotel-etiqueta">
+                        Recomendado
+                    </span>
+
+                </div>
+
+
+                <div class="hotel-info">
+
+
+                    <div class="hotel-contenido">
+
+                        <span class="tipo-hotel">
+                            HOTEL
+                        </span>
+
+                        <h2>
+                            Hotel Casa Oaxaca
+                        </h2>
+
+                        <p class="ubicacion">
+                            📍 Centro Histórico,
+                            Oaxaca de Juárez
+                        </p>
+
+
+                        <div class="calificacion">
+
+                            <span>
+                                ★
+                            </span>
+
+                            <strong>
+                                4.8
+                            </strong>
+
+                            <small>
+                                (320 opiniones)
+                            </small>
+
+                        </div>
+
+
+                        <div class="caracteristicas">
+
+                            <span>
+                                🛏️ 42 habitaciones
+                            </span>
+
+                            <span>
+                                📶 WiFi
+                            </span>
+
+                            <span>
+                                🍳 Desayuno
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hotel-precio">
+
+                        <span>
+                            Desde
+                        </span>
+
+                        <strong>
+                            $1,200
+                        </strong>
+
+                        <small>
+                            / noche
+                        </small>
+
+
+                        <button class="btn-detalles">
+                            Ver detalles →
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================
+                 HOTEL 2
+            ================================== -->
+
+            <article class="hotel-card">
+
+
+                <div class="hotel-imagen">
+
+                    <img
+                        src="img/hotel-boutique-oaxaca.jpg"
+                        alt="Hotel Boutique Oaxaca">
+
+                    <span class="hotel-favorito">
+                        ♡
+                    </span>
+
+                </div>
+
+
+                <div class="hotel-info">
+
+
+                    <div class="hotel-contenido">
+
+                        <span class="tipo-hotel">
+                            HOTEL BOUTIQUE
+                        </span>
+
+                        <h2>
+                            Hotel Boutique Los Arcos
+                        </h2>
+
+                        <p class="ubicacion">
+                            📍 Centro Histórico,
+                            Oaxaca de Juárez
+                        </p>
+
+
+                        <div class="calificacion">
+
+                            <span>
+                                ★
+                            </span>
+
+                            <strong>
+                                4.7
+                            </strong>
+
+                            <small>
+                                (210 opiniones)
+                            </small>
+
+                        </div>
+
+
+                        <div class="caracteristicas">
+
+                            <span>
+                                🛏️ 28 habitaciones
+                            </span>
+
+                            <span>
+                                📶 WiFi
+                            </span>
+
+                            <span>
+                                🏊 Piscina
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hotel-precio">
+
+                        <span>
+                            Desde
+                        </span>
+
+                        <strong>
+                            $1,800
+                        </strong>
+
+                        <small>
+                            / noche
+                        </small>
+
+
+                        <button class="btn-detalles">
+                            Ver detalles →
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================
+                 HOTEL 3
+            ================================== -->
+
+            <article class="hotel-card">
+
+
+                <div class="hotel-imagen">
+
+                    <img
+                        src="img/hostal-azul.jpg"
+                        alt="Hostal Azul Cielo">
+
+                    <span class="hotel-favorito">
+                        ♡
+                    </span>
+
+                </div>
+
+
+                <div class="hotel-info">
+
+
+                    <div class="hotel-contenido">
+
+                        <span class="tipo-hotel">
+                            HOSTAL
+                        </span>
+
+                        <h2>
+                            Hostal Azul Cielo
+                        </h2>
+
+                        <p class="ubicacion">
+                            📍 Barrio de Jalatlaco,
+                            Oaxaca de Juárez
+                        </p>
+
+
+                        <div class="calificacion">
+
+                            <span>
+                                ★
+                            </span>
+
+                            <strong>
+                                4.4
+                            </strong>
+
+                            <small>
+                                (180 opiniones)
+                            </small>
+
+                        </div>
+
+
+                        <div class="caracteristicas">
+
+                            <span>
+                                🛏️ 18 habitaciones
+                            </span>
+
+                            <span>
+                                📶 WiFi
+                            </span>
+
+                            <span>
+                                ☕ Cafetería
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hotel-precio">
+
+                        <span>
+                            Desde
+                        </span>
+
+                        <strong>
+                            $650
+                        </strong>
+
+                        <small>
+                            / noche
+                        </small>
+
+
+                        <button class="btn-detalles">
+                            Ver detalles →
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================
+                 HOTEL 4
+            ================================== -->
+
+            <article class="hotel-card">
+
+
+                <div class="hotel-imagen">
+
+                    <img
+                        src="img/hotel-real-oaxaca.jpg"
+                        alt="Hotel Real Oaxaca">
+
+                    <span class="hotel-favorito">
+                        ♡
+                    </span>
+
+                </div>
+
+
+                <div class="hotel-info">
+
+
+                    <div class="hotel-contenido">
+
+                        <span class="tipo-hotel">
+                            HOTEL
+                        </span>
+
+                        <h2>
+                            Hotel Real Oaxaca
+                        </h2>
+
+                        <p class="ubicacion">
+                            📍 Reforma,
+                            Oaxaca de Juárez
+                        </p>
+
+
+                        <div class="calificacion">
+
+                            <span>
+                                ★
+                            </span>
+
+                            <strong>
+                                4.6
+                            </strong>
+
+                            <small>
+                                (295 opiniones)
+                            </small>
+
+                        </div>
+
+
+                        <div class="caracteristicas">
+
+                            <span>
+                                🛏️ 55 habitaciones
+                            </span>
+
+                            <span>
+                                📶 WiFi
+                            </span>
+
+                            <span>
+                                🍽️ Restaurante
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hotel-precio">
+
+                        <span>
+                            Desde
+                        </span>
+
+                        <strong>
+                            $1,350
+                        </strong>
+
+                        <small>
+                            / noche
+                        </small>
+
+
+                        <button class="btn-detalles">
+                            Ver detalles →
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </article>
+
+
+
+            <!-- =================================
+                 HOTEL 5
+            ================================== -->
+
+            <article class="hotel-card">
+
+
+                <div class="hotel-imagen">
+
+                    <img
+                        src="img/cabana-oaxaca.jpg"
+                        alt="Cabañas Oaxaca">
+
+                    <span class="hotel-favorito">
+                        ♡
+                    </span>
+
+                </div>
+
+
+                <div class="hotel-info">
+
+
+                    <div class="hotel-contenido">
+
+                        <span class="tipo-hotel">
+                            CABAÑA
+                        </span>
+
+                        <h2>
+                            Cabañas Sierra Oaxaca
+                        </h2>
+
+                        <p class="ubicacion">
+                            📍 Zona montañosa,
+                            Oaxaca
+                        </p>
+
+
+                        <div class="calificacion">
+
+                            <span>
+                                ★
+                            </span>
+
+                            <strong>
+                                4.9
+                            </strong>
+
+                            <small>
+                                (142 opiniones)
+                            </small>
+
+                        </div>
+
+
+                        <div class="caracteristicas">
+
+                            <span>
+                                🛏️ 12 habitaciones
+                            </span>
+
+                            <span>
+                                🔥 Chimenea
+                            </span>
+
+                            <span>
+                                🌲 Naturaleza
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hotel-precio">
+
+                        <span>
+                            Desde
+                        </span>
+
+                        <strong>
+                            $950
+                        </strong>
+
+                        <small>
+                            / noche
+                        </small>
+
+
+                        <button class="btn-detalles">
+                            Ver detalles →
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+</body>
+<script src="../../js/ui.js"></script>
+<script src="../../js/chatbot.js"></script>
+
+</html>

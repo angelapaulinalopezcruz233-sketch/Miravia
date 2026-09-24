@@ -1,0 +1,404 @@
+/* =========================================
+   ARMAR VIAJE · MIRAVIA
+   Wizard paso a paso
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Nunito", "Segoe UI", Arial, Helvetica, sans-serif;
+    color: #f7f4ef;
+    background:
+        radial-gradient(circle at 50% 0%, #12324a 0%, #07182e 42%, #020812 82%);
+}
+
+#armarViaje {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 22px 18px 130px;
+}
+
+/* =========================================
+   CABECERA
+======================================== */
+
+.cabecera {
+    text-align: center;
+    margin-bottom: 18px;
+    position: relative;
+}
+
+/* Botón "← Volver" a la página anterior */
+
+.cabecera .btn-volver {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f7fffb;
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cabecera .btn-volver:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateX(-2px);
+}
+
+.logo {
+    display: inline-block;
+    color: #f7fffb;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+    cursor: pointer;
+    text-shadow:
+        0 0 14px rgba(152, 255, 214, 0.45),
+        0 0 28px rgba(255, 179, 71, 0.25);
+}
+
+.destino-elegido {
+    margin-top: 8px;
+    font-size: 15px;
+    color: rgba(247, 244, 239, 0.85);
+}
+
+/* =========================================
+   INDICADOR DE PASOS
+======================================== */
+
+.pasos-indicador {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.paso-ind {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(8, 24, 36, 0.6);
+    border: 1px solid rgba(159, 243, 224, 0.2);
+    color: rgba(247, 244, 239, 0.55);
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.35s ease;
+}
+
+.paso-num {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+}
+
+.paso-ind.actual {
+    color: #f7fffb;
+    border-color: rgba(159, 243, 224, 0.5);
+}
+
+.paso-ind.activo {
+    background: linear-gradient(135deg, #9ff3e0, #ffe0b3);
+    color: #16323a;
+    border-color: transparent;
+}
+
+.paso-ind.activo .paso-num {
+    background: rgba(22, 50, 58, 0.15);
+}
+
+/* =========================================
+   PASOS
+======================================== */
+
+.contenedor-paso {
+    min-height: 320px;
+}
+
+.paso h2 {
+    font-size: clamp(20px, 4vw, 27px);
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.paso-descripcion {
+    text-align: center;
+    color: rgba(247, 244, 239, 0.7);
+    margin-bottom: 20px;
+}
+
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.tarjeta {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.94);
+    color: #123642;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 10px 26px rgba(4, 29, 44, 0.25);
+}
+
+.tarjeta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(47, 154, 144, 0.28);
+}
+
+.tarjeta.elegida {
+    border-color: #2f9a90;
+    box-shadow: 0 0 0 4px rgba(85, 205, 183, 0.25), 0 14px 32px rgba(47, 154, 144, 0.3);
+}
+
+.tarjeta.elegida::after {
+    content: "✓ Elegido";
+    float: right;
+    font-size: 12px;
+    font-weight: 800;
+    color: #0c5a4d;
+    background: #c9f6e8;
+    border-radius: 999px;
+    padding: 3px 9px;
+}
+
+.tipo-etiqueta {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #a4f1df, #ffe39c);
+    color: #16323a;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+}
+
+.tarjeta h3 {
+    font-size: 17px;
+    margin-bottom: 4px;
+}
+
+.tarjeta .ubicacion {
+    font-size: 12.5px;
+    color: #54737a;
+    margin-bottom: 8px;
+}
+
+.tarjeta .descripcion {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #43645e;
+    margin-bottom: 10px;
+}
+
+.tarjeta .pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.tarjeta .calificacion strong {
+    color: #d78a2c;
+}
+
+.tarjeta .precio strong {
+    color: #0c5a4d;
+}
+
+/* =========================================
+   RESUMEN
+======================================== */
+
+.mini-mapa {
+    height: 230px;
+    margin-bottom: 18px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1.5px solid rgba(159, 243, 224, 0.35);
+    box-shadow: 0 12px 30px rgba(4, 29, 44, 0.35);
+}
+
+.itinerario {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.itinerario .bloque {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.93);
+    color: #123642;
+    box-shadow: 0 10px 24px rgba(4, 29, 44, 0.22);
+}
+
+.itinerario .icono {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #a4f1df, #ffe39c);
+    font-size: 21px;
+}
+
+.itinerario h3 {
+    font-size: 14.5px;
+    margin-bottom: 2px;
+}
+
+.itinerario p {
+    font-size: 13px;
+    color: #43645e;
+}
+
+.itinerario .costo {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-weight: 800;
+    color: #0c5a4d;
+    font-size: 13.5px;
+}
+
+.itinerario .costo.total {
+    font-size: 17px;
+    color: #d78a2c;
+}
+
+.acciones-finales {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* =========================================
+   BOTONES Y NAVEGACIÓN
+======================================== */
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 999px;
+    font: 800 15px inherit;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.btn-grad {
+    color: #173944;
+    background: linear-gradient(135deg, #9ff3e0, #ffe0a6);
+    box-shadow: 0 8px 20px rgba(244, 179, 71, 0.26);
+}
+
+.btn-grad:not(:disabled):hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 26px rgba(47, 154, 144, 0.3);
+}
+
+.btn-suave {
+    color: #f7fffb;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid rgba(159, 243, 224, 0.35);
+}
+
+.btn-suave:not(:disabled):hover {
+    background: rgba(159, 243, 224, 0.14);
+    transform: translateY(-2px);
+}
+
+.navegacion {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 14px 18px 18px;
+    background: linear-gradient(0deg, rgba(2, 8, 18, 0.94) 55%, rgba(2, 8, 18, 0));
+}
+
+.aviso-seleccion {
+    text-align: center;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #ffd7a0;
+    flex: 1;
+}
+
+.navegacion-centro {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+}
+
+.total-barra {
+    font-weight: 800;
+    font-size: 15px;
+    color: #9ff3e0;
+    text-shadow: 0 2px 8px rgba(2, 8, 18, 0.6);
+}
+
+/* =========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 620px) {
+
+    .itinerario .bloque {
+        flex-wrap: wrap;
+    }
+
+    .itinerario .costo {
+        margin-left: 56px;
+    }
+
+    .navegacion {
+        flex-direction: column;
+    }
+
+    .aviso-seleccion {
+        order: -1;
+    }
+
+}

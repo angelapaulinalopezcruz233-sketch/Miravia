@@ -1,0 +1,1423 @@
+/* =========================================
+   VARIABLES
+========================================= */
+
+:root {
+
+    --aqua: #00BFA6;
+    --aqua-light: #DFF8F3;
+
+    --green: #2DBE7F;
+    --green-dark: #087F5B;
+
+    --yellow: #FFC857;
+
+    --background: #F4FBF9;
+
+    --text: #123B36;
+    --text-light: #6B8580;
+
+    --white: #FFFFFF;
+
+    --border: #DDECE8;
+
+    --shadow:
+        0 10px 30px rgba(8, 127, 91, 0.08);
+
+}
+
+
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        var(--background);
+
+    color:
+        var(--text);
+
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.encabezado {
+
+    height: 78px;
+
+    background:
+        var(--white);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 5%;
+
+    border-bottom:
+        1px solid var(--border);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+}
+
+
+/* LOGO */
+
+.logo {
+
+    text-decoration: none;
+
+    font-size: 26px;
+
+    font-weight: 800;
+
+    color:
+        var(--text);
+
+    white-space: nowrap;
+
+}
+
+
+.logo span {
+
+    color:
+        var(--aqua);
+
+}
+
+
+/* MENU */
+
+.menu {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 38px;
+
+}
+
+
+.menu a {
+
+    text-decoration: none;
+
+    color:
+        #395B56;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    padding: 28px 0;
+
+    position: relative;
+
+    transition:
+        0.3s;
+
+}
+
+
+.menu a:hover {
+
+    color:
+        var(--aqua);
+
+}
+
+
+.menu a.activo {
+
+    color:
+        var(--green-dark);
+
+}
+
+
+.menu a.activo::after {
+
+    content: "";
+
+    position: absolute;
+
+    bottom: 16px;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 3px;
+
+    border-radius: 10px;
+
+    background:
+        var(--aqua);
+
+}
+
+
+/* USUARIO */
+
+.btn-usuario {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid #D6EEE9;
+
+    background:
+        var(--aqua-light);
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        0.3s;
+
+}
+
+
+.btn-usuario:hover {
+
+    background:
+        var(--aqua);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================
+   CONTENEDOR
+========================================= */
+
+.contenedor {
+
+    width: 92%;
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding:
+        35px 0 70px;
+
+}
+
+
+/* =========================================
+   VOLVER
+========================================= */
+
+.volver {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    text-decoration: none;
+
+    color:
+        var(--green-dark);
+
+    font-weight: 700;
+
+    margin-bottom: 28px;
+
+    transition:
+        0.3s;
+
+}
+
+
+.volver:hover {
+
+    color:
+        var(--aqua);
+
+    transform:
+        translateX(-3px);
+
+}
+
+
+/* =========================================
+   ENCABEZADO COMIDA
+========================================= */
+
+.encabezado-comida {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+
+}
+
+
+.etiqueta {
+
+    display: inline-block;
+
+    background:
+        var(--aqua-light);
+
+    color:
+        var(--green-dark);
+
+    padding:
+        9px 17px;
+
+    border-radius:
+        50px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing:
+        1.5px;
+
+    margin-bottom: 12px;
+
+}
+
+
+.encabezado-comida h1 {
+
+    font-size: 38px;
+
+    margin-bottom: 8px;
+
+    color:
+        var(--text);
+
+}
+
+
+.encabezado-comida p {
+
+    color:
+        var(--text-light);
+
+    font-size: 16px;
+
+}
+
+
+/* CONTADOR */
+
+.contador {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        15px;
+
+    padding:
+        15px 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    box-shadow:
+        var(--shadow);
+
+    min-width: 190px;
+
+}
+
+
+.contador strong {
+
+    color:
+        var(--green-dark);
+
+}
+
+
+.contador span {
+
+    color:
+        var(--text-light);
+
+    font-size: 13px;
+
+}
+
+
+/* =========================================
+   EXPLORADOR
+========================================= */
+
+.explorador-comida {
+
+    display: grid;
+
+    grid-template-columns:
+        310px 1fr;
+
+    gap: 25px;
+
+    align-items: start;
+
+}
+
+
+/* =========================================
+   PANEL
+========================================= */
+
+.panel {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        var(--shadow);
+
+    overflow:
+        hidden;
+
+}
+
+
+.panel-titulo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding:
+        20px;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.icono-panel {
+
+    width: 45px;
+
+    height: 45px;
+
+    border-radius:
+        13px;
+
+    background:
+        var(--aqua-light);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 21px;
+
+}
+
+
+.panel-titulo h2 {
+
+    font-size: 18px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.panel-titulo p {
+
+    font-size: 13px;
+
+    color:
+        var(--text-light);
+
+}
+
+
+/* =========================================
+   FILTROS
+========================================= */
+
+.filtros-contenido {
+
+    padding:
+        20px;
+
+}
+
+
+.filtro {
+
+    margin-bottom:
+        24px;
+
+}
+
+
+.filtro > label:first-child {
+
+    display: block;
+
+    font-weight: 700;
+
+    margin-bottom:
+        11px;
+
+    font-size: 14px;
+
+}
+
+
+/* SELECT */
+
+.filtro select {
+
+    width: 100%;
+
+    padding:
+        12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    background:
+        white;
+
+    color:
+        var(--text);
+
+    font-size: 14px;
+
+    outline: none;
+
+}
+
+
+.filtro select:focus {
+
+    border-color:
+        var(--aqua);
+
+}
+
+
+/* CHECKBOX */
+
+.check {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom:
+        10px;
+
+    font-size: 14px;
+
+    color:
+        #395B56;
+
+    cursor: pointer;
+
+}
+
+
+.check input {
+
+    width: 17px;
+
+    height: 17px;
+
+    accent-color:
+        var(--aqua);
+
+}
+
+
+/* =========================================
+   RANGO
+========================================= */
+
+.precios {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+
+    color:
+        var(--text-light);
+
+}
+
+
+.rango {
+
+    width: 100%;
+
+    accent-color:
+        var(--aqua);
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================
+   BOTONES FILTROS
+========================================= */
+
+.btn-filtros {
+
+    width: 100%;
+
+    border: none;
+
+    background:
+        var(--aqua);
+
+    color:
+        white;
+
+    padding:
+        14px;
+
+    border-radius:
+        11px;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        0.3s;
+
+}
+
+
+.btn-filtros:hover {
+
+    background:
+        var(--green-dark);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.btn-limpiar {
+
+    width: 100%;
+
+    border: none;
+
+    background:
+        transparent;
+
+    color:
+        var(--green-dark);
+
+    padding:
+        12px;
+
+    margin-top: 5px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================
+   LISTA DE COMIDA
+========================================= */
+
+.lista-comida {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+}
+
+
+/* =========================================
+   TARJETA COMIDA
+========================================= */
+
+.comida-card {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    padding:
+        15px;
+
+    display: grid;
+
+    grid-template-columns:
+        190px 1fr 150px;
+
+    gap: 20px;
+
+    align-items: center;
+
+    box-shadow:
+        var(--shadow);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+}
+
+
+.comida-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        0 16px 35px rgba(8, 127, 91, 0.14);
+
+}
+
+
+/* =========================================
+   IMAGEN
+========================================= */
+
+.comida-imagen {
+
+    width: 190px;
+
+    height: 150px;
+
+    border-radius:
+        14px;
+
+    overflow:
+        hidden;
+
+    background:
+        var(--aqua-light);
+
+}
+
+
+.comida-imagen img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform 0.4s ease;
+
+}
+
+
+.comida-card:hover
+.comida-imagen img {
+
+    transform:
+        scale(1.06);
+
+}
+
+
+/* =========================================
+   INFORMACIÓN
+========================================= */
+
+.comida-info {
+
+    min-width: 0;
+
+}
+
+
+.tipo-comida {
+
+    display: inline-block;
+
+    background:
+        var(--aqua-light);
+
+    color:
+        var(--green-dark);
+
+    padding:
+        5px 10px;
+
+    border-radius:
+        50px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    margin-bottom: 8px;
+
+}
+
+
+.comida-info h2 {
+
+    font-size: 20px;
+
+    margin-bottom: 7px;
+
+    color:
+        var(--text);
+
+}
+
+
+.ubicacion {
+
+    color:
+        var(--green-dark);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+
+}
+
+
+.descripcion {
+
+    color:
+        var(--text-light);
+
+    font-size: 14px;
+
+    line-height:
+        1.5;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* =========================================
+   CALIFICACIÓN
+========================================= */
+
+.calificacion {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    font-size: 13px;
+
+}
+
+
+.estrella {
+
+    color:
+        var(--yellow);
+
+    font-size: 18px;
+
+}
+
+
+.calificacion span:last-child {
+
+    color:
+        var(--text-light);
+
+}
+
+
+/* =========================================
+   PRECIO
+========================================= */
+
+.comida-precio {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 5px;
+
+}
+
+
+.comida-precio strong {
+
+    font-size: 21px;
+
+    color:
+        var(--text);
+
+}
+
+
+.comida-precio > span {
+
+    color:
+        var(--text-light);
+
+    font-size: 12px;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* =========================================
+   BOTÓN DETALLES
+========================================= */
+
+.btn-detalles {
+
+    width: 135px;
+
+    border: none;
+
+    background:
+        var(--aqua);
+
+    color:
+        white;
+
+    padding:
+        12px;
+
+    border-radius:
+        10px;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        0.3s;
+
+}
+
+
+.btn-detalles:hover {
+
+    background:
+        var(--green-dark);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================
+   INFORMACIÓN FINAL
+========================================= */
+
+.informacion-comida {
+
+    margin-top:
+        35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--aqua-light),
+            #ECFAF4
+        );
+
+    border:
+        1px solid #CDEDE5;
+
+    border-radius:
+        20px;
+
+    padding:
+        28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+}
+
+
+.informacion-icono {
+
+    width: 60px;
+
+    height: 60px;
+
+    flex-shrink: 0;
+
+    background:
+        white;
+
+    border-radius:
+        17px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 30px;
+
+}
+
+
+.informacion-comida span {
+
+    font-size: 11px;
+
+    letter-spacing:
+        2px;
+
+    color:
+        var(--green-dark);
+
+    font-weight:
+        800;
+
+}
+
+
+.informacion-comida h2 {
+
+    margin:
+        5px 0;
+
+    font-size:
+        23px;
+
+}
+
+
+.informacion-comida p {
+
+    color:
+        var(--text-light);
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+
+    background:
+        var(--text);
+
+    color:
+        white;
+
+    text-align:
+        center;
+
+    padding:
+        25px;
+
+    font-size:
+        13px;
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .menu {
+
+        gap: 20px;
+
+    }
+
+
+    .explorador-comida {
+
+        grid-template-columns:
+            270px 1fr;
+
+    }
+
+
+    .comida-card {
+
+        grid-template-columns:
+            160px 1fr;
+
+    }
+
+
+    .comida-imagen {
+
+        width: 160px;
+
+        height: 140px;
+
+    }
+
+
+    .comida-precio {
+
+        grid-column:
+            2;
+
+        flex-direction:
+            row;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+    }
+
+}
+
+
+/* =========================================
+   TABLET PEQUEÑA
+========================================= */
+
+@media (max-width: 850px) {
+
+    .encabezado-comida {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .explorador-comida {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .filtros-contenido {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            15px;
+
+    }
+
+
+    .btn-filtros,
+    .btn-limpiar {
+
+        grid-column:
+            1 / -1;
+
+    }
+
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 650px) {
+
+    .encabezado {
+
+        height:
+            auto;
+
+        padding:
+            16px;
+
+        flex-wrap:
+            wrap;
+
+        gap:
+            15px;
+
+    }
+
+
+    .menu {
+
+        order:
+            3;
+
+        width:
+            100%;
+
+        overflow-x:
+            auto;
+
+        gap:
+            22px;
+
+        justify-content:
+            flex-start;
+
+    }
+
+
+    .menu a {
+
+        padding:
+            8px 0;
+
+        white-space:
+            nowrap;
+
+    }
+
+
+    .menu a.activo::after {
+
+        display:
+            none;
+
+    }
+
+
+    .contenedor {
+
+        width:
+            94%;
+
+        padding-top:
+            25px;
+
+    }
+
+
+    .encabezado-comida h1 {
+
+        font-size:
+            29px;
+
+    }
+
+
+    .contador {
+
+        width:
+            100%;
+
+    }
+
+
+    .filtros-contenido {
+
+        display:
+            block;
+
+    }
+
+
+    .comida-card {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+        padding:
+            12px;
+
+    }
+
+
+    .comida-imagen {
+
+        width:
+            100%;
+
+        height:
+            210px;
+
+    }
+
+
+    .comida-info h2 {
+
+        font-size:
+            19px;
+
+    }
+
+
+    .comida-precio {
+
+        flex-direction:
+            row;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+    }
+
+
+    .comida-precio > span {
+
+        margin:
+            0;
+
+    }
+
+
+    .btn-detalles {
+
+        width:
+            auto;
+
+        padding:
+            12px 20px;
+
+    }
+
+
+    .informacion-comida {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+}

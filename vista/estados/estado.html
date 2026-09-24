@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MIRAVIA | Explora el estado</title>
+
+    <link rel="stylesheet"
+          href="../../lib/leaflet.css">
+
+    <link rel="stylesheet"
+          href="../../estilo/estado.css?v=miravia-fotos-3">
+
+</head>
+
+<body>
+
+    <!-- =====================================
+         BARRA DE NAVEGACION
+    ====================================== -->
+
+    <header class="barra">
+
+        <a class="logo" href="../../index.html">
+            <span class="logo-icono">🌴</span>
+            MIRAVIA
+        </a>
+
+        <nav>
+            <a href="#" class="activo" id="navDestinos">Destinos</a>
+            <a href="#" id="navHospedaje">Hospedaje</a>
+            <a href="#" id="navComida">Comida</a>
+            <a href="#" id="navMisViajes">Mis viajes</a>
+        </nav>
+
+        <button class="btn-usuario" type="button" aria-label="Mis viajes">👤</button>
+
+    </header>
+
+
+    <!-- =====================================
+         HERO DEL ESTADO
+    ====================================== -->
+
+    <section class="hero-estado">
+
+        <button class="btn-volver" type="button">← Volver</button>
+
+        <span class="etiqueta">DESCUBRE MÉXICO</span>
+
+        <h1 id="nombreEstado">Cargando estado...</h1>
+
+        <p id="descripcionEstado"></p>
+
+        <button class="btn-armar" id="btnArmar" type="button">
+            🧭 Armar mi viaje paso a paso
+        </button>
+
+        <button class="btn-armar btn-todo" id="btnTodoEstado" type="button">
+            📋 Ver todo el estado
+        </button>
+
+    </section>
+
+
+    <!-- =====================================
+         MAPA · UBICACION DEL ESTADO
+    ====================================== -->
+
+    <div class="mapa-caja">
+
+        <div id="mapaEstado"></div>
+
+        <p class="ayuda-ubicacion">
+            🗺️ Toca cualquier municipio del mapa para seleccionarlo y ver qué tiene.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================
+         CONTENIDO DEL MUNICIPIO / ESTADO
+         (abajo del mapa, sin ventana flotante)
+    ====================================== -->
+
+    <section class="seccion" id="seccionZona" hidden>
+
+        <div class="seccion-cabecera">
+            <h2 id="tituloZona">El municipio elegido</h2>
+            <span id="subtituloZona">Buscando lugares…</span>
+        </div>
+
+        <div id="contenidoZona"></div>
+
+    </section>
+
+
+    <!-- =====================================
+         TARJETA DE INFORMACION DEL LUGAR
+         (aparece al tocar "Ver en el mapa")
+    ====================================== -->
+
+    <section class="seccion" id="seccionInfoLugar" hidden>
+
+        <div class="seccion-cabecera">
+            <h2>📍 El lugar que elegiste</h2>
+            <span>Toda su información aquí abajo</span>
+        </div>
+
+        <article class="tarjeta tarjeta-lugar" id="tarjetaInfoLugar"></article>
+
+    </section>
+
+
+    <!-- =====================================
+         LUGARES MAS TURISTICOS DEL ESTADO
+    ====================================== -->
+
+    <section class="seccion" id="seccionLugares">
+
+        <div class="seccion-cabecera">
+            <h2>📍 Lugares más turísticos</h2>
+            <span id="subtituloLugares">Los imperdibles del estado</span>
+        </div>
+
+        <div class="rejilla" id="rejillaLugares"></div>
+
+    </section>
+
+
+    <!-- =====================================
+         PANEL DEL MUNICIPIO SELECCIONADO
+         (hoteles, restaurantes, fondas,
+          en dónde ir a visitar)
+    ====================================== -->
+
+    <div class="panel-fondo" id="panelFondo" hidden></div>
+
+    <aside class="panel-municipio" id="panelMunicipio" hidden style="display:none">
+
+        <button class="panel-cerrar" id="panelCerrar" type="button" aria-label="Cerrar">✕</button>
+
+        <div id="panelContenido"></div>
+
+    </aside>
+
+
+    <footer class="pie">
+        © 2026 MIRAVIA · Tu guía para descubrir México
+    </footer>
+
+
+    <!-- SCRIPTS -->
+
+    <script src="../../lib/leaflet.js"></script>
+
+    <script src="../js/datos-estados.js?v=miravia-mun-18"></script>
+
+    <script>
+
+        /* ==========================================
+           PAGINA DINAMICA DEL ESTADO
+        ========================================== */
+
+        const valorEstado =
+            new URLSearchParams(location.search).get("estado") || "chiapas";
+
+        const datos =
+            DATOS_ESTADOS.obtener(valorEstado);
+
+        if (!datos) {
+            location.replace("../../inicio.html?destinos=1");
+            throw new Error("Estado desconocido: " + valorEstado);
+        }
+
+        /* ---------- TITULOS ---------- */
+
+        document.title =
+            "MIRAVIA | " + datos.nombre;
+
+        document.getElementById(
+            "nombreEstado"
+        ).textContent =
+            "Explora " + datos.nombre;
+
+        document.getElementById(
+            "descripcionEstado"
+        ).textContent =
+            datos.descripcion + " Capital: " + datos.capital + ".";
+
+        document.getElementById(
+            "subtituloLugares"
+        ).textContent =
+            "Los imperdibles de " + datos.nombre;
+
+
+        /* ==========================================
+           MAPA CON LA UBICACION DEL ESTADO
+        ========================================== */
+
+        const mapa =
+            L.map("mapaEstado", {
+                preferCanvas: true
+            }).setView(
+                datos.coords,
+                8
+            );
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+            {
+                maxZoom: 18,
+                attribution: "&copy; OpenStreetMap"
+            }
+        ).addTo(mapa);
+
+        const iconoEstado =
+            L.divIcon({
+                className: "marcador-estado",
+                html: '<div style="width:18px;height:18px;background:#ffb347;border-radius:50%;border:3px solid white;box-shadow:0 0 12px #ffb347"></div>',
+                iconSize: [18, 18],
+                iconAnchor: [9, 9]
+            });
+
+        const marcador =
+            L.marker(datos.coords, { icon: iconoEstado }).addTo(mapa);
+
+        marcador.bindPopup(
+            '<b>' + datos.nombre + '</b><br>' +
+            'Capital: ' + datos.capital
+        );
+
+
+        /* ==========================================
+           DATOS DEL MUNICIPIO
+           (hoteles, restaurantes, fondas y
+            en dónde ir a visitar: generados
+            con el nombre del municipio +
+            los lugares imperdibles del estado)
+        ========================================== */
+
+        function datosMunicipio(nombre) {
+            const corto = nombre.trim().split(" ").pop();
+
+            return {
+                hoteles: [
+                    {
+                        nombre: "Hotel Central " + corto,
+                        tipo: "Hotel",
+                        ubicacion: "Centro, " + nombre,
+                        descripcion: "Hospedaje cómodo y seguro en el corazón de " + nombre + ", " + datos.nombre + ".",
+                        calificacion: "4.6",
+                        precio: "$890"
+                    },
+                    {
+                        nombre: "Cabañas y Suites " + corto,
+                        tipo: "Cabañas",
+                        ubicacion: "Zona tranquila, " + nombre,
+                        descripcion: "Cabañas tradicionales con comida casera y ambiente familiar cerca del centro de " + nombre + ".",
+                        calificacion: "4.4",
+                        precio: "$640"
+                    }
+                ],
+                restaurantes: [
+                    {
+                        nombre: "Fonda Doña " + corto,
+                        tipo: "Fonda",
+                        ubicacion: "Mercado, " + nombre,
+                        descripcion: "Fonda tradicional con mole, tlayudas y comida casera de " + datos.nombre + ".",
+                        calificacion: "4.7",
+                        precio: "$180"
+                    },
+                    {
+                        nombre: "Comedor " + corto,
+                        tipo: "Restaurante",
+                        ubicacion: "Plaza principal, " + nombre,
+                        descripcion: "Restaurante familiar con los platillos típicos de " + datos.nombre + ".",
+                        calificacion: "4.5",
+                        precio: "$220"
+                    }
+                ],
+                lugares: datos.lugares
+            };
+        }
+
+
+        /* ==========================================
+           PANEL DE LA ZONA (MUNICIPIO O ESTADO)
+           Consulta TODOS los lugares reales de
+           OpenStreetMap (la misma fuente de los
+           mapas): hoteles, restaurantes, comedores,
+           fondas, taquerías, cafés y atracciones.
+           Si no hay internet, usa los datos de
+           ejemplo del estado.
+        ========================================== */
+
+        const panelFondo = document.getElementById("panelFondo");
+        const panelMunicipio = document.getElementById("panelMunicipio");
+        let panelContenido = document.getElementById("panelContenido");
+
+        // La ventana flotante quedó desactivada: todo el
+        // contenido se muestra ABAJO DEL MAPA.
+        panelMunicipio.hidden = true;
+        panelMunicipio.style.display = "none";
+
+        const seccionZona = document.getElementById("seccionZona");
+        const tituloZona = document.getElementById("tituloZona");
+        const subtituloZona = document.getElementById("subtituloZona");
+        const contenidoZona = document.getElementById("contenidoZona");
+
+        // El botón del panel viejo apunta al contenido nuevo.
+        panelContenido = contenidoZona;
+
+        let capaMunicipiosGlobal = null;
+
+        // Municipio que el usuario tocó en el mapa:
+        // "Armar mi viaje paso a paso" lo usa.
+        let municipioSeleccionado = "";
+        let idBusqueda = 0;
+
+        function etiquetaComida(tags) {
+            const cocina = (tags.cuisine || "").split(";")[0];
+            const mapa = {
+                taco: "Taquería", tacos: "Taquería",
+                pizza: "Pizzería", burger: "Hamburguesas",
+                seafood: "Mariscos", chicken: "Pollos",
+                ramen: "Ramen", sushi: "Sushi",
+                coffee_shop: "Café", italian: "Italiana",
+                chinese: "Comida china", japanese: "Comida japonesa"
+            };
+            return mapa[cocina] || null;
+        }
+
+        function clasificarLugares(elementos) {
+            const zonas = {
+                hoteles: [],
+                comer: [],
+                atracciones: []
+            };
+
+            elementos.forEach(function (elemento) {
+                const tags = elemento.tags || {};
+                const nombre = tags.name;
+                if (!nombre) {
+                    return;
+                }
+                const lat = elemento.lat || (elemento.center || {}).lat;
+                const lon = elemento.lon || (elemento.center || {}).lon;
+                const item = {
+                    nombre: nombre,
+                    tipo: "",
+                    extra: "",
+                    lat: lat,
+                    lon: lon
+                };
+
+                if (tags.tourism === "hotel") { item.tipo = "Hotel"; zonas.hoteles.push(item); }
+                else if (tags.tourism === "hostel") { item.tipo = "Hostal"; zonas.hoteles.push(item); }
+                else if (tags.tourism === "guest_house") { item.tipo = "Casa de huéspedes"; zonas.hoteles.push(item); }
+                else if (tags.tourism === "motel") { item.tipo = "Motel"; zonas.hoteles.push(item); }
+                else if (tags.amenity === "restaurant") {
+                    item.tipo = etiquetaComida(tags) || "Restaurante";
+                    zonas.comer.push(item);
+                }
+                else if (tags.amenity === "fast_food") {
+                    item.tipo = etiquetaComida(tags) || "Comida rápida";
+                    zonas.comer.push(item);
+                }
+                else if (tags.amenity === "cafe") { item.tipo = "Café"; zonas.comer.push(item); }
+                else if (tags.amenity === "food_court") { item.tipo = "Comedor"; zonas.comer.push(item); }
+                else if (tags.tourism === "museum") { item.tipo = "Museo"; zonas.atracciones.push(item); }
+                else if (tags.tourism === "viewpoint") { item.tipo = "Mirador"; zonas.atracciones.push(item); }
+                else if (tags.tourism === "gallery") { item.tipo = "Galería"; zonas.atracciones.push(item); }
+                else if (tags.tourism === "zoo") { item.tipo = "Zoológico"; zonas.atracciones.push(item); }
+                else if (tags.tourism === "theme_park") { item.tipo = "Parque de diversiones"; zonas.atracciones.push(item); }
+                else if (tags.tourism === "attraction") { item.tipo = "Atracción"; zonas.atracciones.push(item); }
+                else if (tags.historic === "archaeological_site") { item.tipo = "Zona arqueológica"; zonas.atracciones.push(item); }
+                else if (tags.historic === "ruins") { item.tipo = "Ruinas"; zonas.atracciones.push(item); }
+                else if (tags.historic === "monument") { item.tipo = "Monumento"; zonas.atracciones.push(item); }
+                else if (tags.historic === "memorial") { item.tipo = "Memorial"; zonas.atracciones.push(item); }
+                else if (tags.historic === "castle") { item.tipo = "Castillo"; zonas.atracciones.push(item); }
+            });
+
+            return zonas;
+        }
+
+        async function buscarLugaresReales(bounds) {
+            const bbox =
+                bounds.getSouth().toFixed(5) + "," +
+                bounds.getWest().toFixed(5) + "," +
+                bounds.getNorth().toFixed(5) + "," +
+                bounds.getEast().toFixed(5);
+
+            const consulta =
+                '[out:json][timeout:25];(' +
+                'node["tourism"~"^(hotel|hostel|guest_house|motel)$"](' + bbox + ');' +
+                'way["tourism"~"^(hotel|hostel|guest_house|motel)$"](' + bbox + ');' +
+                'node["amenity"~"^(restaurant|fast_food|cafe|food_court)$"](' + bbox + ');' +
+                'way["amenity"~"^(restaurant|fast_food|cafe|food_court)$"](' + bbox + ');' +
+                'node["tourism"~"^(attraction|museum|viewpoint|gallery|zoo|theme_park)$"](' + bbox + ');' +
+                'way["tourism"~"^(attraction|museum|viewpoint|gallery|zoo|theme_park)$"](' + bbox + ');' +
+                'node["historic"~"^(archaeological_site|ruins|monument|memorial|castle)$"](' + bbox + ');' +
+                'way["historic"~"^(archaeological_site|ruins|monument|memorial|castle)$"](' + bbox + ');' +
+                ');out center tags 800;';
+
+            const servidores = [
+                "https://overpass.kumi.systems/api/interpreter",
+                "https://overpass-api.de/api/interpreter",
+                "https://overpass.private.coffee/api/interpreter"
+            ];
+
+            // Dos rondas de intentos por si algún
+            // servidor está saturado en ese momento.
+            for (let ronda = 0; ronda < 2; ronda++) {
+                for (let i = 0; i < servidores.length; i++) {
+                    const control = new AbortController();
+                    const reloj = window.setTimeout(function () {
+                        control.abort();
+                    }, 45000);
+                    try {
+                        const respuesta = await fetch(servidores[i], {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                            body: "data=" + encodeURIComponent(consulta),
+                            signal: control.signal
+                        });
+                        window.clearTimeout(reloj);
+                        if (!respuesta.ok) {
+                            continue;
+                        }
+                        const json = await respuesta.json();
+                        return clasificarLugares(json.elements || []);
+                    } catch (error) {
+                        window.clearTimeout(reloj);
+                        // Intenta el siguiente servidor.
+                    }
+                }
+                if (ronda === 0) {
+                    await new Promise(function (resolver) {
+                        window.setTimeout(resolver, 3000);
+                    });
+                }
+            }
+
+            return null;
+        }
+
+        /* Imagen atractiva según el tipo de lugar. */
+        function imagenDeLugar(item) {
+            const texto = ((item.tipo || "") + " " + (item.nombre || "")).toLowerCase();
+            if (/(hotel|hostel|hostal|motel|posada|lodge|hosped|cabana|caba|suit|resort|inn)/.test(texto)) {
+                return "../../img/lugares/hotel.png";
+            }
+            if (/(taco|torta|marisc|pescad|cafeteria|cafe|fonda|fondita|comedor|pizzer|hamburg|burger|sushi|poll|asado|antoj|garnach|empanad|panader|helad|food|bar|cocina)/.test(texto)) {
+                return "../../img/lugares/taqueria.png";
+            }
+            if (/(museo|zona arqueo|parque|playa|cascada|mirador|sitio|templo|iglesia|catedral|monument|galeria|galería|zoo|acuario|ruina|castillo|piramid|centro histor|plaza|atraccion|atracción|turis)/.test(texto)) {
+                return "../../img/lugares/atractivo.png";
+            }
+            return "../../img/lugares/comedor.png";
+        }
+
+        function filaReal(item) {
+            const maps = item.lat
+                ? `<button class="enlace-mapa" type="button" data-lat="${item.lat}" data-lon="${item.lon}" ` +
+                  `data-nombre="${(item.nombre || "").replace(/"/g, "&quot;")}" ` +
+                  `data-tipo="${(item.tipo || "Lugar").replace(/"/g, "&quot;")}" ` +
+                  `data-extra="${(item.extra || "").replace(/"/g, "&quot;").replace(/</g, "&lt;")}">🧭 Ver en el mapa</button>`
+                : "";
+            return `
+                <div class="panel-item panel-item-con-foto">
+                    <img class="panel-foto" src="${imagenDeLugar(item)}" alt="${item.nombre}" loading="lazy">
+                    <div class="panel-item-cuerpo">
+                        <span class="tipo-etiqueta tipo-comida">${item.tipo}</span>
+                        <h4>${item.nombre}</h4>
+                        ${item.extra ? `<p class="panel-descripcion">${item.extra}</p>` : ""}
+                        ${maps}
+                    </div>
+                </div>`;
+        }
+
+        /* Tarjetas de esqueleto mientras se busca
+           (la pantalla nunca se ve vacía). */
+        function esqueletoCarga(mensaje) {
+            let tarjetas = "";
+            for (let i = 0; i < 6; i++) {
+                tarjetas += `
+                    <div class="panel-item panel-item-con-foto">
+                        <div class="panel-foto esqueleto"></div>
+                        <div class="panel-item-cuerpo">
+                            <div class="esqueleto linea-etiqueta"></div>
+                            <div class="esqueleto linea-titulo"></div>
+                            <div class="esqueleto linea-texto"></div>
+                        </div>
+                    </div>`;
+            }
+            return `
+                <p class="panel-cargando">⏳ ${mensaje}</p>
+                ${tarjetas}`;
+        }
+
+        /* Marcador único reutilizable para
+           "Ver en el mapa" dentro del sistema. */
+        let marcadorLugar = null;
+
+        function mostrarLugarEnMapa(lat, lon, nombre, tipo, extra) {
+            cerrarPanelMunicipio();
+            const latlng = [parseFloat(lat), parseFloat(lon)];
+            const item = { lat: lat, lon: lon, nombre: nombre, tipo: tipo || "Lugar", extra: extra || "" };
+            if (marcadorLugar) {
+                mapa.removeLayer(marcadorLugar);
+            }
+            marcadorLugar = L.marker(latlng).addTo(mapa);
+            marcadorLugar.bindPopup(
+                `<strong>${nombre}</strong><br>El lugar está aquí. Toca el pin para ver su tarjeta.`
+            ).openPopup();
+            marcadorLugar.on("click", function () {
+                mostrarTarjetaLugar(item);
+            });
+            mapa.flyTo(latlng, 16, { duration: 1.2 });
+            // Red de seguridad: si la animación se congela
+            // (pestaña de fondo), asegura el encuadre final.
+            window.setTimeout(function () {
+                mapa.stop();
+                mapa.setView(latlng, 16, { animate: false });
+                marcadorLugar.openPopup();
+            }, 1600);
+            mostrarTarjetaLugar(item);
+        }
+
+        function mostrarTarjetaLugar(item) {
+            const tarjeta = document.getElementById("tarjetaInfoLugar");
+            tarjeta.innerHTML = `
+                <div class="tarjeta-imagen">
+                    <img src="${imagenDeLugar(item)}" alt="${item.nombre}">
+                </div>
+                <div class="tarjeta-contenido">
+                    <span class="tipo-etiqueta tipo-comida">${item.tipo}</span>
+                    <h3>${item.nombre}</h3>
+                    ${item.extra ? `<p>${item.extra}</p>` : ""}
+                    <p class="panel-descripcion">📍 Ubicado en ${datos.nombre}${municipioSeleccionado ? " · " + municipioSeleccionado : ""}</p>
+                    ${item.lat ? `<button class="enlace-mapa" type="button" data-lat="${item.lat}" data-lon="${item.lon}" data-nombre="${(item.nombre || "").replace(/"/g, "&quot;")}" data-tipo="${(item.tipo || "Lugar").replace(/"/g, "&quot;")}" data-extra="${(item.extra || "").replace(/"/g, "&quot;").replace(/</g, "&lt;")}">🧭 Centrar en el mapa</button>` : ""}
+                </div>`;
+            const seccion = document.getElementById("seccionInfoLugar");
+            seccion.hidden = false;
+            tarjeta.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        panelContenido.addEventListener("click", function (evento) {
+            const boton = evento.target.closest("button.enlace-mapa");
+            if (boton && boton.hasAttribute("data-lat")) {
+                evento.preventDefault();
+                evento.stopPropagation();
+                mostrarLugarEnMapa(
+                    boton.getAttribute("data-lat"),
+                    boton.getAttribute("data-lon"),
+                    boton.getAttribute("data-nombre") || "Lugar",
+                    boton.getAttribute("data-tipo"),
+                    boton.getAttribute("data-extra")
+                );
+            }
+        });
+
+        document.getElementById("seccionInfoLugar").addEventListener("click", function (evento) {
+            const boton = evento.target.closest("button.enlace-mapa");
+            if (boton && boton.hasAttribute("data-lat")) {
+                evento.preventDefault();
+                evento.stopPropagation();
+                mostrarLugarEnMapa(
+                    boton.getAttribute("data-lat"),
+                    boton.getAttribute("data-lon"),
+                    boton.getAttribute("data-nombre") || "Lugar",
+                    boton.getAttribute("data-tipo"),
+                    boton.getAttribute("data-extra")
+                );
+            }
+        });
+
+        function seccionReal(icono, titulo, lista, maximo) {
+            if (!lista.length) {
+                return "";
+            }
+            const visibles = lista.slice(0, maximo);
+            const sobrantes = lista.length - visibles.length;
+            return `
+                <section class="panel-seccion">
+                    <h2>${icono} ${titulo} <small>(${lista.length})</small></h2>
+                    ${visibles.map(filaReal).join("")}
+                    ${sobrantes > 0 ? `<p class="panel-mas">…y ${sobrantes} más en la zona</p>` : ""}
+                </section>`;
+        }
+
+        function panelConDatos(tituloZonaTexto, subtitulo, html, valorZona) {
+            // Muestra el resultado ABAJO DEL MAPA
+            // (sin ventana flotante).
+            tituloZona.textContent = tituloZonaTexto;
+            subtituloZona.textContent = subtitulo;
+            contenidoZona.innerHTML =
+                `${html}
+                <button class="btn-armar panel-btn-viaje" id="btnViajeMunicipio" type="button">
+                    ✈ Comenzar viaje aquí
+                </button>`;
+            seccionZona.hidden = false;
+
+            document.getElementById("btnViajeMunicipio").onclick = function () {
+                let url = "../viaje/armar-viaje.html?estado=" + encodeURIComponent(valorEstado);
+                if (valorZona) {
+                    url += "&municipio=" + encodeURIComponent(valorZona);
+                }
+                window.location.href = url;
+            };
+            seccionZona.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        async function abrirPanelZona(nombreZona, bounds, valorZona) {
+            const miBusqueda = ++idBusqueda;
+
+            // Mientras busca, muestra esqueletos ABAJO DEL MAPA.
+            tituloZona.textContent = nombreZona;
+            subtituloZona.textContent = "Buscando todos los lugares reales…";
+            contenidoZona.innerHTML =
+                `${esqueletoCarga("Reuniendo hoteles, restaurantes, comedores, fondas, taquerías y atracciones de la zona…")}`;
+            seccionZona.hidden = false;
+            seccionZona.scrollIntoView({ behavior: "smooth", block: "start" });
+
+            const zonas = await buscarLugaresReales(bounds);
+
+            if (miBusqueda !== idBusqueda) {
+                return; // Se abrió otra zona mientras tanto.
+            }
+
+            const total = zonas
+                ? zonas.hoteles.length + zonas.comer.length + zonas.atracciones.length
+                : 0;
+
+            if (zonas && total > 0) {
+                const html =
+                    `<p class="panel-nota">Lugares reales de OpenStreetMap en la zona</p>` +
+                    seccionReal("🏨", "Hoteles y hospedaje", zonas.hoteles, 60) +
+                    seccionReal("🍴", "Restaurantes, comedores, fondas y taquerías", zonas.comer, 80) +
+                    seccionReal("✨", "Atracciones y en dónde ir a visitar", zonas.atracciones, 60);
+                panelConDatos(nombreZona, total + " lugares encontrados", html, valorZona);
+            } else {
+                // Sin internet o sin datos: usa los ejemplos.
+                const info = datosMunicipio(valorZona || datos.nombre);
+                const html =
+                    `<section class="panel-seccion">
+                        <h2>🏨 Hoteles en ${nombreZona}</h2>
+                        ${info.hoteles.map(function (item) {
+                            return filaReal({
+                                nombre: item.nombre,
+                                tipo: item.tipo,
+                                extra: item.ubicacion
+                            });
+                        }).join("")}
+                    </section>
+                    <section class="panel-seccion">
+                        <h2>🍴 Restaurantes y fondas</h2>
+                        ${info.restaurantes.map(function (item) {
+                            return filaReal({
+                                nombre: item.nombre,
+                                tipo: item.tipo,
+                                extra: item.ubicacion
+                            });
+                        }).join("")}
+                    </section>
+                    <section class="panel-seccion">
+                        <h2>✨ En dónde puedo ir a visitar</h2>
+                        ${info.lugares.map(function (item) {
+                            return filaReal({ nombre: item.nombre, tipo: "Atracción", extra: item.descripcion });
+                        }).join("")}
+                    </section>`;
+                panelConDatos(nombreZona, "Datos de ejemplo (sin conexión)", html, valorZona);
+            }
+        }
+
+        function cerrarPanelMunicipio() {
+            // Cancela cualquier búsqueda en curso para que
+            // sus resultados no vuelvan a abrir el panel.
+            idBusqueda++;
+            panelMunicipio.classList.remove("abierto");
+            panelFondo.hidden = true;
+            document.body.style.overflow = "";
+            window.setTimeout(function () {
+                panelMunicipio.hidden = true;
+            }, 320);
+        }
+
+        document.getElementById("panelCerrar").onclick = cerrarPanelMunicipio;
+        panelFondo.onclick = cerrarPanelMunicipio;
+
+
+        /* ==========================================
+           TARJETA DE LUGAR TURISTICO
+        ========================================== */
+
+        function tarjetaLugar(lugar) {
+            return `
+                <article class="tarjeta tarjeta-lugar">
+
+                    <div class="tarjeta-contenido">
+
+                        <span class="icono-lugar">📍</span>
+
+                        <h3>${lugar.nombre}</h3>
+
+                        <p>${lugar.descripcion}</p>
+
+                        <div class="precio-fila">
+                            <span class="ubicacion">Atracción imperdible</span>
+                            <button class="btn-detalles" type="button">Ver detalles →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+            `;
+        }
+
+
+        /* ==========================================
+           LLENAR LA SECCIÓN DE LUGARES
+        ========================================== */
+
+        document.getElementById("rejillaLugares").innerHTML =
+            datos.lugares.map(tarjetaLugar).join("");
+
+
+        /* ==========================================
+           MAPA DE MUNICIPIOS DEL ESTADO
+           GeoJSON oficial (CONABIO/INEGI 2023)
+           guardado en datos/municipios/ para que
+           funcione sin internet. Puedes tocar
+           cualquier municipio: no hay límite.
+        ========================================== */
+
+        function cerrarPopupMapa() {
+            mapa.closePopup();
+        }
+
+        fetch(`../../datos/municipios/${valorEstado}.geojson`)
+            .then(function (respuesta) {
+                if (!respuesta.ok) throw new Error("sin datos");
+                return respuesta.json();
+            })
+            .then(function (geo) {
+
+                // Con los municipios dibujados, el punto
+                // del estado ya no hace falta.
+                mapa.removeLayer(marcador);
+
+                const capaMunicipios = L.geoJSON(geo, {
+                    style: function () {
+                        return {
+                            color: "#ffffff",
+                            weight: 1.2,
+                            fillColor: "#12b48f",
+                            fillOpacity: 0.3
+                        };
+                    },
+                    onEachFeature: function (caracteristica, capa) {
+                        const nombre =
+                            caracteristica.properties.NOMGEO || "Municipio";
+
+                        capa.bindTooltip(nombre, {
+                            sticky: true,
+                            className: "tooltip-estado"
+                        });
+
+                        capa.on("mouseover", function () {
+                            capa.setStyle({ weight: 2.5, fillOpacity: 0.45 });
+                        });
+
+                        capa.on("mouseout", function () {
+                            capa.setStyle({ weight: 1.2, fillOpacity: 0.3 });
+                        });
+
+                        capa.on("click", function () {
+                            capa.setStyle({
+                                weight: 3,
+                                fillColor: "#ffb347",
+                                fillOpacity: 0.65
+                            });
+                            // Se recuerda el municipio elegido
+                            // para "Armar mi viaje paso a paso".
+                            municipioSeleccionado = nombre;
+                            // Al tocar el municipio se abre el
+                            // panel con TODOS sus lugares reales.
+                            cerrarPopupMapa();
+                            abrirPanelZona(nombre, capa.getBounds(), nombre);
+                        });
+                    }
+                }).addTo(mapa);
+
+                capaMunicipiosGlobal = capaMunicipios;
+
+                // El mapa se queda SOLO en este estado:
+                // se ajusta a sus municipios y se
+                // bloquea para no alejarse de él.
+                const limitesEstado = capaMunicipios.getBounds().pad(0.01);
+                mapa.fitBounds(limitesEstado, { padding: [12, 12] });
+                mapa.setMaxBounds(limitesEstado);
+                mapa.setMinZoom(mapa.getZoom());
+            })
+            .catch(function () {
+                // Estado sin archivo de municipios:
+                // se queda el punto del estado.
+            });
+
+
+        /* ==========================================
+           BOTÓN "ARMAR MI VIAJE PASO A PASO"
+        ========================================== */
+
+        document.getElementById("btnArmar").addEventListener("click", function () {
+            let url =
+                "../viaje/armar-viaje.html?estado=" + encodeURIComponent(valorEstado);
+            if (municipioSeleccionado) {
+                url += "&municipio=" + encodeURIComponent(municipioSeleccionado);
+            }
+            window.location.href = url;
+        });
+
+        /* ==========================================
+           BOTÓN "VER TODO EL ESTADO"
+           (todos los lugares reales del estado:
+            la capital y todos sus municipios)
+        ========================================== */
+
+        document.getElementById("btnTodoEstado").addEventListener("click", function () {
+            if (capaMunicipiosGlobal) {
+                // Ver todo el estado: se olvida el municipio elegido.
+                municipioSeleccionado = "";
+                abrirPanelZona(
+                    datos.nombre + " (todo el estado)",
+                    capaMunicipiosGlobal.getBounds(),
+                    ""
+                );
+            }
+        });
+
+        /* ==========================================
+           MENÚ SUPERIOR DEL ESTADO
+           Destinos = este estado · Hospedaje y
+           Comida = lugares reales de TODO el estado
+           · Mis viajes = viajes armados
+        ========================================== */
+
+        function abrirPanelSimple(titulo, subtitulo, html) {
+            // Muestra el resultado ABAJO DEL MAPA
+            // (sin ventana flotante).
+            tituloZona.textContent = titulo;
+            subtituloZona.textContent = subtitulo;
+            contenidoZona.innerHTML = html;
+            seccionZona.hidden = false;
+            seccionZona.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        async function abrirPanelEstadoCategoria(icono, titulo, clave) {
+            const miBusqueda = ++idBusqueda;
+            abrirPanelSimple(
+                icono + " " + titulo + " de " + datos.nombre,
+                "Buscando todos los lugares reales…",
+                `<p class="panel-cargando">⏳ Reuniendo ${titulo.toLowerCase()} de todo el estado…</p>
+                ${esqueletoCarga("Lugares reales en camino…")}`
+            );
+            let zonas = null;
+            if (capaMunicipiosGlobal) {
+                zonas = await buscarLugaresReales(capaMunicipiosGlobal.getBounds());
+            }
+            if (miBusqueda !== idBusqueda) {
+                return;
+            }
+            const lista = zonas ? zonas[clave] : [];
+            let html;
+            if (lista.length) {
+                html =
+                    `<p class="panel-nota">Lugares reales de OpenStreetMap en ${datos.nombre}</p>` +
+                    seccionReal(icono, titulo, lista, 9999);
+            } else {
+                html =
+                    `<section class="panel-seccion"><h2>${icono} ${titulo}</h2>` +
+                    (datos[clave] || []).map(function (item) {
+                        return filaReal({ nombre: item.nombre, tipo: item.tipo, extra: item.ubicacion });
+                    }).join("") +
+                    `</section>
+                    <p class="panel-nota">Mostrando ejemplos (sin conexión con el mapa de lugares).</p>`;
+            }
+            abrirPanelSimple(
+                icono + " " + titulo + " de " + datos.nombre,
+                lista.length ? lista.length + " lugares encontrados" : "Ejemplos de " + datos.nombre,
+                html
+            );
+        }
+
+        function abrirMisViajesEstado() {
+            let viajes = [];
+            try {
+                viajes = JSON.parse(localStorage.getItem("miravia_viajes")) || [];
+            } catch (error) {
+                viajes = [];
+            }
+            const html = viajes.length
+                ? `<p class="panel-nota">Viajes que has armado con el asistente</p>` +
+                  viajes.map(function (viaje, indice) {
+                      return `<div class="panel-item">
+                          <span class="tipo-etiqueta">${viaje.fecha || ""}</span>
+                          <h4>${viaje.nombre}${viaje.municipio ? " · " + viaje.municipio : ""}</h4>
+                          <p class="panel-descripcion">🏨 ${viaje.hotel || "Sin hospedaje"}<br>🍴 ${viaje.restaurante || "Sin comida"}<br>✨ ${(viaje.lugares || []).length} lugar(es) por visitar</p>
+                          <p class="panel-descripcion"><strong>💰 ${viaje.total || ""}</strong></p>
+                          <button class="enlace-mapa" type="button" data-indice-viaje="${indice}">✕ Eliminar este viaje</button>
+                      </div>`;
+                  }).join("")
+                : `<p class="panel-cargando">Aún no armas viajes.<br>Toca un municipio del mapa y usa "Armar mi viaje paso a paso".</p>`;
+            abrirPanelSimple(
+                "🧳 Mis viajes",
+                viajes.length + " viaje" + (viajes.length === 1 ? "" : "s") + " armado" + (viajes.length === 1 ? "" : "s"),
+                html
+            );
+            panelContenido.querySelectorAll("[data-indice-viaje]").forEach(function (boton) {
+                boton.addEventListener("click", function () {
+                    const indice = parseInt(boton.getAttribute("data-indice-viaje"), 10);
+                    let lista = [];
+                    try {
+                        lista = JSON.parse(localStorage.getItem("miravia_viajes")) || [];
+                    } catch (error) {
+                        lista = [];
+                    }
+                    lista.splice(indice, 1);
+                    localStorage.setItem("miravia_viajes", JSON.stringify(lista));
+                    abrirMisViajesEstado();
+                });
+            });
+        }
+
+        document.getElementById("navDestinos").addEventListener("click", function (evento) {
+            evento.preventDefault();
+            evento.stopPropagation();
+            cerrarPanelMunicipio();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        document.getElementById("navHospedaje").addEventListener("click", function (evento) {
+            evento.preventDefault();
+            evento.stopPropagation();
+            abrirPanelEstadoCategoria("🏨", "Hoteles, cabañas y hospedaje", "hoteles");
+        });
+
+        document.getElementById("navComida").addEventListener("click", function (evento) {
+            evento.preventDefault();
+            evento.stopPropagation();
+            abrirPanelEstadoCategoria("🍴", "Comedores, restaurantes y fondas", "comer");
+        });
+
+        document.getElementById("navMisViajes").addEventListener("click", function (evento) {
+            evento.preventDefault();
+            evento.stopPropagation();
+            abrirMisViajesEstado();
+        });
+
+    </script>
+
+    <script src="../../js/ui.js?v=miravia-ui-2"></script>
+
+    <script src="../../js/chatbot.js"></script>
+
+</body>
+
+</html>

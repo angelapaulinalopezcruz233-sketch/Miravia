@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MIRAVIA | ¿En dónde quieres viajar?</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="lib/leaflet.css">
+
+    <link rel="stylesheet"
+          href="estilo/inicio.css?v=miravia-ini-14">
+
+</head>
+
+<body>
+
+    <main id="inicio">
+
+        <div id="espacio" aria-hidden="true"></div>
+
+        <div id="tierra" aria-hidden="true"></div>
+
+        <div id="mapaInicio" role="img" aria-label="Mapa de México para elegir destino"></div>
+
+        <div class="viñeta" aria-hidden="true"></div>
+
+        <section class="contenido">
+
+            <div class="logo" id="logoMiravia" title="Inicio">
+                MIRAVIA
+            </div>
+
+            <div class="mensaje">
+
+                <p class="etapa" id="etiquetaEtapa">
+                    Un momento
+                </p>
+
+                <h1 id="titulo">
+                    Bienvenido
+                </h1>
+
+                <p id="subtitulo">
+                    Respira. El viaje empieza aquí.
+                </p>
+
+            </div>
+
+            <div id="estadoUbicacion"
+                 class="ubicacion">
+
+                <span class="punto"></span>
+
+                <span id="textoUbicacion">
+                    tu viaje comienza desde aqui
+                </span>
+
+            </div>
+
+            <div id="elegirDestino"
+                 class="elegir-destino"
+                 hidden>
+
+                <h2>¿En dónde quieres viajar?</h2>
+
+                <p>Toca un círculo de colores para elegir tu estado,<br>después oprime "Comenzar viaje".</p>
+
+            </div>
+
+            <div id="avisoEstado"
+                 class="aviso-estado"
+                 hidden>
+
+            </div>
+
+            <div id="estadoElegidoChip"
+                 class="estado-elegido-chip"
+                 hidden>
+
+                <span class="chip-punto"></span>
+
+                <span id="estadoElegidoNombre">—</span>
+
+            </div>
+
+            <button id="btnComenzarViaje"
+                    class="boton-comenzar-viaje"
+                    type="button"
+                    hidden>
+
+                ✈ Comenzar viaje
+
+            </button>
+
+        </section>
+
+    </main>
+
+    <script src="lib/leaflet.js"></script>
+    <script src="lib/three.min.js"></script>
+    <script src="lib/gsap.min.js"></script>
+    <script src="js/animacion-inicio.js?v=miravia-ini-15"></script>
+    <script src="js/selector-viaje.js?v=miravia-ini-15"></script>
+
+</body>
+
+</html>

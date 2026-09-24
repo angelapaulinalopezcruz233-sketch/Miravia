@@ -1,0 +1,2484 @@
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --aqua: #00BFA6;
+    --aqua-light: #DFF8F3;
+
+    --green: #2DBE7F;
+    --green-dark: #087F5B;
+
+    --yellow: #FFC857;
+
+    --background: #F4FBF9;
+
+    --text: #123B36;
+    --text-light: #66817B;
+
+    --white: #FFFFFF;
+
+    --border: #DCEBE7;
+
+    --shadow: 0 8px 25px rgba(18, 59, 54, 0.08);
+
+    --shadow-hover: 0 15px 35px rgba(18, 59, 54, 0.14);
+
+    --radius: 16px;
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    line-height: 1.5;
+}
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+
+button {
+    cursor: pointer;
+}
+
+
+img {
+
+    display: block;
+
+    width: 100%;
+
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+
+    width: 100%;
+
+    height: 74px;
+
+    padding: 0 5%;
+
+    background: var(--white);
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* LOGO */
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.logo-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--aqua-light);
+
+    font-size: 23px;
+}
+
+
+.logo-text {
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    color: var(--text);
+
+    letter-spacing: -0.7px;
+}
+
+
+.logo-text strong {
+
+    color: var(--aqua);
+}
+
+
+/* MENÚ */
+
+.menu {
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+
+.menu a {
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    position: relative;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #48645E;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.menu a:hover {
+
+    color: var(--aqua);
+
+    transform: translateY(-1px);
+}
+
+
+.menu a.activo {
+
+    color: var(--green-dark);
+}
+
+
+.menu a.activo::after {
+
+    content: "";
+
+    position: absolute;
+
+    bottom: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 3px;
+
+    border-radius: 5px 5px 0 0;
+
+    background: var(--aqua);
+}
+
+
+/* PERFIL */
+
+.perfil {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 50%;
+
+    border: 1px solid var(--border);
+
+    background: var(--aqua-light);
+
+    font-size: 18px;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.perfil:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+main {
+
+    width: 90%;
+
+    max-width: 1240px;
+
+    margin: 0 auto;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    min-height: 440px;
+
+    margin-top: 28px;
+
+    padding: 55px 60px;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            120deg,
+            #DFF8F3 0%,
+            #EAFBF5 55%,
+            #D2F2E6 100%
+        );
+}
+
+
+.hero-contenido {
+
+    width: 62%;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.hero-etiqueta {
+
+    display: inline-block;
+
+    padding: 7px 13px;
+
+    border-radius: 30px;
+
+    background: rgba(255,255,255,0.75);
+
+    color: var(--green-dark);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 18px;
+}
+
+
+.hero h1 {
+
+    font-size: clamp(38px, 5vw, 62px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+
+    color: var(--text);
+
+    margin-bottom: 20px;
+}
+
+
+.hero h1 span {
+
+    color: var(--aqua);
+}
+
+
+.hero-contenido > p {
+
+    max-width: 620px;
+
+    font-size: 16px;
+
+    color: var(--text-light);
+
+    margin-bottom: 28px;
+}
+
+
+/* BUSCADOR */
+
+.hero-buscador {
+
+    max-width: 620px;
+
+    min-height: 60px;
+
+    padding: 7px;
+
+    display: flex;
+
+    align-items: center;
+
+    background: var(--white);
+
+    border: 1px solid rgba(8,127,91,0.12);
+
+    border-radius: 14px;
+
+    box-shadow: var(--shadow);
+}
+
+
+.buscador-icono {
+
+    width: 44px;
+
+    text-align: center;
+
+    font-size: 18px;
+}
+
+
+.hero-buscador input {
+
+    flex: 1;
+
+    min-width: 0;
+
+    border: none;
+
+    outline: none;
+
+    color: var(--text);
+
+    font-size: 14px;
+}
+
+
+.hero-buscador input::placeholder {
+
+    color: #8BA39E;
+}
+
+
+.hero-buscador button {
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 14px 19px;
+
+    background: var(--aqua);
+
+    color: white;
+
+    font-weight: 700;
+
+    font-size: 13px;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.hero-buscador button:hover {
+
+    background: var(--green-dark);
+
+    transform: translateY(-1px);
+}
+
+
+/* CATEGORÍAS */
+
+.hero-categorias {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+.hero-categorias span {
+
+    padding: 7px 12px;
+
+    border-radius: 30px;
+
+    background: rgba(255,255,255,0.7);
+
+    color: var(--text);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    border: 1px solid rgba(8,127,91,0.08);
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.hero-categorias span:hover {
+
+    background: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* HERO VISUAL */
+
+.hero-visual {
+
+    position: absolute;
+
+    width: 430px;
+
+    height: 430px;
+
+    right: 30px;
+
+    top: 5px;
+}
+
+
+.hero-circulo {
+
+    position: absolute;
+
+    border-radius: 50%;
+}
+
+
+.hero-circulo.grande {
+
+    width: 360px;
+
+    height: 360px;
+
+    right: 10px;
+
+    top: 30px;
+
+    background: rgba(0,191,166,0.13);
+}
+
+
+.hero-circulo.mediano {
+
+    width: 240px;
+
+    height: 240px;
+
+    right: 70px;
+
+    top: 90px;
+
+    background: rgba(45,190,127,0.15);
+}
+
+
+.hero-icono {
+
+    position: absolute;
+
+    right: 105px;
+
+    top: 110px;
+
+    font-size: 125px;
+
+    filter: drop-shadow(
+        0 15px 20px rgba(8,127,91,0.15)
+    );
+}
+
+
+.hero-tarjeta {
+
+    position: absolute;
+
+    right: 25px;
+
+    bottom: 65px;
+
+    width: 245px;
+
+    padding: 14px;
+
+    background: rgba(255,255,255,0.95);
+
+    border-radius: 14px;
+
+    box-shadow: var(--shadow);
+
+    display: flex;
+
+    gap: 12px;
+
+    align-items: center;
+}
+
+
+.hero-tarjeta > span {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--aqua-light);
+
+    border-radius: 10px;
+
+    font-size: 18px;
+}
+
+
+.hero-tarjeta strong {
+
+    display: block;
+
+    font-size: 14px;
+}
+
+
+.hero-tarjeta small {
+
+    display: block;
+
+    color: var(--text-light);
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   SECCIONES
+========================================================= */
+
+.destinos,
+.experiencias,
+.hospedaje,
+.gastronomia {
+
+    padding-top: 75px;
+}
+
+
+.titulo-seccion {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+
+.seccion-etiqueta {
+
+    display: block;
+
+    color: var(--green-dark);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 7px;
+}
+
+
+.titulo-seccion h2,
+.seccion-cabecera h2 {
+
+    font-size: 29px;
+
+    line-height: 1.2;
+
+    color: var(--text);
+
+    letter-spacing: -0.6px;
+}
+
+
+.titulo-seccion p,
+.seccion-cabecera p {
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+    margin-top: 7px;
+}
+
+
+.titulo-seccion > a {
+
+    color: var(--green-dark);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    transition: color 0.2s ease;
+}
+
+
+.titulo-seccion > a:hover {
+
+    color: var(--aqua);
+}
+
+
+/* =========================================================
+   DESTINOS
+========================================================= */
+
+.destinos-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+
+.destino-card {
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    overflow: hidden;
+
+    box-shadow: 0 5px 18px rgba(18,59,54,0.05);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.destino-card:hover {
+
+    transform: translateY(-6px);
+
+    box-shadow: var(--shadow-hover);
+}
+
+
+/* IMAGEN DESTINO */
+
+.imagen-card {
+
+    height: 215px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.imagen-card img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.5s ease;
+}
+
+
+.destino-card:hover .imagen-card img {
+
+    transform: scale(1.06);
+}
+
+
+.destino-badge {
+
+    position: absolute;
+
+    top: 13px;
+
+    left: 13px;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    background: var(--aqua);
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.favorito {
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 12px;
+
+    width: 36px;
+
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.95);
+
+    color: var(--green-dark);
+
+    font-size: 21px;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+
+.favorito:hover {
+
+    transform: scale(1.1);
+
+    color: var(--aqua);
+}
+
+
+/* INFORMACIÓN */
+
+.destino-info {
+
+    padding: 18px;
+}
+
+
+.destino-titulo {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.destino-titulo h3 {
+
+    font-size: 17px;
+
+    color: var(--text);
+}
+
+
+.rating {
+
+    color: #9A7520;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.estado {
+
+    color: var(--green-dark);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    margin-top: 3px;
+}
+
+
+.descripcion {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    margin: 10px 0 14px;
+
+    min-height: 38px;
+}
+
+
+.link-explorar {
+
+    color: var(--aqua);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    transition: color 0.2s ease;
+}
+
+
+.link-explorar:hover {
+
+    color: var(--green-dark);
+}
+
+
+/* =========================================================
+   MAPA
+========================================================= */
+
+.explora-mexico {
+
+    margin-top: 75px;
+
+    padding: 35px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 22px;
+
+    box-shadow: var(--shadow);
+}
+
+
+.seccion-cabecera {
+
+    margin-bottom: 25px;
+}
+
+
+.explorador-contenido {
+
+    display: grid;
+
+    grid-template-columns: 310px 1fr;
+
+    gap: 20px;
+}
+
+
+/* FILTROS */
+
+.filtros-panel {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+
+.ubicacion-box,
+.seleccion-box {
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 20px;
+}
+
+
+.ubicacion-box {
+
+    background: var(--aqua-light);
+}
+
+
+.ubicacion-titulo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 13px;
+}
+
+
+.ubicacion-icono {
+
+    width: 34px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: white;
+}
+
+
+.ubicacion-box > p {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+    margin: 10px 0 14px 43px;
+}
+
+
+.ubicacion-actual {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+.punto-activo {
+
+    width: 9px;
+
+    height: 9px;
+
+    background: var(--green);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 5px rgba(45,190,127,0.15);
+}
+
+
+/* SELECCIÓN */
+
+.seleccion-box h3 {
+
+    font-size: 17px;
+
+    margin-bottom: 3px;
+}
+
+
+.texto-ayuda {
+
+    font-size: 11px;
+
+    color: var(--text-light);
+
+    margin-bottom: 18px;
+}
+
+
+.seleccion-box label {
+
+    display: block;
+
+    color: var(--text);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    margin-bottom: 6px;
+}
+
+
+.seleccion-box select {
+
+    width: 100%;
+
+    height: 44px;
+
+    padding: 0 12px;
+
+    margin-bottom: 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: var(--text);
+
+    outline: none;
+
+    font-size: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.seleccion-box select:focus {
+
+    border-color: var(--aqua);
+
+    box-shadow:
+        0 0 0 3px var(--aqua-light);
+}
+
+
+/* BOTÓN EXPLORAR */
+
+.btn-explorar {
+
+    width: 100%;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border-radius: 9px;
+
+    background: var(--aqua);
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.btn-explorar:hover {
+
+    background: var(--green-dark);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(0,191,166,0.25);
+}
+
+
+/* MAPA */
+
+.mapa {
+
+    min-height: 475px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    background: #DCEDEA;
+}
+
+
+.mapa iframe {
+
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 475px;
+
+    border: 0;
+
+}
+
+
+.mapa-etiqueta {
+
+    position: absolute;
+
+    left: 15px;
+
+    top: 15px;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: rgba(255,255,255,0.95);
+
+    color: var(--text);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+
+.controles-mapa {
+
+    position: absolute;
+
+    right: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.controles-mapa button {
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    background: white;
+
+    border-radius: 8px;
+
+    color: var(--text);
+
+    font-size: 21px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+
+
+/* =========================================================
+   EXPERIENCIAS
+========================================================= */
+
+.experiencias-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(6, 1fr);
+
+    gap: 14px;
+}
+
+
+.experiencia-card {
+
+    min-height: 190px;
+
+    padding: 22px 15px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+
+.experiencia-card:hover {
+
+    transform: translateY(-5px);
+
+    background: var(--aqua-light);
+
+    box-shadow: var(--shadow-hover);
+}
+
+
+.experiencia-icono {
+
+    width: 65px;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--aqua-light);
+
+    border-radius: 18px;
+
+    font-size: 31px;
+
+    margin-bottom: 14px;
+
+    transition: transform 0.3s ease;
+}
+
+
+.experiencia-card:hover .experiencia-icono {
+
+    transform: scale(1.08);
+}
+
+
+.experiencia-card h3 {
+
+    font-size: 15px;
+
+    margin-bottom: 3px;
+}
+
+
+.experiencia-card p {
+
+    color: var(--text-light);
+
+    font-size: 11px;
+
+    margin-bottom: 10px;
+}
+
+
+.experiencia-card > span {
+
+    color: var(--green-dark);
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   DESCUBRIR DESTINO
+========================================================= */
+
+.descubre-destino {
+
+    margin-top: 75px;
+
+    padding: 38px 45px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            110deg,
+            var(--green-dark),
+            var(--aqua)
+        );
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    box-shadow: var(--shadow);
+}
+
+
+.descubre-icono {
+
+    width: 65px;
+
+    height: 65px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255,255,255,0.16);
+
+    border-radius: 18px;
+
+    font-size: 32px;
+}
+
+
+.descubre-contenido {
+
+    flex: 1;
+}
+
+
+.descubre-contenido span {
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.3px;
+
+    opacity: 0.8;
+}
+
+
+.descubre-contenido h2 {
+
+    font-size: 25px;
+
+    margin: 3px 0;
+}
+
+
+.descubre-contenido p {
+
+    font-size: 13px;
+
+    opacity: 0.9;
+}
+
+
+.btn-secundario {
+
+    padding: 13px 20px;
+
+    background: white;
+
+    color: var(--green-dark);
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.btn-secundario:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+
+/* =========================================================
+   HOSPEDAJE
+========================================================= */
+
+.hospedaje-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+}
+
+
+.hospedaje-card {
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 16px rgba(18,59,54,0.05);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.hospedaje-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow: var(--shadow-hover);
+}
+
+
+.hospedaje-imagen {
+
+    height: 170px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.hospedaje-imagen img {
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 0.5s ease;
+}
+
+
+.hospedaje-card:hover img {
+
+    transform: scale(1.05);
+}
+
+
+.hospedaje-imagen span {
+
+    position: absolute;
+
+    left: 12px;
+
+    bottom: 12px;
+
+    padding: 5px 9px;
+
+    background: rgba(255,255,255,0.95);
+
+    border-radius: 20px;
+
+    color: var(--green-dark);
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+.hospedaje-info {
+
+    padding: 16px;
+}
+
+
+.hospedaje-info h3 {
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}
+
+
+.hospedaje-info p {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+    min-height: 38px;
+
+    margin-bottom: 10px;
+}
+
+
+.hospedaje-info strong {
+
+    color: var(--green-dark);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   GASTRONOMÍA
+========================================================= */
+
+.comida-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+}
+
+
+.comida-card {
+
+    min-height: 190px;
+
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    text-align: center;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+
+.comida-card:hover {
+
+    transform: translateY(-5px);
+
+    background: var(--aqua-light);
+
+    box-shadow: var(--shadow-hover);
+}
+
+
+.comida-card > span {
+
+    width: 65px;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--aqua-light);
+
+    border-radius: 50%;
+
+    font-size: 31px;
+
+    margin-bottom: 13px;
+}
+
+
+.comida-card h3 {
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}
+
+
+.comida-card p {
+
+    color: var(--text-light);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   MIS VIAJES
+========================================================= */
+
+.mis-viajes {
+
+    margin-top: 75px;
+
+    margin-bottom: 75px;
+
+    padding: 35px 42px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    box-shadow: var(--shadow);
+}
+
+
+.mis-viajes-icono {
+
+    width: 60px;
+
+    height: 60px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: #FFF5D9;
+
+    font-size: 27px;
+}
+
+
+.mis-viajes > div:nth-child(2) {
+
+    flex: 1;
+}
+
+
+.mis-viajes span {
+
+    color: var(--green-dark);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+
+.mis-viajes h2 {
+
+    font-size: 23px;
+
+    margin: 3px 0;
+}
+
+
+.mis-viajes p {
+
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+
+.btn-viaje {
+
+    padding: 13px 22px;
+
+    background: var(--green-dark);
+
+    color: white;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.btn-viaje:hover {
+
+    background: var(--aqua);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+
+    background: #073F35;
+
+    color: white;
+
+    padding-top: 45px;
+}
+
+
+.footer-contenido {
+
+    width: 90%;
+
+    max-width: 1240px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1fr;
+
+    gap: 60px;
+
+    padding-bottom: 40px;
+}
+
+
+.footer-marca .logo-text {
+
+    color: white;
+}
+
+
+.footer-marca .logo {
+
+    margin-bottom: 15px;
+}
+
+
+.footer-marca p {
+
+    max-width: 390px;
+
+    color: #B7D1CB;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+
+.footer-columna {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.footer-columna h3 {
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+
+.footer-columna a {
+
+    color: #B7D1CB;
+
+    font-size: 12px;
+
+    transition: color 0.2s ease;
+}
+
+
+.footer-columna a:hover {
+
+    color: white;
+}
+
+
+.footer-final {
+
+    border-top: 1px solid rgba(255,255,255,0.1);
+
+    text-align: center;
+
+    padding: 18px;
+
+    color: #8FB4AC;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+
+
+    .menu {
+
+        gap: 17px;
+    }
+
+
+    .hero {
+
+        padding: 45px;
+
+    }
+
+
+    .hero-contenido {
+
+        width: 70%;
+    }
+
+
+    .hero-visual {
+
+        opacity: 0.5;
+
+        right: -80px;
+    }
+
+
+    .destinos-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .explorador-contenido {
+
+        grid-template-columns: 280px 1fr;
+    }
+
+
+    .experiencias-grid {
+
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+
+    .hospedaje-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .comida-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET PEQUEÑA
+========================================================= */
+
+@media (max-width: 800px) {
+
+
+    .navbar {
+
+        padding: 12px 4%;
+
+        height: auto;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+    }
+
+
+    .menu {
+
+        order: 3;
+
+        width: 100%;
+
+        height: auto;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+    }
+
+
+    .menu a {
+
+        height: auto;
+
+        padding: 5px;
+    }
+
+
+    .menu a.activo::after {
+
+        display: none;
+    }
+
+
+    .hero {
+
+        min-height: auto;
+
+        padding: 40px 30px;
+    }
+
+
+    .hero-contenido {
+
+        width: 100%;
+    }
+
+
+    .hero-visual {
+
+        display: none;
+    }
+
+
+    .explorador-contenido {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .mapa {
+
+        min-height: 400px;
+    }
+
+
+    .mapa iframe {
+
+        min-height: 400px;
+    }
+
+
+    .descubre-destino {
+
+        flex-wrap: wrap;
+    }
+
+
+    .descubre-contenido {
+
+        min-width: 60%;
+    }
+
+
+    .footer-contenido {
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - CELULAR
+========================================================= */
+
+@media (max-width: 600px) {
+
+
+    main {
+
+        width: 92%;
+    }
+
+
+    .navbar {
+
+        padding: 12px 4%;
+    }
+
+
+    .logo-text {
+
+        font-size: 20px;
+    }
+
+
+    .perfil {
+
+        width: 38px;
+
+        height: 38px;
+    }
+
+
+    .menu {
+
+        gap: 8px 13px;
+    }
+
+
+    .menu a {
+
+        font-size: 11px;
+    }
+
+
+    /* HERO */
+
+    .hero {
+
+        margin-top: 18px;
+
+        padding: 32px 22px;
+
+        border-radius: 18px;
+    }
+
+
+    .hero h1 {
+
+        font-size: 37px;
+
+        letter-spacing: -1.5px;
+    }
+
+
+    .hero-contenido > p {
+
+        font-size: 13px;
+    }
+
+
+    .hero-buscador {
+
+        flex-direction: column;
+
+        padding: 8px;
+
+        align-items: stretch;
+    }
+
+
+    .buscador-icono {
+
+        display: none;
+    }
+
+
+    .hero-buscador input {
+
+        height: 45px;
+
+        padding: 0 10px;
+    }
+
+
+    .hero-buscador button {
+
+        width: 100%;
+    }
+
+
+    .hero-categorias {
+
+        gap: 7px;
+    }
+
+
+    .hero-categorias span {
+
+        font-size: 10px;
+
+        padding: 6px 9px;
+    }
+
+
+    /* TÍTULOS */
+
+    .destinos,
+    .experiencias,
+    .hospedaje,
+    .gastronomia {
+
+        padding-top: 50px;
+    }
+
+
+    .titulo-seccion {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    .titulo-seccion h2,
+    .seccion-cabecera h2 {
+
+        font-size: 23px;
+    }
+
+
+    /* DESTINOS */
+
+    .destinos-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+
+    .imagen-card {
+
+        height: 220px;
+    }
+
+
+    /* MAPA */
+
+    .explora-mexico {
+
+        margin-top: 50px;
+
+        padding: 20px;
+
+        border-radius: 16px;
+    }
+
+
+    .explorador-contenido {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .mapa {
+
+        min-height: 350px;
+    }
+
+
+    .mapa iframe {
+
+        min-height: 350px;
+    }
+
+
+    /* EXPERIENCIAS */
+
+    .experiencias-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 10px;
+    }
+
+
+    .experiencia-card {
+
+        min-height: 160px;
+
+        padding: 15px 10px;
+    }
+
+
+    .experiencia-icono {
+
+        width: 52px;
+
+        height: 52px;
+
+        font-size: 25px;
+    }
+
+
+    /* DESCUBRIR */
+
+    .descubre-destino {
+
+        margin-top: 50px;
+
+        padding: 28px 22px;
+
+        gap: 15px;
+    }
+
+
+    .descubre-icono {
+
+        width: 52px;
+
+        height: 52px;
+
+        font-size: 25px;
+    }
+
+
+    .descubre-contenido {
+
+        min-width: 0;
+
+        width: calc(100% - 70px);
+    }
+
+
+    .descubre-contenido h2 {
+
+        font-size: 20px;
+    }
+
+
+    .descubre-contenido p {
+
+        font-size: 11px;
+    }
+
+
+    .btn-secundario {
+
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    /* HOSPEDAJE */
+
+    .hospedaje-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    /* COMIDA */
+
+    .comida-grid {
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    /* MIS VIAJES */
+
+    .mis-viajes {
+
+        margin-top: 50px;
+
+        margin-bottom: 50px;
+
+        padding: 25px 20px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .mis-viajes h2 {
+
+        font-size: 20px;
+    }
+
+
+    .btn-viaje {
+
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    /* FOOTER */
+
+    .footer-contenido {
+
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - CELULAR PEQUEÑO
+========================================================= */
+
+@media (max-width: 400px) {
+
+
+    .menu a {
+
+        font-size: 10px;
+    }
+
+
+    .hero h1 {
+
+        font-size: 32px;
+    }
+
+
+    .experiencias-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .comida-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .imagen-card {
+
+        height: 200px;
+    }
+
+}
+/* Estados de interacción y alternativa visual cuando una imagen no está disponible */
+.aviso-sistema { position: fixed; right: 24px; bottom: 24px; z-index: 9999; max-width: 330px; padding: 14px 18px; border-radius: 14px; background: #113a40; color: #fff; box-shadow: 0 12px 32px rgba(0,0,0,.22); font-weight: 700; opacity: 0; transform: translateY(14px); pointer-events: none; transition: .25s ease; }
+.aviso-sistema.visible { opacity: 1; transform: translateY(0); }
+.favorito.seleccionado { color: #e85d75; }
+.imagen-no-disponible { min-height: 190px; background: linear-gradient(135deg, #0c6b76, #38a3a5 52%, #f4b860); display: grid; place-items: center; overflow: hidden; }
+.imagen-no-disponible::after { content: '✦ México te espera'; color: #fff; font-weight: 800; letter-spacing: .04em; text-shadow: 0 2px 8px rgba(0,0,0,.28); }
+.imagen-no-disponible img { display: none; }
+select:disabled { cursor: not-allowed; opacity: .62; }
+@media (max-width: 600px) { .aviso-sistema { right: 16px; bottom: 16px; left: 16px; max-width: none; } }

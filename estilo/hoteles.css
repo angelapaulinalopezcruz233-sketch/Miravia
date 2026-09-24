@@ -1,0 +1,1711 @@
+/* =========================================
+   VARIABLES
+========================================= */
+
+:root {
+
+    --aqua: #00BFA6;
+    --aqua-light: #DFF8F3;
+
+    --green: #2DBE7F;
+    --green-dark: #087F5B;
+
+    --yellow: #FFC857;
+
+    --background: #F4FBF9;
+
+    --text: #123B36;
+    --text-light: #6B8580;
+
+    --white: #FFFFFF;
+
+    --border: #DDECE8;
+
+    --shadow:
+        0 10px 30px rgba(8, 127, 91, 0.08);
+
+}
+
+
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        var(--background);
+
+    color:
+        var(--text);
+
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.encabezado {
+
+    height: 78px;
+
+    background:
+        var(--white);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 5%;
+
+    border-bottom:
+        1px solid var(--border);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+}
+
+
+/* LOGO */
+
+.logo {
+
+    text-decoration: none;
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+    color:
+        var(--text);
+
+    white-space: nowrap;
+
+}
+
+
+.logo span {
+
+    color:
+        var(--aqua);
+
+}
+
+
+/* MENU */
+
+.menu {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 38px;
+
+}
+
+
+.menu a {
+
+    text-decoration: none;
+
+    color:
+        #395B56;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    padding: 28px 0;
+
+    position: relative;
+
+    transition:
+        0.3s;
+
+}
+
+
+.menu a:hover {
+
+    color:
+        var(--aqua);
+
+}
+
+
+.menu a.activo {
+
+    color:
+        var(--green-dark);
+
+}
+
+
+.menu a.activo::after {
+
+    content: "";
+
+    position: absolute;
+
+    bottom: 16px;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 3px;
+
+    border-radius: 10px;
+
+    background:
+        var(--aqua);
+
+}
+
+
+/* USUARIO */
+
+.btn-usuario {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid #D6EEE9;
+
+    background:
+        var(--aqua-light);
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        0.3s;
+
+}
+
+
+.btn-usuario:hover {
+
+    background:
+        var(--aqua);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================
+   CONTENEDOR
+========================================= */
+
+.contenedor {
+
+    width: 92%;
+
+    max-width: 1350px;
+
+    margin:
+        auto;
+
+    padding:
+        35px 0 70px;
+
+}
+
+
+/* =========================================
+   VOLVER
+========================================= */
+
+.volver {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    color:
+        var(--green-dark);
+
+    text-decoration:
+        none;
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        28px;
+
+    transition:
+        0.3s;
+
+}
+
+
+.volver:hover {
+
+    color:
+        var(--aqua);
+
+    transform:
+        translateX(-4px);
+
+}
+
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+.encabezado-pagina {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-end;
+
+    gap:
+        30px;
+
+    margin-bottom:
+        30px;
+
+}
+
+
+.etiqueta {
+
+    display:
+        inline-block;
+
+    background:
+        var(--aqua-light);
+
+    color:
+        var(--green-dark);
+
+    padding:
+        8px 16px;
+
+    border-radius:
+        50px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.5px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.encabezado-pagina h1 {
+
+    font-size:
+        38px;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.encabezado-pagina p {
+
+    color:
+        var(--text-light);
+
+    font-size:
+        16px;
+
+}
+
+
+/* RESULTADOS */
+
+.resultado {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        15px;
+
+    padding:
+        14px 20px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    box-shadow:
+        var(--shadow);
+
+}
+
+
+.resultado strong {
+
+    color:
+        var(--aqua);
+
+    font-size:
+        20px;
+
+}
+
+
+.resultado span {
+
+    color:
+        var(--text-light);
+
+    font-size:
+        13px;
+
+}
+
+
+/* =========================================
+   CONTENIDO HOTELES
+========================================= */
+
+.contenido-hoteles {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        300px 1fr;
+
+    gap:
+        25px;
+
+    align-items:
+        start;
+
+}
+
+
+/* =========================================
+   FILTROS
+========================================= */
+
+.filtros {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        20px;
+
+    box-shadow:
+        var(--shadow);
+
+    padding:
+        22px;
+
+    position:
+        sticky;
+
+    top:
+        100px;
+
+}
+
+
+/* HEADER FILTROS */
+
+.filtros-header {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+    gap:
+        10px;
+
+    padding-bottom:
+        20px;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.filtros-header > div {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+}
+
+
+.icono-filtro {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        var(--aqua-light);
+
+    border-radius:
+        12px;
+
+}
+
+
+.filtros-header h2 {
+
+    font-size:
+        16px;
+
+}
+
+
+.filtros-header p {
+
+    color:
+        var(--text-light);
+
+    font-size:
+        11px;
+
+    margin-top:
+        3px;
+
+}
+
+
+.limpiar {
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    color:
+        var(--aqua);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+}
+
+
+/* =========================================
+   FILTRO INDIVIDUAL
+========================================= */
+
+.filtro {
+
+    padding:
+        20px 0;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.filtro:last-of-type {
+
+    border-bottom:
+        none;
+
+}
+
+
+.filtro > label:first-child {
+
+    display:
+        block;
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        13px;
+
+}
+
+
+/* BUSQUEDA */
+
+.input-busqueda {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    background:
+        var(--background);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    padding:
+        11px;
+
+}
+
+
+.input-busqueda input {
+
+    border:
+        none;
+
+    outline:
+        none;
+
+    background:
+        transparent;
+
+    width:
+        100%;
+
+    color:
+        var(--text);
+
+    font-size:
+        13px;
+
+}
+
+
+.input-busqueda input::placeholder {
+
+    color:
+        #8CA5A0;
+
+}
+
+
+/* =========================================
+   CHECKBOX
+========================================= */
+
+.checkbox {
+
+    display:
+        flex !important;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    margin:
+        11px 0;
+
+    cursor:
+        pointer;
+
+    font-size:
+        13px !important;
+
+    font-weight:
+        500 !important;
+
+}
+
+
+.checkbox input {
+
+    width:
+        17px;
+
+    height:
+        17px;
+
+    accent-color:
+        var(--aqua);
+
+}
+
+
+.checkbox span {
+
+    flex:
+        1;
+
+}
+
+
+.checkbox small {
+
+    color:
+        var(--text-light);
+
+}
+
+
+.estrellas {
+
+    color:
+        var(--yellow);
+
+}
+
+
+/* =========================================
+   PRECIO
+========================================= */
+
+.precios {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    font-size:
+        12px;
+
+    color:
+        var(--text-light);
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.rango {
+
+    width:
+        100%;
+
+    accent-color:
+        var(--aqua);
+
+    cursor:
+        pointer;
+
+}
+
+
+/* =========================================
+   SELECT
+========================================= */
+
+.filtro select {
+
+    width:
+        100%;
+
+    padding:
+        11px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    background:
+        var(--background);
+
+    color:
+        var(--text);
+
+    outline:
+        none;
+
+    cursor:
+        pointer;
+
+}
+
+
+/* =========================================
+   BOTÓN FILTROS
+========================================= */
+
+.btn-aplicar {
+
+    width:
+        100%;
+
+    border:
+        none;
+
+    background:
+        var(--aqua);
+
+    color:
+        var(--white);
+
+    padding:
+        14px;
+
+    border-radius:
+        11px;
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+    margin-top:
+        20px;
+
+    transition:
+        0.3s;
+
+}
+
+
+.btn-aplicar:hover {
+
+    background:
+        var(--green-dark);
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(8, 127, 91, 0.18);
+
+}
+
+
+/* =========================================
+   LISTADO
+========================================= */
+
+.lista-hoteles {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        17px;
+
+}
+
+
+/* =========================================
+   BARRA RESULTADOS
+========================================= */
+
+.barra-resultados {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        15px;
+
+    padding:
+        15px 20px;
+
+}
+
+
+.barra-resultados strong {
+
+    display:
+        block;
+
+    font-size:
+        15px;
+
+    margin-bottom:
+        4px;
+
+}
+
+
+.barra-resultados span {
+
+    font-size:
+        12px;
+
+    color:
+        var(--text-light);
+
+}
+
+
+.ordenar {
+
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--background);
+
+    border-radius:
+        9px;
+
+    padding:
+        9px 12px;
+
+    color:
+        var(--text);
+
+    outline:
+        none;
+
+}
+
+
+/* =========================================
+   TARJETA HOTEL
+========================================= */
+
+.hotel-card {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        230px 1fr;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        18px;
+
+    overflow:
+        hidden;
+
+    box-shadow:
+        var(--shadow);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+}
+
+
+.hotel-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        0 16px 35px
+        rgba(8, 127, 91, 0.14);
+
+}
+
+
+/* =========================================
+   IMAGEN HOTEL
+========================================= */
+
+.hotel-imagen {
+
+    height:
+        230px;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    background:
+        var(--aqua-light);
+
+}
+
+
+.hotel-imagen img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    display:
+        block;
+
+    object-fit:
+        cover;
+
+    transition:
+        transform 0.45s ease;
+
+}
+
+
+.hotel-card:hover
+.hotel-imagen img {
+
+    transform:
+        scale(1.06);
+
+}
+
+
+/* FAVORITO */
+
+.hotel-favorito {
+
+    position:
+        absolute;
+
+    top:
+        13px;
+
+    right:
+        13px;
+
+    width:
+        35px;
+
+    height:
+        35px;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,0.95);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        21px;
+
+    cursor:
+        pointer;
+
+}
+
+
+/* ETIQUETA */
+
+.hotel-etiqueta {
+
+    position:
+        absolute;
+
+    bottom:
+        12px;
+
+    left:
+        12px;
+
+    background:
+        var(--aqua);
+
+    color:
+        white;
+
+    padding:
+        6px 10px;
+
+    border-radius:
+        50px;
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================
+   INFORMACIÓN HOTEL
+========================================= */
+
+.hotel-info {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        25px;
+
+    padding:
+        23px;
+
+}
+
+
+.hotel-contenido {
+
+    flex:
+        1;
+
+}
+
+
+.tipo-hotel {
+
+    display:
+        inline-block;
+
+    color:
+        var(--green-dark);
+
+    background:
+        var(--aqua-light);
+
+    padding:
+        5px 9px;
+
+    border-radius:
+        50px;
+
+    font-size:
+        10px;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.8px;
+
+    margin-bottom:
+        9px;
+
+}
+
+
+.hotel-contenido h2 {
+
+    font-size:
+        20px;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.ubicacion {
+
+    color:
+        var(--text-light);
+
+    font-size:
+        13px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+/* =========================================
+   CALIFICACIÓN
+========================================= */
+
+.calificacion {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.calificacion span {
+
+    color:
+        var(--yellow);
+
+    font-size:
+        17px;
+
+}
+
+
+.calificacion strong {
+
+    font-size:
+        13px;
+
+}
+
+
+.calificacion small {
+
+    color:
+        var(--text-light);
+
+    font-size:
+        11px;
+
+}
+
+
+/* =========================================
+   CARACTERÍSTICAS
+========================================= */
+
+.caracteristicas {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+
+}
+
+
+.caracteristicas span {
+
+    background:
+        var(--background);
+
+    border:
+        1px solid var(--border);
+
+    padding:
+        7px 9px;
+
+    border-radius:
+        8px;
+
+    color:
+        var(--text-light);
+
+    font-size:
+        11px;
+
+}
+
+
+/* =========================================
+   PRECIO
+========================================= */
+
+.hotel-precio {
+
+    min-width:
+        150px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        center;
+
+    border-left:
+        1px solid var(--border);
+
+    padding-left:
+        22px;
+
+}
+
+
+.hotel-precio span {
+
+    color:
+        var(--text-light);
+
+    font-size:
+        11px;
+
+}
+
+
+.hotel-precio strong {
+
+    font-size:
+        25px;
+
+    color:
+        var(--text);
+
+    margin-top:
+        3px;
+
+}
+
+
+.hotel-precio small {
+
+    color:
+        var(--text-light);
+
+    font-size:
+        11px;
+
+}
+
+
+/* =========================================
+   BOTÓN DETALLES
+========================================= */
+
+.btn-detalles {
+
+    border:
+        none;
+
+    background:
+        var(--aqua);
+
+    color:
+        white;
+
+    padding:
+        11px 18px;
+
+    border-radius:
+        9px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+    margin-top:
+        18px;
+
+    transition:
+        0.3s;
+
+}
+
+
+.btn-detalles:hover {
+
+    background:
+        var(--green-dark);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1050px) {
+
+    .menu {
+
+        gap:
+            20px;
+
+    }
+
+
+    .contenido-hoteles {
+
+        grid-template-columns:
+            250px 1fr;
+
+    }
+
+
+    .hotel-card {
+
+        grid-template-columns:
+            190px 1fr;
+
+    }
+
+
+    .hotel-info {
+
+        padding:
+            18px;
+
+    }
+
+}
+
+
+/* =========================================
+   TABLET PEQUEÑA
+========================================= */
+
+@media (max-width: 850px) {
+
+    .encabezado-pagina {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .contenido-hoteles {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .filtros {
+
+        position:
+            static;
+
+    }
+
+
+    .hotel-card {
+
+        grid-template-columns:
+            200px 1fr;
+
+    }
+
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 650px) {
+
+    .encabezado {
+
+        height:
+            auto;
+
+        padding:
+            16px;
+
+        flex-wrap:
+            wrap;
+
+        gap:
+            15px;
+
+    }
+
+
+    .menu {
+
+        order:
+            3;
+
+        width:
+            100%;
+
+        overflow-x:
+            auto;
+
+        justify-content:
+            flex-start;
+
+        gap:
+            22px;
+
+        padding-bottom:
+            5px;
+
+    }
+
+
+    .menu a {
+
+        padding:
+            8px 0;
+
+        white-space:
+            nowrap;
+
+    }
+
+
+    .menu a.activo::after {
+
+        display:
+            none;
+
+    }
+
+
+    .contenedor {
+
+        width:
+            94%;
+
+        padding-top:
+            25px;
+
+    }
+
+
+    .encabezado-pagina h1 {
+
+        font-size:
+            30px;
+
+    }
+
+
+    .resultado {
+
+        width:
+            100%;
+
+    }
+
+
+    .barra-resultados {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            12px;
+
+    }
+
+
+    .ordenar {
+
+        width:
+            100%;
+
+    }
+
+
+    .hotel-card {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .hotel-imagen {
+
+        height:
+            220px;
+
+    }
+
+
+    .hotel-info {
+
+        flex-direction:
+            column;
+
+        gap:
+            20px;
+
+    }
+
+
+    .hotel-precio {
+
+        border-left:
+            none;
+
+        border-top:
+            1px solid var(--border);
+
+        padding:
+            18px 0 0;
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .btn-detalles {
+
+        width:
+            100%;
+
+        padding:
+            14px;
+
+    }
+
+
+    .caracteristicas {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+}

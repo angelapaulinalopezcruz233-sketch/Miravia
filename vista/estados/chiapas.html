@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ViajaMX - Explora Chiapas</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="../../estilo/chiapas.css">
+
+    <!-- LEAFLET -->
+    <link rel="stylesheet"
+          href="../../lib/leaflet.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
+
+    <header class="encabezado">
+
+        <div class="logo">
+            🌴 <span>Viaja</span>MX
+        </div>
+
+
+        <nav class="menu">
+
+            <a href="../../inicio.html?destinos=1" class="activo">
+                Destinos
+            </a>
+
+            <a href="#">
+                Hospedaje
+            </a>
+
+            <a href="#">
+                Comida
+            </a>
+
+            <a href="#">
+                Atracciones
+            </a>
+
+            <a href="#">
+                Mis viajes
+            </a>
+
+        </nav>
+
+
+        <button class="btn-usuario">
+            👤
+        </button>
+
+    </header>
+
+
+
+    <!-- =========================================
+         CONTENIDO PRINCIPAL
+    ========================================== -->
+
+    <main class="contenedor">
+
+
+        <!-- VOLVER -->
+
+        <a href="#"
+           class="volver">
+
+            ← México
+
+        </a>
+
+
+
+        <!-- =====================================
+             ENCABEZADO
+        ====================================== -->
+
+        <section class="encabezado-estado">
+
+            <div>
+
+                <span class="etiqueta">
+                    DESCUBRE MÉXICO
+                </span>
+
+
+                <h1>
+                    Explora un estado
+                </h1>
+
+
+                <p>
+                    Selecciona un estado y descubre sus
+                    municipios y destinos turísticos.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             EXPLORADOR
+        ====================================== -->
+
+        <section class="explorador">
+
+
+            <!-- =================================
+                 ESTADOS
+            ================================== -->
+
+            <div class="panel estados-panel">
+
+
+                <div class="panel-titulo">
+
+                    <span class="icono-panel">
+                        🇲🇽
+                    </span>
+
+
+                    <div>
+
+                        <h2>
+                            Selecciona un estado
+                        </h2>
+
+                        <p>
+                            Elige dónde quieres viajar
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="lista-estados">
+
+
+                    <button class="estado">
+                        Aguascalientes
+                    </button>
+
+
+                    <button class="estado">
+                        Baja California
+                    </button>
+
+
+                    <button class="estado">
+                        Baja California Sur
+                    </button>
+
+
+                    <button class="estado">
+                        Campeche
+                    </button>
+
+
+                    <button class="estado">
+                        Chihuahua
+                    </button>
+
+
+                    <button class="estado">
+                        Ciudad de México
+                    </button>
+
+
+                    <button class="estado">
+                        Coahuila
+                    </button>
+
+
+                    <button class="estado">
+                        Colima
+                    </button>
+
+
+                    <button class="estado">
+                        Durango
+                    </button>
+
+
+                    <button class="estado">
+                        Guanajuato
+                    </button>
+
+
+                    <button class="estado">
+                        Guerrero
+                    </button>
+
+
+                    <button class="estado">
+                        Hidalgo
+                    </button>
+
+
+                    <button class="estado">
+                        Jalisco
+                    </button>
+
+
+                    <button class="estado">
+                        México
+                    </button>
+
+
+                    <!-- ESTADO ACTUAL -->
+
+                    <button class="estado seleccionado"
+                            onclick="seleccionarEstado('Chiapas')">
+
+                        Chiapas
+
+                        <span>
+                            ✓
+                        </span>
+
+                    </button>
+
+
+                    <button class="estado">
+                        Michoacán
+                    </button>
+
+
+                    <button class="estado">
+                        Morelos
+                    </button>
+
+
+                    <button class="estado">
+                        Nayarit
+                    </button>
+
+
+                    <button class="estado">
+                        Nuevo León
+                    </button>
+
+
+                    <button class="estado">
+                        Oaxaca
+                    </button>
+
+
+                    <button class="estado">
+                        Puebla
+                    </button>
+
+
+                    <button class="estado">
+                        Querétaro
+                    </button>
+
+
+                    <button class="estado">
+                        Quintana Roo
+                    </button>
+
+
+                    <button class="estado">
+                        San Luis Potosí
+                    </button>
+
+
+                    <button class="estado">
+                        Tabasco
+                    </button>
+
+
+                    <button class="estado">
+                        Tamaulipas
+                    </button>
+
+
+                    <button class="estado">
+                        Veracruz
+                    </button>
+
+
+                    <button class="estado">
+                        Yucatán
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 MUNICIPIOS
+            ================================== -->
+
+            <div class="panel municipios-panel">
+
+
+                <div class="panel-titulo">
+
+                    <span class="icono-panel">
+                        📍
+                    </span>
+
+
+                    <div>
+
+                        <h2 id="tituloMunicipios">
+                            Municipios de Chiapas
+                        </h2>
+
+
+                        <p>
+                            Selecciona un municipio
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="lista-municipios"
+                     id="listaMunicipios">
+
+
+                    <!-- TUXTLA -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Tuxtla Gutiérrez',
+                                16.7528,
+                                -93.1162
+                            )">
+
+                        <span>
+                            Tuxtla Gutiérrez
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- SAN CRISTÓBAL -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'San Cristóbal de las Casas',
+                                16.7370,
+                                -92.6376
+                            )">
+
+                        <span>
+                            San Cristóbal de las Casas
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- COMITÁN -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Comitán de Domínguez',
+                                16.2510,
+                                -92.1342
+                            )">
+
+                        <span>
+                            Comitán de Domínguez
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- TAPACHULA -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Tapachula',
+                                14.9056,
+                                -92.2634
+                            )">
+
+                        <span>
+                            Tapachula
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- PALENQUE -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Palenque',
+                                17.5095,
+                                -91.9822
+                            )">
+
+                        <span>
+                            Palenque
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- CHIAPA DE CORZO -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Chiapa de Corzo',
+                                16.7073,
+                                -93.0130
+                            )">
+
+                        <span>
+                            Chiapa de Corzo
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- OCOSINGO -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Ocosingo',
+                                16.9064,
+                                -92.0932
+                            )">
+
+                        <span>
+                            Ocosingo
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- TONALÁ -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Tonalá',
+                                16.0899,
+                                -93.7516
+                            )">
+
+                        <span>
+                            Tonalá
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- CINTALAPA -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Cintalapa',
+                                16.6935,
+                                -93.7247
+                            )">
+
+                        <span>
+                            Cintalapa
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- ARRIAGA -->
+
+                    <button class="municipio"
+                            onclick="seleccionarMunicipio(
+                                event,
+                                'Arriaga',
+                                16.2350,
+                                -93.9000
+                            )">
+
+                        <span>
+                            Arriaga
+                        </span>
+
+                        <span class="flecha">
+                            →
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 MAPA
+            ================================== -->
+
+            <div class="panel mapa-panel">
+
+
+                <div class="mapa-encabezado">
+
+                    <div>
+
+                        <span class="etiqueta-mapa">
+                            UBICACIÓN
+                        </span>
+
+
+                        <h2 id="nombreMapa">
+                            Chiapas
+                        </h2>
+
+                    </div>
+
+
+                    <span class="indicador-mapa">
+                        ● Estado seleccionado
+                    </span>
+
+                </div>
+
+
+                <!-- MAPA -->
+
+                <div id="mapa"></div>
+
+
+                <!-- BOTÓN -->
+
+                <button class="btn-explorar"
+                        id="btnExplorar"
+                        onclick="explorarMunicipio()">
+
+                    Explorar Chiapas
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             INFORMACIÓN DEL ESTADO
+        ====================================== -->
+
+        <section class="informacion-estado">
+
+
+            <div class="informacion-icono">
+                🌿
+            </div>
+
+
+            <div>
+
+                <span>
+                    CHIAPAS
+                </span>
+
+
+                <h2>
+                    Un estado lleno de naturaleza
+                </h2>
+
+
+                <p>
+                    Descubre pueblos mágicos, zonas
+                    arqueológicas, cascadas, selvas y
+                    experiencias únicas en Chiapas.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             LUGARES TURÍSTICOS
+        ====================================== -->
+
+        <section class="lugares-turisticos"
+                 id="lugaresTuristicos">
+
+
+            <!-- ENCABEZADO -->
+
+            <div class="seccion-titulo">
+
+                <span class="etiqueta">
+                    DESCUBRE EL DESTINO
+                </span>
+
+
+                <h2 id="tituloLugares">
+                    Lugares turísticos de Chiapas
+                </h2>
+
+
+                <p id="descripcionLugares">
+                    Selecciona un municipio para descubrir
+                    sus atracciones turísticas.
+                </p>
+
+            </div>
+
+
+
+            <!-- TARJETAS -->
+
+            <div class="grid-lugares"
+                 id="gridLugares">
+
+
+                <!-- MENSAJE INICIAL -->
+
+                <div class="mensaje-lugares"
+                     id="mensajeLugares">
+
+                    📍 Selecciona un municipio para
+                    descubrir sus lugares turísticos.
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         LEAFLET
+    ========================================== -->
+
+    <script src="../../lib/leaflet.js">
+    </script>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+
+        /* ==========================================
+           MAPA INICIAL
+        ========================================== */
+
+        const mapa = L.map('mapa').setView(
+            [16.75, -92.63],
+            7
+        );
+
+
+
+        /* ==========================================
+           CAPA DEL MAPA
+        ========================================== */
+
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap'
+            }
+        ).addTo(mapa);
+
+
+
+        /* ==========================================
+           MARCADOR
+        ========================================== */
+
+        let marcador = L.marker(
+            [16.75, -92.63]
+        )
+        .addTo(mapa)
+        .bindPopup(
+            '<b>Chiapas</b><br>Estado seleccionado'
+        )
+        .openPopup();
+
+
+
+        /* ==========================================
+           MUNICIPIO SELECCIONADO
+        ========================================== */
+
+        let municipioSeleccionado = null;
+
+
+
+        /* ==========================================
+           LUGARES TURÍSTICOS POR MUNICIPIO
+        ========================================== */
+
+        const lugaresPorMunicipio = {
+
+
+            /* =====================================
+               TUXTLA GUTIÉRREZ
+            ===================================== */
+
+            "Tuxtla Gutiérrez": [
+
+                {
+                    nombre: "Cañón del Sumidero",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Impresionante formación natural con grandes paredes de roca y recorridos en lancha.",
+
+                    imagen:
+                        "../../imagenes/canon-sumidero.jpg"
+                },
+
+
+                {
+                    nombre: "Parque de la Marimba",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Uno de los lugares más representativos de Tuxtla para disfrutar música y ambiente local.",
+
+                    imagen:
+                        "../../imagenes/parque-marimba.jpg"
+                },
+
+
+                {
+                    nombre: "ZOOMAT",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Espacio dedicado a la conservación y observación de especies de Chiapas.",
+
+                    imagen:
+                        "../../imagenes/zoomat.jpg"
+                },
+
+
+                {
+                    nombre: "Cristo de Copoya",
+
+                    tipo: "Atracción",
+
+                    descripcion:
+                        "Monumento ubicado en una zona elevada con una vista panorámica de Tuxtla Gutiérrez.",
+
+                    imagen:
+                        "../../imagenes/cristo-copoya.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               SAN CRISTÓBAL
+            ===================================== */
+
+            "San Cristóbal de las Casas": [
+
+                {
+                    nombre: "Centro Histórico",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Calles, edificios coloniales, plazas y espacios representativos de la ciudad.",
+
+                    imagen:
+                        "../../imagenes/centro-san-cristobal.jpg"
+                },
+
+
+                {
+                    nombre: "Catedral de San Cristóbal",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Uno de los edificios religiosos más importantes del centro histórico.",
+
+                    imagen:
+                        "../../imagenes/catedral-san-cristobal.jpg"
+                },
+
+
+                {
+                    nombre: "Na Bolom",
+
+                    tipo: "Historia",
+
+                    descripcion:
+                        "Espacio cultural dedicado a la historia y cultura de los pueblos de Chiapas.",
+
+                    imagen:
+                        "../../imagenes/na-bolom.jpg"
+                },
+
+
+                {
+                    nombre: "El Arcotete",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Formación natural rodeada de bosque donde pueden realizarse diferentes actividades.",
+
+                    imagen:
+                        "../../imagenes/arcotete.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               COMITÁN
+            ===================================== */
+
+            "Comitán de Domínguez": [
+
+                {
+                    nombre: "Centro Histórico de Comitán",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Zona histórica con arquitectura tradicional y espacios culturales.",
+
+                    imagen:
+                        "../../imagenes/comitan-centro.jpg"
+                },
+
+
+                {
+                    nombre: "Lagos de Montebello",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Conjunto de lagos rodeados de bosques y paisajes naturales.",
+
+                    imagen:
+                        "../../imagenes/montebello.jpg"
+                },
+
+
+                {
+                    nombre: "Chiflón",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Conjunto de cascadas y espacios naturales ideales para disfrutar del paisaje.",
+
+                    imagen:
+                        "../../imagenes/chiflon.jpg"
+                },
+
+
+                {
+                    nombre: "Zona Arqueológica de Chinkultic",
+
+                    tipo: "Historia",
+
+                    descripcion:
+                        "Sitio arqueológico rodeado por un paisaje natural característico de Chiapas.",
+
+                    imagen:
+                        "../../imagenes/chinkultic.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               TAPACHULA
+            ===================================== */
+
+            "Tapachula": [
+
+                {
+                    nombre: "Puerto Chiapas",
+
+                    tipo: "Playa",
+
+                    descripcion:
+                        "Zona costera donde puedes disfrutar del paisaje y actividades relacionadas con el mar.",
+
+                    imagen:
+                        "../../imagenes/puerto-chiapas.jpg"
+                },
+
+
+                {
+                    nombre: "Ruta del Café",
+
+                    tipo: "Gastronomía",
+
+                    descripcion:
+                        "Experiencia para conocer zonas cafetaleras y paisajes de la región.",
+
+                    imagen:
+                        "../../imagenes/ruta-cafe.jpg"
+                },
+
+
+                {
+                    nombre: "Izapa",
+
+                    tipo: "Historia",
+
+                    descripcion:
+                        "Importante zona arqueológica de la región del Soconusco.",
+
+                    imagen:
+                        "../../imagenes/izapa.jpg"
+                },
+
+
+                {
+                    nombre: "Parque Central Miguel Hidalgo",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Uno de los principales espacios de convivencia del centro de Tapachula.",
+
+                    imagen:
+                        "../../imagenes/parque-tapachula.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               PALENQUE
+            ===================================== */
+
+            "Palenque": [
+
+                {
+                    nombre: "Zona Arqueológica de Palenque",
+
+                    tipo: "Historia",
+
+                    descripcion:
+                        "Una de las zonas arqueológicas mayas más importantes de México.",
+
+                    imagen:
+                        "../../imagenes/palenque.jpg"
+                },
+
+
+                {
+                    nombre: "Museo de Sitio de Palenque",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Museo donde se pueden conocer piezas y elementos relacionados con la antigua ciudad maya.",
+
+                    imagen:
+                        "../../imagenes/museo-palenque.jpg"
+                },
+
+
+                {
+                    nombre: "Cascadas de Roberto Barrios",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Conjunto de cascadas y pozas naturales rodeadas de vegetación.",
+
+                    imagen:
+                        "../../imagenes/roberto-barrios.jpg"
+                },
+
+
+                {
+                    nombre: "Misol-Há",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Cascada rodeada de vegetación tropical y paisajes naturales.",
+
+                    imagen:
+                        "../../imagenes/misol-ha.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               CHIAPA DE CORZO
+            ===================================== */
+
+            "Chiapa de Corzo": [
+
+                {
+                    nombre: "Cañón del Sumidero",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Una de las principales maravillas naturales de Chiapas.",
+
+                    imagen:
+                        "../../imagenes/canon-sumidero.jpg"
+                },
+
+
+                {
+                    nombre: "Fuente Colonial",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Monumento histórico representativo de Chiapa de Corzo.",
+
+                    imagen:
+                        "../../imagenes/fuente-chiapa.jpg"
+                },
+
+
+                {
+                    nombre: "Templo de Santo Domingo",
+
+                    tipo: "Cultura",
+
+                    descripcion:
+                        "Edificio histórico ubicado en el centro de Chiapa de Corzo.",
+
+                    imagen:
+                        "../../imagenes/santo-domingo.jpg"
+                },
+
+
+                {
+                    nombre: "Embarcaderos",
+
+                    tipo: "Aventura",
+
+                    descripcion:
+                        "Puntos de acceso para realizar recorridos por el Cañón del Sumidero.",
+
+                    imagen:
+                        "../../imagenes/embarcadero.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               OCOSINGO
+            ===================================== */
+
+            "Ocosingo": [
+
+                {
+                    nombre: "Zona Arqueológica de Toniná",
+
+                    tipo: "Historia",
+
+                    descripcion:
+                        "Importante zona arqueológica maya ubicada en la región de Ocosingo.",
+
+                    imagen:
+                        "../../imagenes/tonina.jpg"
+                },
+
+
+                {
+                    nombre: "Cascadas de Agua Azul",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Paisaje natural con cascadas y aguas de tonalidades azuladas.",
+
+                    imagen:
+                        "../../imagenes/agua-azul.jpg"
+                },
+
+
+                {
+                    nombre: "Selva Lacandona",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Una de las regiones naturales más importantes de Chiapas.",
+
+                    imagen:
+                        "../../imagenes/selva-lacandona.jpg"
+                },
+
+
+                {
+                    nombre: "Lacanjá",
+
+                    tipo: "Aventura",
+
+                    descripcion:
+                        "Comunidad cercana a importantes atractivos naturales de la Selva Lacandona.",
+
+                    imagen:
+                        "../../imagenes/lacanja.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               TONALÁ
+            ===================================== */
+
+            "Tonalá": [
+
+                {
+                    nombre: "Puerto Arista",
+
+                    tipo: "Playa",
+
+                    descripcion:
+                        "Destino de playa conocido por sus paisajes costeros y actividades recreativas.",
+
+                    imagen:
+                        "../../imagenes/puerto-arista.jpg"
+                },
+
+
+                {
+                    nombre: "Boca del Cielo",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Zona costera ideal para disfrutar del mar y los paisajes naturales.",
+
+                    imagen:
+                        "../../imagenes/boca-del-cielo.jpg"
+                },
+
+
+                {
+                    nombre: "Playa del Sol",
+
+                    tipo: "Playa",
+
+                    descripcion:
+                        "Espacio costero para disfrutar del paisaje y actividades de playa.",
+
+                    imagen:
+                        "../../imagenes/playa-sol.jpg"
+                },
+
+
+                {
+                    nombre: "Reserva La Encrucijada",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Área natural con manglares y gran diversidad de flora y fauna.",
+
+                    imagen:
+                        "../../imagenes/encrucijada.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               CINTALAPA
+            ===================================== */
+
+            "Cintalapa": [
+
+                {
+                    nombre: "Reserva de la Biosfera Selva El Ocote",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Área natural protegida con paisajes de selva y gran biodiversidad.",
+
+                    imagen:
+                        "../../imagenes/el-ocote.jpg"
+                },
+
+
+                {
+                    nombre: "Sima de las Cotorras",
+
+                    tipo: "Aventura",
+
+                    descripcion:
+                        "Impresionante formación natural donde pueden observarse numerosas aves.",
+
+                    imagen:
+                        "../../imagenes/sima-cotorras.jpg"
+                },
+
+
+                {
+                    nombre: "Grutas de El Chorreadero",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Espacio natural con formaciones rocosas y paisajes característicos de Chiapas.",
+
+                    imagen:
+                        "../../imagenes/chorreadero.jpg"
+                }
+
+            ],
+
+
+
+            /* =====================================
+               ARRIAGA
+            ===================================== */
+
+            "Arriaga": [
+
+                {
+                    nombre: "Playa Santa Brígida",
+
+                    tipo: "Playa",
+
+                    descripcion:
+                        "Zona costera de Arriaga ideal para disfrutar del paisaje y tranquilidad.",
+
+                    imagen:
+                        "../../imagenes/santa-brigida.jpg"
+                },
+
+
+                {
+                    nombre: "La Línea",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Paisaje costero representativo de la región del Istmo de Tehuantepec.",
+
+                    imagen:
+                        "../../imagenes/la-linea.jpg"
+                },
+
+
+                {
+                    nombre: "Reserva La Sepultura",
+
+                    tipo: "Naturaleza",
+
+                    descripcion:
+                        "Área natural protegida con paisajes montañosos y gran biodiversidad.",
+
+                    imagen:
+                        "../../imagenes/la-sepultura.jpg"
+                }
+
+            ]
+
+        };
+
+
+
+        /* ==========================================
+           SELECCIONAR MUNICIPIO
+        ========================================== */
+
+        function seleccionarMunicipio(
+            event,
+            nombre,
+            latitud,
+            longitud
+        ) {
+
+
+            /* GUARDAR MUNICIPIO */
+
+            municipioSeleccionado = nombre;
+
+
+
+            /* ======================================
+               MOVER MAPA
+            ====================================== */
+
+            mapa.setView(
+                [latitud, longitud],
+                11
+            );
+
+
+
+            /* CAMBIAR MARCADOR */
+
+            marcador.setLatLng(
+                [latitud, longitud]
+            );
+
+
+
+            /* CAMBIAR POPUP */
+
+            marcador
+                .bindPopup(
+                    '<b>' +
+                    nombre +
+                    '</b><br>Municipio seleccionado'
+                )
+                .openPopup();
+
+
+
+            /* ======================================
+               CAMBIAR TÍTULO DEL MAPA
+            ====================================== */
+
+            document.getElementById(
+                'nombreMapa'
+            ).textContent = nombre;
+
+
+
+            /* ======================================
+               CAMBIAR BOTÓN
+            ====================================== */
+
+            document.getElementById(
+                'btnExplorar'
+            ).innerHTML =
+                'Explorar ' +
+                nombre +
+                ' <span>→</span>';
+
+
+
+            /* ======================================
+               QUITAR SELECCIÓN ANTERIOR
+            ====================================== */
+
+            document
+                .querySelectorAll('.municipio')
+                .forEach(function(elemento) {
+
+                    elemento.classList.remove(
+                        'municipio-seleccionado'
+                    );
+
+                });
+
+
+
+            /* ======================================
+               MARCAR MUNICIPIO ACTUAL
+            ====================================== */
+
+            event.currentTarget.classList.add(
+                'municipio-seleccionado'
+            );
+
+
+
+            /* ======================================
+               MOSTRAR LUGARES TURÍSTICOS
+            ====================================== */
+
+            mostrarLugares(nombre);
+
+        }
+
+
+
+        /* ==========================================
+           MOSTRAR LUGARES
+        ========================================== */
+
+        function mostrarLugares(nombreMunicipio) {
+
+
+            const grid =
+                document.getElementById(
+                    'gridLugares'
+                );
+
+
+            const titulo =
+                document.getElementById(
+                    'tituloLugares'
+                );
+
+
+            const descripcion =
+                document.getElementById(
+                    'descripcionLugares'
+                );
+
+
+
+            /* OBTENER LUGARES */
+
+            const lugares =
+                lugaresPorMunicipio[
+                    nombreMunicipio
+                ];
+
+
+
+            /* CAMBIAR TÍTULO */
+
+            titulo.textContent =
+                'Lugares turísticos de ' +
+                nombreMunicipio;
+
+
+
+            descripcion.textContent =
+                'Descubre las atracciones turísticas más visitadas de ' +
+                nombreMunicipio + '.';
+
+
+
+            /* LIMPIAR CONTENIDO */
+
+            grid.innerHTML = '';
+
+
+
+            /* ======================================
+               SI NO EXISTEN LUGARES
+            ====================================== */
+
+            if (
+                !lugares ||
+                lugares.length === 0
+            ) {
+
+                grid.innerHTML = `
+
+                    <div class="mensaje-lugares">
+
+                        📍
+
+                        <br><br>
+
+                        No hay lugares turísticos
+                        registrados para este municipio
+                        por el momento.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            /* ======================================
+               CREAR TARJETAS
+            ====================================== */
+
+            lugares.forEach(function(lugar) {
+
+
+                const tarjeta =
+                    document.createElement(
+                        'article'
+                    );
+
+
+                tarjeta.className =
+                    'lugar-card';
+
+
+
+                tarjeta.innerHTML = `
+
+                    <div class="lugar-imagen">
+
+                        <img
+                            src="${lugar.imagen}"
+                            alt="${lugar.nombre}"
+                            onerror="this.style.display='none'; this.parentElement.classList.add('sin-imagen');"
+                        >
+
+                    </div>
+
+
+                    <div class="lugar-info">
+
+                        <span class="lugar-tipo">
+
+                            ${lugar.tipo}
+
+                        </span>
+
+
+                        <h3>
+
+                            ${lugar.nombre}
+
+                        </h3>
+
+
+                        <p>
+
+                            ${lugar.descripcion}
+
+                        </p>
+
+
+                        <button
+                            class="btn-lugar"
+                            type="button"
+                            onclick="verAtraccion('${lugar.nombre}')">
+
+                            Ver atracción →
+
+                        </button>
+
+                    </div>
+
+                `;
+
+
+
+                grid.appendChild(
+                    tarjeta
+                );
+
+            });
+
+
+
+            /* ======================================
+               DESPLAZAR HACIA LOS LUGARES
+            ====================================== */
+
+            document
+                .getElementById(
+                    'lugaresTuristicos'
+                )
+                .scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+        }
+
+
+
+        /* ==========================================
+           BOTÓN VER ATRACCIÓN
+        ========================================== */
+
+        function verAtraccion(nombreLugar) {
+
+
+            /*
+             * POR AHORA ES VISUAL.
+             *
+             * Posteriormente aquí puedes conectar
+             * la ruta del controlador MVC para
+             * mostrar la información completa
+             * de la atracción.
+             */
+
+            console.log(
+                'Atracción seleccionada:',
+                nombreLugar
+            );
+
+        }
+
+
+
+        /* ==========================================
+           DATOS DE TODOS LOS ESTADOS
+        ========================================== */
+
+        const coordenadasEstados = {
+            'Aguascalientes': [21.89, -102.29],
+            'Baja California': [30.84, -115.28],
+            'Baja California Sur': [25.04, -111.66],
+            'Campeche': [19.83, -90.53],
+            'Chihuahua': [28.63, -106.07],
+            'Ciudad de México': [19.43, -99.13],
+            'Coahuila': [25.43, -100.99],
+            'Colima': [19.24, -103.72],
+            'Durango': [24.02, -104.65],
+            'Guanajuato': [21.02, -101.26],
+            'Guerrero': [17.55, -99.50],
+            'Hidalgo': [20.10, -98.76],
+            'Jalisco': [20.66, -103.35],
+            'México': [19.29, -99.65],
+            'Chiapas': [16.75, -92.63],
+            'Michoacán': [19.70, -101.19],
+            'Morelos': [18.68, -99.10],
+            'Nayarit': [21.75, -104.85],
+            'Nuevo León': [25.68, -100.32],
+            'Oaxaca': [17.07, -96.72],
+            'Puebla': [19.04, -98.20],
+            'Querétaro': [20.59, -100.39],
+            'Quintana Roo': [18.50, -88.30],
+            'San Luis Potosí': [22.16, -100.99],
+            'Tabasco': [17.99, -92.93],
+            'Tamaulipas': [23.74, -99.14],
+            'Veracruz': [19.17, -96.13],
+            'Yucatán': [20.97, -89.62]
+        };
+
+        const listaMunicipios =
+            document.getElementById(
+                'listaMunicipios'
+            );
+
+        const municipiosChiapasHTML =
+            listaMunicipios.innerHTML;
+
+        /* ==========================================
+           SELECCIONAR ESTADO (CUALQUIER ESTADO)
+        ========================================== */
+
+        function seleccionarEstado(estado) {
+
+            const coordenadas =
+                coordenadasEstados[estado] ||
+                [16.75, -92.63];
+
+            /* MOVER MAPA */
+
+            mapa.setView(
+                coordenadas,
+                estado === 'Chiapas' ? 7 : 8
+            );
+
+            /* MOVER MARCADOR */
+
+            marcador.setLatLng(
+                coordenadas
+            );
+
+            /* POPUP */
+
+            marcador
+                .bindPopup(
+                    '<b>' +
+                    estado +
+                    '</b><br>' +
+                    'Estado seleccionado'
+                )
+                .openPopup();
+
+            /* TÍTULO */
+
+            document.getElementById(
+                'nombreMapa'
+            ).textContent =
+                estado;
+
+            /* BOTÓN */
+
+            document.getElementById(
+                'btnExplorar'
+            ).innerHTML =
+                'Explorar ' +
+                estado +
+                ' <span>→</span>';
+
+            /* TÍTULO DE MUNICIPIOS */
+
+            document.getElementById(
+                'tituloMunicipios'
+            ).textContent =
+                'Municipios de ' + estado;
+
+            /* SELECCIÓN VISUAL */
+
+            document
+                .querySelectorAll('.estado')
+                .forEach(function(boton) {
+
+                    const nombreBoton =
+                        boton.textContent
+                            .replace('✓', '')
+                            .trim();
+
+                    const esSeleccionado =
+                        nombreBoton === estado;
+
+                    boton.classList.toggle(
+                        'seleccionado',
+                        esSeleccionado
+                    );
+
+                    const check =
+                        boton.querySelector('span');
+
+                    if (
+                        esSeleccionado &&
+                        !check
+                    ) {
+
+                        boton
+                            .insertAdjacentHTML(
+                                'beforeend',
+                                '<span>✓</span>'
+                            );
+
+                    }
+
+                    if (
+                        !esSeleccionado &&
+                        check
+                    ) {
+
+                        check.remove();
+
+                    }
+
+                });
+
+            /* LIMPIAR MUNICIPIO */
+
+            municipioSeleccionado = null;
+
+            /* MUNICIPIOS */
+
+            if (
+                estado === 'Chiapas'
+            ) {
+
+                listaMunicipios.innerHTML =
+                    municipiosChiapasHTML;
+
+            }
+
+            else {
+
+                listaMunicipios.innerHTML = `
+                    <div class="mensaje-lugares">
+
+                        📍 Los municipios de ${estado}
+                        estarán disponibles próximamente.
+                        Selecciona Chiapas para explorar
+                        lugares ahora.
+
+                    </div>
+                `;
+
+            }
+
+            /* LIMPIAR TARJETAS */
+
+            document.getElementById(
+                'gridLugares'
+            ).innerHTML = `
+
+                <div class="mensaje-lugares">
+
+                    📍 Selecciona un municipio para
+                    descubrir sus lugares turísticos.
+
+                </div>
+
+            `;
+
+            document.getElementById(
+                'tituloLugares'
+            ).textContent =
+                'Lugares turísticos de ' + estado;
+
+            document.getElementById(
+                'descripcionLugares'
+            ).textContent =
+
+                estado === 'Chiapas'
+
+                    ? 'Selecciona un municipio para descubrir sus atracciones turísticas.'
+
+                    : 'Los lugares de ' + estado + ' llegarán pronto. Mientras tanto, explora Chiapas.';
+
+        }
+
+        /* ==========================================
+           CONECTAR TODOS LOS BOTONES DE ESTADO
+        ========================================== */
+
+        document
+            .querySelectorAll('.estado')
+            .forEach(function(boton) {
+
+                if (
+                    boton.getAttribute('onclick')
+                ) {
+                    return;
+                }
+
+                boton.addEventListener(
+                    'click',
+                    function() {
+
+                        seleccionarEstado(
+
+                            boton.textContent
+                                .replace('✓', '')
+                                .trim()
+
+                        );
+
+                    }
+                );
+
+            });
+
+
+
+        /* ==========================================
+           BOTÓN EXPLORAR
+        ========================================== */
+
+        function explorarMunicipio() {
+
+
+            if (
+                municipioSeleccionado
+            ) {
+
+
+                /*
+                 * POR AHORA SOLO MOSTRAMOS EN CONSOLA.
+                 *
+                 * POSTERIORMENTE PUEDES CONECTAR
+                 * AQUÍ TU CONTROLADOR MVC.
+                 *
+                 * Ejemplo:
+                 *
+                 * window.location.href =
+                 * '../../destinos/' +
+                 * encodeURIComponent(
+                 *     municipioSeleccionado
+                 * );
+                 */
+
+
+                console.log(
+                    'Municipio seleccionado:',
+                    municipioSeleccionado
+                );
+
+
+
+                /* ENFOCAR LUGARES */
+
+                document
+                    .getElementById(
+                        'lugaresTuristicos'
+                    )
+                    .scrollIntoView({
+                        behavior: 'smooth'
+                    });
+
+            }
+
+
+            else {
+
+                alert(
+                    'Selecciona un municipio para explorar.'
+                );
+
+            }
+
+        }
+
+
+    </script>
+
+
+</body>
+<script src="../../js/ui.js"></script>
+<script src="../../js/chatbot.js"></script>
+
+</html>

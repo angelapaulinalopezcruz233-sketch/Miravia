@@ -1,0 +1,554 @@
+/* =========================================
+   CONFIGURACIÓN GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Nunito", "Segoe UI", Arial, Helvetica, sans-serif;
+    background: #020812;
+    color: #f7f4ef;
+}
+
+
+/* =========================================
+   PANTALLA PRINCIPAL
+========================================= */
+
+#inicio {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background:
+        radial-gradient(circle at 50% 42%, #12324a 0%, #07182e 38%, #020812 78%);
+    overflow: hidden;
+}
+
+
+/* =========================================
+   ESPACIO
+========================================= */
+
+#espacio {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.85) 50%, transparent 52%),
+        radial-gradient(1px 1px at 28% 72%, rgba(167, 255, 235, 0.7) 50%, transparent 52%),
+        radial-gradient(1.5px 1.5px at 63% 22%, rgba(255, 214, 170, 0.75) 50%, transparent 52%),
+        radial-gradient(1px 1px at 81% 64%, rgba(255, 255, 255, 0.7) 50%, transparent 52%),
+        radial-gradient(1px 1px at 47% 88%, rgba(152, 255, 214, 0.55) 50%, transparent 52%);
+    animation: destelloEstrellas 8s ease-in-out infinite;
+}
+
+@keyframes destelloEstrellas {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
+
+/* =========================================
+   TIERRA Y MAPA
+========================================= */
+
+#tierra,
+#mapaInicio {
+    position: absolute;
+    inset: 0;
+}
+
+#tierra {
+    z-index: 1;
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+#tierra.ocultar {
+    opacity: 0;
+    transform: scale(1.08);
+    pointer-events: none;
+}
+
+#mapaInicio {
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.4s ease;
+}
+
+#mapaInicio.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#mapaInicio .leaflet-tile-pane {
+    filter: saturate(1.1) contrast(1.06) brightness(1.02);
+}
+
+#mapaInicio .leaflet-control-zoom {
+    margin: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(20, 55, 68, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(6, 28, 42, 0.2);
+}
+
+#mapaInicio .leaflet-control-zoom a {
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    color: #123642;
+    background: rgba(255, 255, 255, 0.94);
+}
+
+.contenido .mensaje {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.viñeta {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at center, transparent 38%, rgba(2, 8, 18, 0.45) 100%);
+}
+
+
+/* =========================================
+   CONTENIDO
+========================================= */
+
+.contenido {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    cursor: pointer;
+    color: #f7fffb;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+    text-shadow:
+        0 0 14px rgba(152, 255, 214, 0.45),
+        0 0 28px rgba(255, 179, 71, 0.25);
+    animation: aparecerSuave 1.4s ease both;
+}
+
+
+/* =========================================
+   MENSAJES
+========================================= */
+
+.mensaje {
+    position: absolute;
+    left: 50%;
+    bottom: 148px;
+    transform: translateX(-50%);
+    width: min(90%, 520px);
+    text-align: center;
+}
+
+.etapa {
+    display: none;
+    margin-bottom: 10px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #16323a;
+    background: linear-gradient(90deg, #9ff3e0, #ffd7a0);
+    opacity: 0.95;
+}
+
+.mensaje h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.mensaje p#subtitulo {
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(247, 244, 239, 0.82);
+    transition: opacity 0.45s ease;
+}
+
+
+/* =========================================
+   UBICACIÓN
+========================================= */
+
+.ubicacion {
+    position: absolute;
+    bottom: 84px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: min(90%, 420px);
+    padding: 12px 18px;
+    border-radius: 999px;
+    color: #f7fffb;
+    background: rgba(8, 24, 36, 0.58);
+    border: 1px solid rgba(159, 243, 224, 0.28);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+    animation: aparecerSuave 1.8s ease both;
+}
+
+#textoUbicacion {
+    font-size: 14px;
+    text-align: left;
+}
+
+.punto {
+    flex-shrink: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ffb347;
+    box-shadow: 0 0 10px #ffb347, 0 0 22px rgba(159, 243, 224, 0.6);
+    animation: pulsar 1.6s ease-in-out infinite;
+}
+
+.ubicacion.encontrada .punto {
+    background: #7ef0c8;
+    box-shadow: 0 0 10px #7ef0c8, 0 0 22px #ffb347;
+}
+
+@keyframes pulsar {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.45); opacity: 0.55; }
+}
+
+@keyframes aparecerSuave {
+    from { opacity: 0; transform: translate(-50%, -8px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+
+/* =========================================
+   BOTÓN
+========================================= */
+
+.boton {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(8px);
+    padding: 13px 28px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #9ff3e0, #ffe0b3);
+    color: #16323a;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    pointer-events: auto;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0 10px 24px rgba(255, 179, 71, 0.28);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.4s ease;
+}
+
+.boton.mostrar {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.boton:hover {
+    transform: translateX(-50%) scale(1.04);
+    box-shadow: 0 14px 30px rgba(159, 243, 224, 0.35);
+}
+
+.boton:active {
+    transform: translateX(-50%) scale(0.98);
+}
+
+/* Selector de destino: pregunta y aviso sobre el mapa */
+
+.elegir-destino {
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%);
+    width: min(92%, 520px);
+    padding: 14px 18px;
+    border-radius: 24px;
+    color: #f7fffb;
+    background: rgba(8, 24, 36, 0.62);
+    border: 1.5px solid rgba(159, 243, 224, 0.4);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 14px 36px rgba(4, 29, 44, 0.35);
+    text-align: center;
+    pointer-events: none;
+    animation: aparecerSuave 0.8s ease both;
+}
+
+.elegir-destino h2 {
+    font-size: clamp(20px, 4.5vw, 26px);
+    margin-bottom: 6px;
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.elegir-destino p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(247, 244, 239, 0.85);
+}
+
+.aviso-estado {
+    position: absolute;
+    left: 50%;
+    bottom: 110px;
+    transform: translateX(-50%);
+    width: min(92%, 420px);
+    padding: 14px 18px;
+    border-radius: 18px;
+    color: #173944;
+    background: linear-gradient(135deg, rgba(159, 243, 224, 0.96), rgba(255, 224, 166, 0.96));
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(244, 179, 71, 0.3);
+    pointer-events: none;
+}
+
+.aviso-estado[hidden] { display: none; }
+
+.aviso-estado em { font-style: normal; color: #0c5a4d; }
+
+.aviso-estado small {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #54737a;
+}
+
+/* Chip del estado elegido */
+
+.estado-elegido-chip {
+    position: absolute;
+    left: 50%;
+    top: 92px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    color: #f7fffb;
+    font-weight: 800;
+    font-size: 16px;
+    background: rgba(8, 24, 36, 0.7);
+    border: 1.5px solid rgba(159, 243, 224, 0.5);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 26px rgba(4, 29, 44, 0.35);
+    pointer-events: none;
+}
+
+.estado-elegido-chip[hidden] { display: none; }
+
+.chip-punto {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ffb347;
+    border: 2.5px solid #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+/* Botón "Comenzar viaje" */
+
+.boton-comenzar-viaje {
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%);
+    padding: 15px 34px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffb347, #ff7043);
+    color: #2c1204;
+    font-size: 17px;
+    font-weight: 800;
+    font-family: inherit;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 12px 30px rgba(255, 112, 67, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.boton-comenzar-viaje[hidden] { display: none; }
+
+.boton-comenzar-viaje:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 16px 36px rgba(255, 179, 71, 0.5);
+}
+
+.boton-comenzar-viaje:active {
+    transform: translateX(-50%) scale(0.97);
+}
+
+/* Tooltip de los estados */
+
+.tooltip-estado {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 999px;
+    color: #f7fffb;
+    font-weight: 800;
+    font-size: 13px;
+    font-family: inherit;
+    background: rgba(8, 24, 36, 0.88);
+    box-shadow: 0 8px 20px rgba(4, 29, 44, 0.4);
+}
+
+.tooltip-estado::before {
+    border-top-color: rgba(8, 24, 36, 0.88);
+}
+
+.etiqueta-visualmente-oculta { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+
+/* =========================================
+   MARCADOR DEL MAPA
+========================================= */
+
+.marcador-inicio {
+    background: transparent;
+    border: none;
+}
+
+.aro-marcador {
+    width: 18px;
+    height: 18px;
+    margin: 9px;
+    border-radius: 50%;
+    background: #ffb347;
+    border: 2px solid #f7fffb;
+    box-shadow: 0 0 0 8px rgba(159, 243, 224, 0.28), 0 0 16px #ffb347;
+    animation: pulsar 1.8s ease-in-out infinite;
+}
+
+.leaflet-control-attribution {
+    background: rgba(8, 24, 36, 0.55) !important;
+    color: rgba(247, 244, 239, 0.75) !important;
+    font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+    color: #9ff3e0 !important;
+}
+
+
+/* =========================================
+   SALIDA
+========================================= */
+
+#inicio.saliendo {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .logo {
+        font-size: 20px;
+        letter-spacing: 0.32em;
+        text-indent: 0.32em;
+    }
+
+    .mensaje {
+        bottom: 158px;
+    }
+
+    .mensaje h1 {
+        font-size: 28px;
+    }
+
+    .mensaje p#subtitulo {
+        font-size: 14px;
+    }
+
+    .ubicacion {
+        bottom: 88px;
+        width: min(92%, 380px);
+    }
+
+}
+
+
+/* =========================================
+   TARJETA DE INFORMACION DEL ESTADO
+========================================= */
+
+.info-estado {
+    margin-top: 14px;
+    padding: 13px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1.5px solid #cdeee2;
+    box-shadow: 0 8px 20px rgba(8, 40, 34, 0.12);
+    text-align: left;
+    animation: aparecerInfo 0.35s ease;
+}
+
+.info-estado[hidden] {
+    display: none;
+}
+
+.info-estado strong {
+    display: block;
+    color: #0c5a4d;
+    font-size: 14.5px;
+    margin-bottom: 4px;
+}
+
+.info-estado p {
+    margin: 0;
+    color: #43645e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@keyframes aparecerInfo {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
