@@ -23,6 +23,10 @@ body {
    PANTALLA PRINCIPAL
 ========================================= */
 
+body.verificando-sesion #inicio {
+    visibility: hidden;
+}
+
 #inicio {
     position: fixed;
     width: 100%;

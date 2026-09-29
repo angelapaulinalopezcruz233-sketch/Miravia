@@ -229,6 +229,50 @@ body {
     color: #0c5a4d;
 }
 
+.estadia-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    max-width: 620px;
+    margin: 18px auto 0;
+    padding: 14px 18px;
+    border: 1px solid rgba(159, 243, 224, 0.3);
+    border-radius: 12px;
+    background: rgba(8, 24, 36, 0.72);
+}
+
+.estadia-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.estadia-control label {
+    color: #f7fffb;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.estadia-control input {
+    width: 76px;
+    height: 40px;
+    padding: 0 8px;
+    border: 1px solid rgba(159, 243, 224, 0.5);
+    border-radius: 8px;
+    color: #123642;
+    background: #f7fffb;
+    font: 800 16px "Nunito", sans-serif;
+    text-align: center;
+}
+
+.estadia-calculo {
+    color: #9ff3e0;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: right;
+}
+
 /* =========================================
    RESUMEN
 ======================================== */
@@ -291,6 +335,90 @@ body {
 .itinerario .costo.total {
     font-size: 17px;
     color: #d78a2c;
+}
+
+.calculadora-viaje {
+    margin: 0 0 22px;
+    padding: 18px;
+    border: 1px solid rgba(159, 243, 224, 0.35);
+    border-radius: 12px;
+    background: rgba(8, 24, 36, 0.8);
+    box-shadow: 0 12px 28px rgba(4, 29, 44, 0.24);
+    animation: aparecerCalculadora .28s ease both;
+}
+
+.calculadora-encabezado h3 {
+    color: #f7fffb;
+    font-size: 18px;
+}
+
+.calculadora-encabezado p {
+    margin-top: 3px;
+    color: rgba(247, 244, 239, 0.72);
+    font-size: 13px;
+}
+
+.calculadora-controles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.calculadora-controles label {
+    display: grid;
+    gap: 6px;
+    color: #d8eee8;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.calculadora-controles input {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+    padding: 0 10px;
+    border: 1px solid rgba(159, 243, 224, 0.38);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #123642;
+    font: 700 15px "Nunito", sans-serif;
+}
+
+.calculadora-resultado {
+    display: grid;
+    gap: 7px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(159, 243, 224, 0.2);
+}
+
+.calculadora-resultado p {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: rgba(247, 244, 239, 0.8);
+    font-size: 14px;
+}
+
+.calculadora-resultado strong {
+    color: #9ff3e0;
+}
+
+.calculadora-resultado .calculadora-total {
+    margin-top: 3px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.calculadora-resultado .calculadora-total strong {
+    color: #ffd7a0;
+    font-size: 19px;
+}
+
+@keyframes aparecerCalculadora {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .acciones-finales {
@@ -384,6 +512,24 @@ body {
 ======================================== */
 
 @media (max-width: 620px) {
+
+    .calculadora-controles {
+        grid-template-columns: 1fr;
+    }
+
+    .estadia-panel {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .estadia-control {
+        justify-content: space-between;
+    }
+
+    .estadia-calculo {
+        text-align: left;
+    }
 
     .itinerario .bloque {
         flex-wrap: wrap;

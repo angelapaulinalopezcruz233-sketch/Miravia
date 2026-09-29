@@ -95,7 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
         nombre: datos.nombre,
         municipio: valorMunicipio,
         hotel: null,
+        noches: 1,
+        habitaciones: 1,
         restaurante: null,
+        viajeros: 1,
+        comidas: 1,
         lugares: []
     };
 
@@ -119,6 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const tarjetasHoteles = document.getElementById("tarjetasHoteles");
     const tarjetasRestaurantes = document.getElementById("tarjetasRestaurantes");
     const tarjetasLugares = document.getElementById("tarjetasLugares");
+    const nochesHospedaje = document.getElementById("nochesHospedaje");
+    const calculoHospedaje = document.getElementById("calculoHospedaje");
 
     function pintarHoteles() {
         fuente.hoteles.forEach((hotel) => {
@@ -202,6 +208,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ------------------------------------------ */
 
     const totalBarra = document.getElementById("totalBarra");
+    const calculadoraViaje = document.getElementById("calculadoraViaje");
+    const cantidadViajeros = document.getElementById("cantidadViajeros");
+    const cantidadHabitaciones = document.getElementById("cantidadHabitaciones");
+    const cantidadComidas = document.getElementById("cantidadComidas");
+
+    const numero = (precio) =>
+        parseFloat(String(precio || "").replace(/[^\d.]/g, "")) || 0;
+
+    const dinero = (valor) =>
+        "$" + Math.round(valor).toLocaleString("es-MX");
 
     function actualizarTotal() {
         if (!totalBarra) {
@@ -209,15 +225,84 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         let total = 0;
         if (plan.hotel) {
-            total += numero(plan.hotel.precio) * 2;
+            const precioNoche = numero(plan.hotel.precio);
+            const costoHospedaje = precioNoche * plan.noches * plan.habitaciones;
+            total += costoHospedaje;
+            calculoHospedaje.textContent =
+                `${dinero(precioNoche)} por noche × ${plan.noches} ${plan.noches === 1 ? "noche" : "noches"} × ${plan.habitaciones} ${plan.habitaciones === 1 ? "habitación" : "habitaciones"} = ${dinero(costoHospedaje)} de hospedaje`;
+        } else {
+            calculoHospedaje.textContent = "Elige un hotel para calcular el costo de tu estancia.";
         }
         if (plan.restaurante) {
-            total += numero(plan.restaurante.precio);
+            total += numero(plan.restaurante.precio) * plan.viajeros * plan.comidas;
         }
         totalBarra.textContent =
             "💰 Total hasta ahora: " + dinero(total) +
             (plan.lugares.length ? ` · ${plan.lugares.length} lugar${plan.lugares.length > 1 ? "es" : ""}` : "");
+
+        const costoHospedaje = plan.hotel
+            ? numero(plan.hotel.precio) * plan.noches * plan.habitaciones
+            : 0;
+        const costoComidas = plan.restaurante
+            ? numero(plan.restaurante.precio) * plan.viajeros * plan.comidas
+            : 0;
+        document.getElementById("costoCalculadoHotel").textContent = dinero(costoHospedaje);
+        document.getElementById("costoCalculadoComidas").textContent = dinero(costoComidas);
+        document.getElementById("costoCalculadoTotal").textContent = dinero(costoHospedaje + costoComidas);
+
+        const costoHotelResumen = document.getElementById("resumenCostoHotel");
+        if (costoHotelResumen && plan.hotel) {
+            costoHotelResumen.textContent =
+                `${dinero(numero(plan.hotel.precio))} × ${plan.noches} noches × ${plan.habitaciones} hab. = ${dinero(costoHospedaje)}`;
+        }
+        const costoComidasResumen = document.getElementById("resumenCostoComidas");
+        if (costoComidasResumen && plan.restaurante) {
+            costoComidasResumen.textContent =
+                `${dinero(numero(plan.restaurante.precio))} × ${plan.viajeros} viajeros × ${plan.comidas} comidas = ${dinero(costoComidas)}`;
+        }
+        const costoTotalResumen = document.getElementById("resumenCostoTotal");
+        if (costoTotalResumen) {
+            costoTotalResumen.textContent = dinero(costoHospedaje + costoComidas);
+        }
+        const descripcionTotalResumen = document.getElementById("descripcionCostoTotal");
+        if (descripcionTotalResumen) {
+            descripcionTotalResumen.textContent =
+                `${plan.noches} ${plan.noches === 1 ? "noche" : "noches"} · ${plan.viajeros} ${plan.viajeros === 1 ? "viajero" : "viajeros"} · ${plan.comidas} ${plan.comidas === 1 ? "comida" : "comidas"} por persona`;
+        }
+
+        if (pasoActual === TOTAL_PASOS) {
+            localStorage.setItem("miravia_plan", JSON.stringify(plan));
+            guardarViajeEnLista();
+        }
     }
+
+    nochesHospedaje.addEventListener("input", () => {
+        const cantidad = Number(nochesHospedaje.value);
+        if (nochesHospedaje.value === "" || !Number.isFinite(cantidad)) {
+            return;
+        }
+
+        plan.noches = Math.max(1, Math.min(30, Math.trunc(cantidad)));
+        nochesHospedaje.value = String(plan.noches);
+        actualizarTotal();
+    });
+
+    [
+        [cantidadViajeros, "viajeros", 20],
+        [cantidadHabitaciones, "habitaciones", 10],
+        [cantidadComidas, "comidas", 90]
+    ].forEach(([control, propiedad, maximo]) => {
+        control.addEventListener("input", () => {
+            const cantidad = Number(control.value);
+            if (control.value === "" || !Number.isFinite(cantidad)) {
+                return;
+            }
+
+            plan[propiedad] = Math.max(1, Math.min(maximo, Math.trunc(cantidad)));
+            control.value = String(plan[propiedad]);
+            actualizarTotal();
+        });
+    });
 
     /* ------------------------------------------
        RESUMEN
@@ -226,30 +311,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const resumenEstado = document.getElementById("resumenEstado");
     const itinerario = document.getElementById("itinerario");
 
-    const numero = (precio) =>
-        parseFloat((precio || "").replace(/[^\d.]/g, "")) || 0;
-
-    const dinero = (valor) =>
-        "$" + Math.round(valor).toLocaleString("es-MX");
-
     function pintarResumen() {
         resumenEstado.textContent = valorMunicipio || datos.nombre;
 
-        const costoHotel = numero(plan.hotel.precio) * 2;
-        const costoComida = numero(plan.restaurante.precio);
+        cantidadViajeros.value = String(plan.viajeros);
+        cantidadHabitaciones.value = String(plan.habitaciones);
+        cantidadComidas.value = String(plan.comidas);
+
+        const costoHotel = numero(plan.hotel.precio) * plan.noches * plan.habitaciones;
+        const costoComida = numero(plan.restaurante.precio) * plan.viajeros * plan.comidas;
 
         itinerario.innerHTML =
             `<div class="bloque itinerario-hospedaje">` +
             `  <span class="icono">🏨</span>` +
             `  <div><h3>Hospedaje</h3>` +
             `  <p>${plan.hotel.nombre} — ${plan.hotel.ubicacion}</p></div>` +
-            `  <span class="costo">${dinero(costoHotel)} (2 noches)</span>` +
+            `  <span class="costo" id="resumenCostoHotel">${dinero(numero(plan.hotel.precio))} × ${plan.noches} noches × ${plan.habitaciones} hab. = ${dinero(costoHotel)}</span>` +
             `</div>` +
             `<div class="bloque itinerario-comida">` +
             `  <span class="icono">🍴</span>` +
             `  <div><h3>Comida</h3>` +
             `  <p>${plan.restaurante.nombre} — ${plan.restaurante.ubicacion}</p></div>` +
-            `  <span class="costo">${dinero(costoComida)} por persona</span>` +
+            `  <span class="costo" id="resumenCostoComidas">${dinero(numero(plan.restaurante.precio))} × ${plan.viajeros} viajeros × ${plan.comidas} comidas = ${dinero(costoComida)}</span>` +
             `</div>` +
             `<div class="bloque itinerario-lugares">` +
             `  <span class="icono">✨</span>` +
@@ -260,9 +343,11 @@ document.addEventListener("DOMContentLoaded", () => {
             `<div class="bloque itinerario-total">` +
             `  <span class="icono">💰</span>` +
             `  <div><h3>Presupuesto estimado</h3>` +
-            `  <p>2 noches + una comida por persona</p></div>` +
-            `  <span class="costo total">${dinero(costoHotel + costoComida)}</span>` +
+            `  <p id="descripcionCostoTotal">${plan.noches} ${plan.noches === 1 ? "noche" : "noches"} · ${plan.viajeros} ${plan.viajeros === 1 ? "viajero" : "viajeros"} · ${plan.comidas} ${plan.comidas === 1 ? "comida" : "comidas"} por persona</p></div>` +
+            `  <span class="costo total" id="resumenCostoTotal">${dinero(costoHotel + costoComida)}</span>` +
             `</div>`;
+
+        actualizarTotal();
 
         // Mini mapa del estado en el resumen.
         const miniMapa = document.getElementById("miniMapa");
@@ -317,7 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnAtras.disabled = pasoActual === 1;
         btnSiguiente.textContent = ETIQUETA_SIGUIENTE[pasoActual];
         if (pasoActual === 4) {
-            btnSiguiente.disabled = true;
+            btnSiguiente.disabled = false;
             pintarResumen();
             localStorage.setItem("miravia_plan", JSON.stringify(plan));
             guardarViajeEnLista();
@@ -330,14 +415,20 @@ document.addEventListener("DOMContentLoaded", () => {
     /* Guarda el viaje terminado en la lista
        "Mis viajes" (sin duplicar el último). */
     function guardarViajeEnLista() {
-        const costoHotel = numero(plan.hotel.precio) * 2;
-        const costoComida = numero(plan.restaurante.precio);
+        const costoHotel = numero(plan.hotel.precio) * plan.noches * plan.habitaciones;
+        const costoComida = numero(plan.restaurante.precio) * plan.viajeros * plan.comidas;
         const viaje = {
             estado: valorEstado,
             nombre: datos.nombre,
             municipio: valorMunicipio,
             hotel: plan.hotel ? plan.hotel.nombre : "",
+            noches: plan.noches,
+            habitaciones: plan.habitaciones,
+            precioPorNoche: plan.hotel ? dinero(numero(plan.hotel.precio)) : "",
+            costoHospedaje: dinero(costoHotel),
             restaurante: plan.restaurante ? plan.restaurante.nombre : "",
+            viajeros: plan.viajeros,
+            comidas: plan.comidas,
             lugares: plan.lugares.map((lugar) => lugar.nombre),
             total: dinero(costoHotel + costoComida),
             fecha: new Date().toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" })
@@ -373,13 +464,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     btnSiguiente.addEventListener("click", () => {
+        if (pasoActual === TOTAL_PASOS) {
+            calculadoraViaje.hidden = false;
+            btnSiguiente.setAttribute("aria-expanded", "true");
+            calculadoraViaje.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+        }
+
         if (!validarPaso()) {
             return;
         }
-        if (pasoActual < TOTAL_PASOS) {
-            pasoActual += 1;
-            pintarPaso();
-        }
+        pasoActual += 1;
+        pintarPaso();
     });
 
     btnAtras.addEventListener("click", () => {

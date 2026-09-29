@@ -370,6 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         valorElegido = valor;
+        elegirDestino.hidden = true;
 
         avisoEstado.hidden = false;
         avisoEstado.innerHTML =
