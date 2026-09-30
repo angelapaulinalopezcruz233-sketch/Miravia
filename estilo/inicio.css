@@ -1,3 +1,9 @@
+.enlace-login { position: fixed; top: 24px; right: 28px; z-index: 20; color: #fff; background: rgba(18, 63, 61, .82); padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: .9rem; }
+.enlace-login:hover { background: #123f3d; }
+.usuario-sesion { position: fixed; top: 20px; right: 28px; z-index: 21; display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 16px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255,255,255,0.22); backdrop-filter: blur(8px); }
+.usuario-sesion span { font-weight: 800; color: #f7f4ef; }
+.usuario-sesion small { color: #d6f8ef; text-transform: capitalize; }
+.usuario-sesion button { border: 0; border-radius: 999px; padding: 8px 12px; font-weight: 700; cursor: pointer; background: rgba(234, 108, 82, 0.9); color: #fff; }
 /* =========================================
    CONFIGURACIÓN GENERAL
 ========================================= */

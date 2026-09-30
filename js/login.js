@@ -1,4 +1,17 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const sesion = await fetch("api/sesion.php", {
+            credentials: "same-origin",
+            cache: "no-store"
+        });
+        const datosSesion = await sesion.json();
+        if (datosSesion.autenticado) {
+            window.location.replace("inicio.html");
+            return;
+        }
+    } catch (error) {
+        // Continuamos con el login si no existe sesión activa.
+    }
 
     const formulario = document.getElementById("formLogin");
     const formularioRegistro = document.getElementById("formRegistro");
@@ -247,11 +260,14 @@ document.addEventListener("DOMContentLoaded", () => {
         boton.textContent = "✈ Iniciando sesión...";
 
         try {
-            await enviarAuth("api/login.php", {
-                identificador: document.getElementById("usuario").value.trim(),
+            const usuarioInput = document.getElementById("usuario").value.trim();
+
+            await enviarAuth("api/auth.php?accion=login", {
+                correo: usuarioInput,
                 contrasena: password.value,
                 recordarme: document.getElementById("recordarme").checked
             });
+
             window.location.href = "inicio.html";
         } catch (error) {
             mensaje.textContent = error.message;

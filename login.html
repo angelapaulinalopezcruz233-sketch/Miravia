@@ -80,14 +80,12 @@
                 </div>
 
 
-                <form id="formLogin" autocomplete="on">
-
-                    <!-- USUARIO -->
+                <form id="formLogin" autocomplete="on" novalidate>
 
                     <div class="campo">
 
                         <label for="usuario">
-                            Usuario o correo
+                            Correo electrónico
                         </label>
 
                         <div class="input-contenedor">
@@ -95,18 +93,16 @@
                             <span>👤</span>
 
                             <input
-                                type="text"
+                                type="email"
                                 id="usuario"
+                                name="correo"
                                 autocomplete="username"
-                                placeholder="Ingresa tu usuario"
+                                placeholder="tu@correo.com"
                                 required>
 
                         </div>
 
                     </div>
-
-
-                    <!-- CONTRASEÑA -->
 
                     <div class="campo">
 
@@ -121,17 +117,14 @@
                             <input
                                 type="password"
                                 id="password"
-                                    maxlength="72"
+                                name="contrasena"
+                                maxlength="72"
                                 autocomplete="current-password"
                                 placeholder="Ingresa tu contraseña"
                                 required>
 
-                            <button
-                                type="button"
-                                id="mostrarPassword">
-
+                            <button type="button" id="mostrarPassword" aria-label="Mostrar u ocultar contraseña">
                                 👁
-
                             </button>
 
                         </div>
@@ -182,7 +175,7 @@
                 </form>
 
 
-                <form id="formRegistro" autocomplete="on" hidden>
+                <form id="formRegistro" autocomplete="on" hidden novalidate>
 
                     <div class="campo">
                         <label for="nombreRegistro">Nombre completo</label>

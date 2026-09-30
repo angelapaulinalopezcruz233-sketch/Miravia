@@ -1,35 +1,17 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/auth-comun.php';
-require_once __DIR__ . '/db.php';
+session_start();
+header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store');
 
-prepararRespuestaAuth();
-iniciarSesionAuth();
-
-$usuario = $_SESSION['usuario'] ?? null;
-if (!is_array($usuario)) {
-    responderAuth(['error' => 'Inicia sesión para continuar.'], 401);
+if (!isset($_SESSION['usuario']) || !is_array($_SESSION['usuario'])) {
+    http_response_code(401);
+    echo json_encode(['autenticado' => false], JSON_UNESCAPED_UNICODE);
+    exit;
 }
 
-try {
-    $pdo = conectarBaseDatos();
-    $consulta = $pdo->prepare(
-        'SELECT id, nombre, usuario, correo
-         FROM usuarios
-         WHERE id = :id AND activo = 1
-         LIMIT 1'
-    );
-    $consulta->execute(['id' => $usuario['id']]);
-    $usuarioActual = $consulta->fetch();
-
-    if (!$usuarioActual) {
-        $_SESSION = [];
-        session_destroy();
-        responderAuth(['error' => 'Inicia sesión para continuar.'], 401);
-    }
-
-    responderAuth(['usuario' => $usuarioActual]);
-} catch (Throwable $error) {
-    responderAuth(['error' => 'No se pudo comprobar la sesión.'], 500);
-}
+echo json_encode([
+    'autenticado' => true,
+    'usuario' => $_SESSION['usuario'],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
