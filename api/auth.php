@@ -1,26 +1,53 @@
 <?php
+
 declare(strict_types=1);
 
 require_once __DIR__ . '/db.php';
 
 session_start();
+
 header('Content-Type: application/json; charset=utf-8');
-header('Cache-Control: no-store');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Pragma: no-cache');
+
 
 function responder(array $datos, int $codigo = 200): never
 {
     http_response_code($codigo);
-    echo json_encode($datos, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    echo json_encode(
+        $datos,
+        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+    );
+
     exit;
 }
 
-function leerDatosAutenticacion(): array
+
+/*
+|--------------------------------------------------------------------------
+| LEER DATOS
+|--------------------------------------------------------------------------
+*/
+
+function leerDatos(): array
 {
-    $raw = trim((string) file_get_contents('php://input'));
+    $raw = trim(
+        (string) file_get_contents('php://input')
+    );
+
     if ($raw !== '') {
+
         $json = json_decode($raw, true);
+
         if (is_array($json)) {
             return $json;
+        }
+
+        parse_str($raw, $formulario);
+
+        if (is_array($formulario) && !empty($formulario)) {
+            return $formulario;
         }
     }
 
@@ -31,78 +58,353 @@ function leerDatosAutenticacion(): array
     return $_GET;
 }
 
-$accion = $_GET['accion'] ?? $_POST['accion'] ?? $_REQUEST['accion'] ?? 'sesion';
+
+/*
+|--------------------------------------------------------------------------
+| ACCIÓN
+|--------------------------------------------------------------------------
+*/
+
+$accion =
+    $_GET['accion']
+    ?? $_POST['accion']
+    ?? 'sesion';
+
 
 try {
-    $datos = leerDatosAutenticacion();
+
+    /*
+    |--------------------------------------------------------------------------
+    | CERRAR SESIÓN
+    |--------------------------------------------------------------------------
+    */
 
     if ($accion === 'logout') {
+
         $_SESSION = [];
+
         if (ini_get('session.use_cookies')) {
+
             $parametros = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000, $parametros['path'], $parametros['domain'], $parametros['secure'], $parametros['httponly']);
+
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $parametros['path'],
+                $parametros['domain'],
+                $parametros['secure'],
+                $parametros['httponly']
+            );
         }
+
         session_destroy();
-        responder(['autenticado' => false]);
+
+        responder([
+            'autenticado' => false
+        ]);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | INICIAR SESIÓN
+    |--------------------------------------------------------------------------
+    */
 
     if ($accion === 'login') {
-        $correo = strtolower(trim((string) ($datos['correo'] ?? $datos['email'] ?? $datos['identificador'] ?? $datos['usuario'] ?? '')));
-        $contrasena = (string) ($datos['contrasena'] ?? $datos['password'] ?? '');
 
-        if ($correo === '' || $contrasena === '') {
-            responder(['error' => 'Escribe un correo y una contraseña válidos.'], 422);
+        $datos = leerDatos();
+
+
+        /*
+        |----------------------------------------------------------------------
+        | USUARIO
+        |----------------------------------------------------------------------
+        */
+
+        $usuarioInput = trim(
+            (string) (
+                $datos['usuario']
+                ?? ''
+            )
+        );
+
+
+        /*
+        |----------------------------------------------------------------------
+        | CONTRASEÑA
+        |----------------------------------------------------------------------
+        */
+
+        $contrasena = (string) (
+            $datos['contrasena']
+            ?? $datos['password']
+            ?? ''
+        );
+
+
+        /*
+        |----------------------------------------------------------------------
+        | VALIDAR DATOS
+        |----------------------------------------------------------------------
+        */
+
+        if (
+            $usuarioInput === ''
+            ||
+            $contrasena === ''
+        ) {
+
+            responder([
+                'error' =>
+                    'Escribe tu nombre de usuario y contraseña.'
+            ], 422);
         }
 
-        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            responder(['error' => 'El correo no tiene un formato válido.'], 422);
+
+        if (
+            !preg_match(
+                '/^[\p{L}\p{N}._-]{3,30}$/u',
+                $usuarioInput
+            )
+        ) {
+
+            responder([
+                'error' =>
+                    'El nombre de usuario no es válido.'
+            ], 422);
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONECTAR BASE DE DATOS
+        |--------------------------------------------------------------------------
+        */
 
         $pdo = conectarBaseDatos();
-        $columnas = array_map(static fn ($columna) => $columna['Field'], $pdo->query('SHOW COLUMNS FROM usuarios')->fetchAll());
-        $usaCamposNuevos = in_array('correo', $columnas, true) && in_array('contrasena', $columnas, true);
 
-        if (in_array('correo', $columnas, true)) {
-            $consulta = $pdo->prepare(
-                'SELECT u.id, u.nombre, COALESCE(u.correo, u.email) AS correo, COALESCE(u.contrasena, u.password_hash) AS contrasena, COALESCE(r.nombre, CASE u.rol WHEN "admin" THEN "admin" ELSE "usuario" END) AS rol
-                 FROM usuarios u
-                 LEFT JOIN roles r ON r.id = u.rol_id
-                 WHERE COALESCE(u.correo, u.email) = :correo AND u.activo = 1 LIMIT 1'
-            );
-        } else {
-            $consulta = $pdo->prepare(
-                'SELECT u.id, u.nombre, COALESCE(u.correo, u.email) AS correo, COALESCE(u.contrasena, u.password_hash) AS contrasena, COALESCE(r.nombre, CASE u.rol WHEN "admin" THEN "admin" ELSE "usuario" END) AS rol
-                 FROM usuarios u
-                 LEFT JOIN roles r ON r.id = u.rol_id
-                 WHERE COALESCE(u.correo, u.email) = :correo AND u.activo = 1 LIMIT 1'
-            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | BUSCAR USUARIO
+        |--------------------------------------------------------------------------
+        */
+
+        $consulta = $pdo->prepare(
+            'SELECT
+                u.id,
+                u.nombre,
+                u.usuario,
+                u.correo,
+                u.contrasena,
+                u.activo,
+                u.rol_id,
+                r.nombre AS nombre_rol
+             FROM usuarios u
+             LEFT JOIN roles r
+                ON r.id = u.rol_id
+             WHERE u.usuario = :usuario
+             LIMIT 1'
+        );
+
+
+        $consulta->execute([
+            ':usuario' => $usuarioInput
+        ]);
+
+
+        $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | USUARIO NO ENCONTRADO
+        |--------------------------------------------------------------------------
+        */
+
+        if (!$usuario) {
+
+            responder([
+                'error' =>
+                    'El nombre de usuario o la contraseña no son correctos.'
+            ], 401);
         }
 
-        $consulta->execute(['correo' => $correo]);
-        $usuario = $consulta->fetch();
 
-        if (!$usuario || !password_verify($contrasena, (string) $usuario['contrasena'])) {
-            responder(['error' => 'El correo o la contraseña no son correctos.'], 401);
+        /*
+        |--------------------------------------------------------------------------
+        | USUARIO INACTIVO
+        |--------------------------------------------------------------------------
+        */
+
+        if ((int) $usuario['activo'] !== 1) {
+
+            responder([
+                'error' =>
+                    'Esta cuenta está desactivada.'
+            ], 403);
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | VERIFICAR CONTRASEÑA
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            empty($usuario['contrasena'])
+            ||
+            !password_verify(
+                $contrasena,
+                (string) $usuario['contrasena']
+            )
+        ) {
+
+            responder([
+                'error' =>
+                    'El nombre de usuario o la contraseña no son correctos.'
+            ], 401);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CREAR SESIÓN
+        |--------------------------------------------------------------------------
+        */
 
         session_regenerate_id(true);
-        $_SESSION['usuario'] = [
-            'id' => (int) $usuario['id'],
-            'nombre' => $usuario['nombre'],
-            'correo' => $usuario['correo'],
-            'rol' => $usuario['rol'],
-        ];
 
-        responder(['autenticado' => true, 'usuario' => $_SESSION['usuario']]);
+
+        $_SESSION['autenticado'] = true;
+
+        $_SESSION['usuario_id'] =
+            (int) $usuario['id'];
+
+        $_SESSION['usuario'] =
+            $usuario['usuario'];
+
+        $_SESSION['nombre'] =
+            $usuario['nombre'];
+
+        $_SESSION['correo'] =
+            $usuario['correo'];
+
+        $_SESSION['rol'] =
+            $usuario['nombre_rol'] ?? 'usuario';
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | RESPUESTA
+        |--------------------------------------------------------------------------
+        */
+
+        responder([
+            'autenticado' => true,
+
+            'mensaje' =>
+                'Inicio de sesión correcto.',
+
+            'usuario' => [
+                'id' =>
+                    (int) $usuario['id'],
+
+                'nombre' =>
+                    $usuario['nombre'],
+
+                'usuario' =>
+                    $usuario['usuario'],
+
+                'correo' =>
+                    $usuario['correo'],
+
+                'rol' =>
+                    $usuario['nombre_rol'] ?? 'usuario'
+            ]
+        ]);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | COMPROBAR SESIÓN
+    |--------------------------------------------------------------------------
+    */
 
     if ($accion === 'sesion') {
-        responder(isset($_SESSION['usuario'])
-            ? ['autenticado' => true, 'usuario' => $_SESSION['usuario']]
-            : ['autenticado' => false]);
+
+        if (
+            isset($_SESSION['autenticado'])
+            &&
+            $_SESSION['autenticado'] === true
+        ) {
+
+            responder([
+                'autenticado' => true,
+
+                'usuario' => [
+                    'id' =>
+                        $_SESSION['usuario_id'] ?? null,
+
+                    'nombre' =>
+                        $_SESSION['nombre'] ?? '',
+
+                    'usuario' =>
+                        $_SESSION['usuario'] ?? '',
+
+                    'correo' =>
+                        $_SESSION['correo'] ?? '',
+
+                    'rol' =>
+                        $_SESSION['rol'] ?? 'usuario'
+                ]
+            ]);
+        }
+
+
+        responder([
+            'autenticado' => false
+        ]);
     }
 
-    responder(['error' => 'Acción no válida.'], 400);
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCIÓN NO VÁLIDA
+    |--------------------------------------------------------------------------
+    */
+
+    responder([
+        'error' => 'Acción no válida.'
+    ], 400);
+
+
+} catch (PDOException $error) {
+
+    error_log(
+        'ERROR PDO auth.php: '
+        . $error->getMessage()
+    );
+
+    responder([
+        'error' =>
+            'Error de base de datos.'
+    ], 500);
+
+
 } catch (Throwable $error) {
-    responder(['error' => 'No se pudo completar la operación.'], 500);
+
+    error_log(
+        'ERROR PHP auth.php: '
+        . $error->getMessage()
+    );
+
+    responder([
+        'error' =>
+            'No se pudo completar la operación.'
+    ], 500);
 }

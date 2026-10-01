@@ -253,28 +253,37 @@ document.addEventListener("DOMContentLoaded", async () => {
         mostrarPassword.textContent = mostrar ? "🙈" : "👁";
     });
 
-    formulario.addEventListener("submit", async (evento) => {
-        evento.preventDefault();
-        mensaje.textContent = "";
-        boton.disabled = true;
-        boton.textContent = "✈ Iniciando sesión...";
+   formulario.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
 
-        try {
-            const usuarioInput = document.getElementById("usuario").value.trim();
+    mensaje.textContent = "";
+    boton.disabled = true;
+    boton.textContent = "✈ Iniciando sesión...";
 
-            await enviarAuth("api/auth.php?accion=login", {
-                correo: usuarioInput,
-                contrasena: password.value,
-                recordarme: document.getElementById("recordarme").checked
-            });
+    try {
+        const usuarioInput = document
+            .getElementById("usuario")
+            .value
+            .trim();
 
-            window.location.href = "inicio.html";
-        } catch (error) {
-            mensaje.textContent = error.message;
-            boton.disabled = false;
-            boton.textContent = "Iniciar sesión";
-        }
-    });
+        await enviarAuth("api/auth.php?accion=login", {
+            usuario: usuarioInput,
+            contrasena: password.value,
+            recordarme: document
+                .getElementById("recordarme")
+                .checked
+        });
+
+        window.location.href = "inicio.html";
+
+    } catch (error) {
+
+        mensaje.textContent = error.message;
+
+        boton.disabled = false;
+        boton.textContent = "Iniciar sesión";
+    }
+});
 
     formularioRegistro.addEventListener("submit", async (evento) => {
         evento.preventDefault();
