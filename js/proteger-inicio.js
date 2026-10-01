@@ -35,15 +35,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (botonLogout) {
             botonLogout.addEventListener("click", async () => {
+                botonLogout.disabled = true;
                 try {
-                    await fetch("api/auth.php?accion=logout", {
+                    const respuestaLogout = await fetch("api/auth.php?accion=logout", {
                         method: "POST",
                         credentials: "same-origin",
                         cache: "no-store"
                     });
+
+                    const resultadoLogout = await respuestaLogout.json();
+                    if (!respuestaLogout.ok || resultadoLogout.autenticado !== false) {
+                        throw new Error("No se pudo cerrar la sesión.");
+                    }
+
                     window.location.replace("login.html");
                 } catch (error) {
-                    window.location.replace("login.html");
+                    botonLogout.disabled = false;
+                    window.alert("No se pudo cerrar sesión. Intenta de nuevo.");
                 }
             });
         }

@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function animar() {
         requestAnimationFrame(animar);
-        grupoTierra.rotation.y += 0.0018;
+        grupoTierra.rotation.y -= 0.0018;
         anilloMarcador.rotation.z += 0.012;
         estrellas.rotation.y += 0.00035;
         renderizador.render(escena, camara);
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         mapa = L.map("mapaInicio", {
             zoomControl: true,
-            attributionControl: false,
+            attributionControl: true,
             scrollWheelZoom: true,
             doubleClickZoom: true,
             touchZoom: true,
@@ -218,10 +218,9 @@ document.addEventListener("DOMContentLoaded", () => {
             maxBoundsViscosity: 1.0
         }).setView(VISTA_MEXICO.centro, VISTA_MEXICO.zoom);
 
-        L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 12,
-            subdomains: "abc",
-            attribution: "&copy; OpenStreetMap"
+            attribution: "&copy; OpenStreetMap contributors"
         }).addTo(mapa);
 
         mapaListo = true;
@@ -290,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
             duration: 3.2,
             ease: "power2.inOut"
         });
+        await new Promise((resolve) => window.setTimeout(resolve, 2000));
 
         escribirMensaje(
             "Acercándonos a nuevos recuerdos",
@@ -304,6 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
             duration: 2.1,
             ease: "power2.inOut"
         });
+        await new Promise((resolve) => window.setTimeout(resolve, 2000));
 
         escribirMensaje(
             "Bienvenido a MIRAVIA",
@@ -311,6 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
         textoUbicacion.textContent = "Listo para comenzar";
 
+        await new Promise((resolve) => window.setTimeout(resolve, 4000));
         mostrarMapa();
     }
 
