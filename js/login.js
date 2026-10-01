@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             ? "Regístrate para comenzar tu viaje."
             : "Entra a MIRAVIA para continuar tu viaje.";
 
-        document.getElementById(mostrarRegistro ? "nombreRegistro" : "usuario").focus();
+        document.getElementById(mostrarRegistro ? "nombreRegistro" : "correo").focus();
     }
 
     document.getElementById("mostrarRegistro").addEventListener("click", (evento) => {
@@ -261,13 +261,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     boton.textContent = "✈ Iniciando sesión...";
 
     try {
-        const usuarioInput = document
-            .getElementById("usuario")
+        const correoInput = document
+            .getElementById("correo")
             .value
             .trim();
 
         await enviarAuth("api/auth.php?accion=login", {
-            usuario: usuarioInput,
+            correo: correoInput,
             contrasena: password.value,
             recordarme: document
                 .getElementById("recordarme")
