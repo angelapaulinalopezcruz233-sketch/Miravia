@@ -123,9 +123,10 @@ try {
         |----------------------------------------------------------------------
         */
 
-        $usuarioInput = trim(
+        $identificadorInput = trim(
             (string) (
-                $datos['usuario']
+                $datos['correo']
+                ?? $datos['usuario']
                 ?? ''
             )
         );
@@ -151,28 +152,33 @@ try {
         */
 
         if (
-            $usuarioInput === ''
+            $identificadorInput === ''
             ||
             $contrasena === ''
         ) {
 
             responder([
                 'error' =>
-                    'Escribe tu nombre de usuario y contraseña.'
+                    'Escribe tu correo y contraseña.'
             ], 422);
         }
 
 
-        if (
-            !preg_match(
-                '/^[\p{L}\p{N}._-]{3,30}$/u',
-                $usuarioInput
-            )
-        ) {
+        $esCorreo = filter_var(
+            $identificadorInput,
+            FILTER_VALIDATE_EMAIL
+        ) !== false;
+
+        $esUsuario = preg_match(
+            '/^[\p{L}\p{N}._-]{3,30}$/u',
+            $identificadorInput
+        ) === 1;
+
+        if (!$esCorreo && !$esUsuario) {
 
             responder([
                 'error' =>
-                    'El nombre de usuario no es válido.'
+                    'Escribe un correo válido o un nombre de usuario.'
             ], 422);
         }
 
@@ -192,27 +198,55 @@ try {
         |--------------------------------------------------------------------------
         */
 
+        $columnas = array_column(
+            $pdo->query('SHOW COLUMNS FROM usuarios')->fetchAll(PDO::FETCH_ASSOC),
+            'Field'
+        );
+        $columnaCorreo = in_array('correo', $columnas, true)
+            ? 'correo'
+            : (in_array('email', $columnas, true) ? 'email' : null);
+        $columnaContrasena = in_array('contrasena', $columnas, true)
+            ? 'contrasena'
+            : (in_array('password_hash', $columnas, true) ? 'password_hash' : null);
+
+        if ($columnaCorreo === null || $columnaContrasena === null) {
+            responder([
+                'error' => 'La estructura de usuarios no es compatible con el inicio de sesión.'
+            ], 500);
+        }
+
+        $tieneUsuario = in_array('usuario', $columnas, true);
+        $tieneActivo = in_array('activo', $columnas, true);
+        $tieneRoles = in_array('rol_id', $columnas, true)
+            && $pdo->query("SHOW TABLES LIKE 'roles'")->fetchColumn() !== false;
+
+        $campoUsuario = $tieneUsuario ? 'u.usuario' : "''";
+        $campoActivo = $tieneActivo ? 'u.activo' : '1';
+        $campoRol = $tieneRoles
+            ? 'r.nombre'
+            : (in_array('rol', $columnas, true) ? 'u.rol' : "'usuario'");
+        $joinRoles = $tieneRoles ? 'LEFT JOIN roles r ON r.id = u.rol_id' : '';
+
+        $condiciones = [
+            'LOWER(u.`' . $columnaCorreo . '`) = LOWER(:correo)'
+        ];
+        $parametros = [':correo' => $identificadorInput];
+
+        if ($tieneUsuario) {
+            $condiciones[] = 'u.usuario = :usuario';
+            $parametros[':usuario'] = $identificadorInput;
+        }
+
         $consulta = $pdo->prepare(
-            'SELECT
-                u.id,
-                u.nombre,
-                u.usuario,
-                u.correo,
-                u.contrasena,
-                u.activo,
-                u.rol_id,
-                r.nombre AS nombre_rol
-             FROM usuarios u
-             LEFT JOIN roles r
-                ON r.id = u.rol_id
-             WHERE u.usuario = :usuario
-             LIMIT 1'
+            'SELECT u.id, u.nombre, ' . $campoUsuario . ' AS usuario, '
+            . 'u.`' . $columnaCorreo . '` AS correo, '
+            . 'u.`' . $columnaContrasena . '` AS contrasena, '
+            . $campoActivo . ' AS activo, ' . $campoRol . ' AS nombre_rol '
+            . 'FROM usuarios u ' . $joinRoles . ' '
+            . 'WHERE (' . implode(' OR ', $condiciones) . ') LIMIT 1'
         );
 
-
-        $consulta->execute([
-            ':usuario' => $usuarioInput
-        ]);
+        $consulta->execute($parametros);
 
 
         $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
@@ -228,7 +262,7 @@ try {
 
             responder([
                 'error' =>
-                    'El nombre de usuario o la contraseña no son correctos.'
+                    'El correo o nombre de usuario o la contraseña no son correctos.'
             ], 401);
         }
 
@@ -265,7 +299,7 @@ try {
 
             responder([
                 'error' =>
-                    'El nombre de usuario o la contraseña no son correctos.'
+                    'El correo o nombre de usuario o la contraseña no son correctos.'
             ], 401);
         }
 
@@ -285,7 +319,9 @@ try {
             (int) $usuario['id'];
 
         $_SESSION['usuario'] =
-            $usuario['usuario'];
+            $usuario['usuario'] !== ''
+                ? $usuario['usuario']
+                : $usuario['correo'];
 
         $_SESSION['nombre'] =
             $usuario['nombre'];
