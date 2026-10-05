@@ -62,71 +62,111 @@ try {
     }
 
     $pdo = conectarBaseDatos();
-    $columnas = array_map(static fn ($col) => $col['Field'], $pdo->query('SHOW COLUMNS FROM usuarios')->fetchAll());
+    $columnasInfo = $pdo->query('SHOW COLUMNS FROM usuarios')->fetchAll(PDO::FETCH_ASSOC);
+    $columnas = array_column($columnasInfo, 'Field');
+    $columnasPorNombre = array_column($columnasInfo, null, 'Field');
+    $columnasCorreo = array_values(array_intersect(['correo', 'email'], $columnas));
+    $columnasContrasena = array_values(array_intersect(['contrasena', 'password_hash'], $columnas));
 
-    $rolUsuario = $pdo->query("SELECT id FROM roles WHERE nombre = 'usuario' LIMIT 1")->fetchColumn();
-    if ($rolUsuario === false) {
-        responder(['error' => 'No existe el rol usuario en la base de datos.'], 500);
+    if ($columnasCorreo === [] || $columnasContrasena === []) {
+        responder(['error' => 'La estructura de usuarios no es compatible con el registro.'], 500);
+    }
+
+    $usuario = trim((string) ($datos['usuario'] ?? ''));
+    $tieneUsuario = in_array('usuario', $columnas, true);
+    if ($tieneUsuario && !preg_match('/^[\p{L}\p{N}._-]{3,30}$/u', $usuario)) {
+        responder(['error' => 'Escribe un nombre de usuario válido de 3 a 30 caracteres.'], 422);
+    }
+
+    $condicionesCorreo = [];
+    $parametrosCorreo = [];
+    foreach ($columnasCorreo as $indice => $columna) {
+        $parametro = ':correo' . $indice;
+        $condicionesCorreo[] = 'LOWER(`' . $columna . '`) = LOWER(' . $parametro . ')';
+        $parametrosCorreo[$parametro] = $correo;
     }
 
     $consultaExiste = $pdo->prepare(
-        'SELECT id FROM usuarios WHERE COALESCE(correo, email) = :correo LIMIT 1'
+        'SELECT id FROM usuarios WHERE (' . implode(' OR ', $condicionesCorreo) . ') LIMIT 1'
     );
-    $consultaExiste->execute(['correo' => $correo]);
+    $consultaExiste->execute($parametrosCorreo);
     if ($consultaExiste->fetch()) {
         responder(['error' => 'Ese correo ya está registrado.'], 409);
     }
 
-    $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-
-    if (in_array('correo', $columnas, true) && in_array('contrasena', $columnas, true)) {
-        $campos = ['nombre', 'correo', 'contrasena', 'rol_id', 'activo'];
-        $datosInsert = [
-            'nombre' => $nombre,
-            'correo' => $correo,
-            'contrasena' => $hash,
-            'rol_id' => (int) $rolUsuario,
-            'activo' => 1,
-        ];
-
-        if (in_array('email', $columnas, true)) {
-            $campos[] = 'email';
-            $datosInsert['email'] = $correo;
+    if ($tieneUsuario) {
+        $consultaUsuario = $pdo->prepare('SELECT id FROM usuarios WHERE usuario = :usuario LIMIT 1');
+        $consultaUsuario->execute(['usuario' => $usuario]);
+        if ($consultaUsuario->fetch()) {
+            responder(['error' => 'Ese nombre de usuario ya está registrado.'], 409);
         }
-
-        if (in_array('password_hash', $columnas, true)) {
-            $campos[] = 'password_hash';
-            $datosInsert['password_hash'] = $hash;
-        }
-
-        $placeholders = implode(', ', array_map(static fn ($campo) => ':' . $campo, $campos));
-        $consultaInsert = 'INSERT INTO usuarios (' . implode(', ', $campos) . ') VALUES (' . $placeholders . ')';
-        $insertar = $pdo->prepare($consultaInsert);
-        $insertar->execute($datosInsert);
-    } elseif (in_array('email', $columnas, true) && in_array('password_hash', $columnas, true)) {
-        $insertar = $pdo->prepare(
-            'INSERT INTO usuarios (nombre, email, password_hash, rol, created_at)
-             VALUES (:nombre, :correo, :password_hash, :rol, NOW())'
-        );
-        $insertar->execute([
-            'nombre' => $nombre,
-            'correo' => $correo,
-            'password_hash' => $hash,
-            'rol' => 'cliente',
-        ]);
-    } else {
-        responder(['error' => 'La estructura de usuarios no es compatible con el registro.'], 500);
     }
+
+    $hash = password_hash($contrasena, PASSWORD_DEFAULT);
+    $datosInsert = ['nombre' => $nombre];
+    foreach ($columnasCorreo as $columna) {
+        $datosInsert[$columna] = $correo;
+    }
+    foreach ($columnasContrasena as $columna) {
+        $datosInsert[$columna] = $hash;
+    }
+    if ($tieneUsuario) {
+        $datosInsert['usuario'] = $usuario;
+    }
+    if (in_array('activo', $columnas, true)) {
+        $datosInsert['activo'] = 1;
+    }
+
+    $rolesDisponibles = $pdo->query("SHOW TABLES LIKE 'roles'")->fetchColumn() !== false;
+    $rolNombre = 'usuario';
+    if (in_array('rol_id', $columnas, true) && $rolesDisponibles) {
+        $consultaRol = $pdo->prepare("SELECT id, nombre FROM roles WHERE nombre = 'usuario' LIMIT 1");
+        $consultaRol->execute();
+        $rol = $consultaRol->fetch(PDO::FETCH_ASSOC);
+        if (!$rol) {
+            responder(['error' => 'No existe el rol usuario en la base de datos.'], 500);
+        }
+        $datosInsert['rol_id'] = (int) $rol['id'];
+        $rolNombre = (string) $rol['nombre'];
+    } elseif (in_array('rol', $columnas, true)) {
+        $datosInsert['rol'] = 'cliente';
+        $rolNombre = 'cliente';
+    } elseif (
+        in_array('rol_id', $columnas, true)
+        && $columnasPorNombre['rol_id']['Null'] === 'NO'
+        && $columnasPorNombre['rol_id']['Default'] === null
+    ) {
+        responder(['error' => 'La base de datos no tiene configurada la tabla de roles.'], 500);
+    }
+
+    foreach (['creado_en', 'created_at', 'actualizado_en'] as $columnaFecha) {
+        if (in_array($columnaFecha, $columnas, true)) {
+            $datosInsert[$columnaFecha] = date('Y-m-d H:i:s');
+        }
+    }
+
+    $campos = array_keys($datosInsert);
+    $placeholders = array_map(static fn ($campo) => ':' . $campo, $campos);
+    $insertar = $pdo->prepare(
+        'INSERT INTO usuarios (`' . implode('`, `', $campos) . '`) VALUES (' . implode(', ', $placeholders) . ')'
+    );
+    $insertar->execute($datosInsert);
 
     $usuarioCreado = [
         'id' => (int) $pdo->lastInsertId(),
         'nombre' => $nombre,
+        'usuario' => $usuario !== '' ? $usuario : $correo,
         'correo' => $correo,
-        'rol' => 'usuario',
+        'rol' => $rolNombre,
     ];
 
     session_regenerate_id(true);
-    $_SESSION['usuario'] = $usuarioCreado;
+    $_SESSION['autenticado'] = true;
+    $_SESSION['usuario_id'] = $usuarioCreado['id'];
+    $_SESSION['usuario'] = $usuarioCreado['usuario'];
+    $_SESSION['nombre'] = $nombre;
+    $_SESSION['correo'] = $correo;
+    $_SESSION['rol'] = $rolNombre;
     responder(['autenticado' => true, 'usuario' => $usuarioCreado], 201);
 } catch (Throwable $error) {
     responder(['error' => 'No se pudo crear la cuenta.'], 500);

@@ -100,7 +100,51 @@ body.verificando-sesion #inicio {
 }
 
 #mapaInicio .leaflet-tile-pane {
-    filter: saturate(1.1) contrast(1.06) brightness(1.02);
+    filter: saturate(0.76) contrast(0.96) brightness(1.02);
+}
+
+.marcador-estado-contenedor {
+    border: 0;
+    background: transparent;
+}
+
+.marcador-estado {
+    display: block;
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    background: #d9eee6;
+    box-shadow: 0 2px 9px rgba(24, 43, 56, 0.42);
+    transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.marcador-estado img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.marcador-estado-contenedor:hover .marcador-estado,
+.marcador-estado--seleccionado {
+    z-index: 1000;
+    transform: scale(1.16);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.62), 0 4px 12px rgba(5, 25, 39, 0.52);
+}
+
+.tooltip-estado {
+    padding: 5px 8px;
+    border: 1px solid rgba(17, 63, 61, 0.12);
+    border-radius: 4px;
+    background: rgba(250, 253, 252, 0.96);
+    box-shadow: 0 3px 10px rgba(24, 43, 56, 0.16);
+    color: #123f3d;
+    font-size: 11px;
+}
+
 }
 
 #mapaInicio .leaflet-control-zoom {
@@ -309,11 +353,11 @@ body.verificando-sesion #inicio {
 .elegir-destino {
     position: absolute;
     left: 50%;
-    bottom: 26px;
+    bottom: 20px;
     transform: translateX(-50%);
-    width: min(92%, 520px);
-    padding: 14px 18px;
-    border-radius: 24px;
+    width: min(340px, calc(100% - 32px));
+    padding: 10px 16px;
+    border-radius: 8px;
     color: #f7fffb;
     background: rgba(8, 24, 36, 0.62);
     border: 1.5px solid rgba(159, 243, 224, 0.4);
@@ -325,8 +369,8 @@ body.verificando-sesion #inicio {
 }
 
 .elegir-destino h2 {
-    font-size: clamp(20px, 4.5vw, 26px);
-    margin-bottom: 6px;
+    font-size: 17px;
+    line-height: 1.3;
     text-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 

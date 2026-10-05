@@ -1,8 +1,5 @@
 // ==========================================
-// MIRAVIA · SELECCIÓN DE ESTADO EN EL MAPA
-// 32 círculos llamativos, cada estado de
-// un color distinto. Al tocar un estado se
-// selecciona y aparece "Comenzar viaje".
+// MIRAVIA · UN MARCADOR POR ESTADO
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -73,23 +70,18 @@ document.addEventListener("DOMContentLoaded", () => {
     ------------------------------------------ */
 
     let marcadorActivo = null;
-    const ESTILO_BASE = { radius: 8, weight: 2, fillOpacity: 0.92 };
 
-    function seleccionarEstado(estado) {
+    function seleccionarEstado(estado, marcador = null) {
         if (marcadorActivo) {
-            const base = ESTADOS.find((item) => item === marcadorActivo.__estado);
-            marcadorActivo.setStyle({ ...ESTILO_BASE, fillColor: base.color, color: "#ffffff" });
+            marcadorActivo.getElement()?.querySelector(".marcador-estado")?.classList.remove("marcador-estado--seleccionado");
             marcadorActivo.closeTooltip();
         }
         if (!estado) return;
 
-        if (estado.__marcador) {
-            estado.__marcador.setStyle({
-                radius: 14, fillColor: estado.color, color: "#ffd7a0", weight: 4, fillOpacity: 1
-            });
-            estado.__marcador.openTooltip();
-            marcadorActivo = estado.__marcador;
-            marcadorActivo.__estado = estado;
+        if (marcador) {
+            marcadorActivo = marcador;
+            marcadorActivo.getElement()?.querySelector(".marcador-estado")?.classList.add("marcador-estado--seleccionado");
+            marcadorActivo.openTooltip();
         }
 
         document.dispatchEvent(new CustomEvent("miravia:estado-elegido", {
@@ -102,37 +94,46 @@ document.addEventListener("DOMContentLoaded", () => {
         }));
     }
 
+    function crearIconoEstado(estado) {
+        return L.divIcon({
+            className: "marcador-estado-contenedor",
+            html: `<span class="marcador-estado"><img src="imagenes/estados/iconos/${estado.valor}.jpg" alt="" draggable="false"></span>`,
+            iconSize: [38, 38],
+            iconAnchor: [19, 19],
+            tooltipAnchor: [0, -19]
+        });
+    }
+
+    function crearMarcadoresEstados(mapa) {
+        ESTADOS.forEach((estado) => {
+            const marcador = L.marker(estado.coords, {
+                icon: crearIconoEstado(estado),
+                keyboard: true,
+                title: estado.nombre,
+                riseOnHover: true
+            }).addTo(mapa);
+
+            marcador.bindTooltip(estado.nombre, {
+                direction: "top",
+                className: "tooltip-estado",
+                offset: [0, -22]
+            });
+            marcador.on("click", (evento) => {
+                L.DomEvent.stopPropagation(evento);
+                seleccionarEstado(estado, marcador);
+            });
+        });
+    }
+
     /* ------------------------------------------
-       CREAR LOS 32 CÍRCULOS DE COLORES
-       (cuando la pantalla de inicio crea el mapa)
+    CREAR UN MARCADOR POR ESTADO
     ------------------------------------------ */
 
     document.addEventListener("miravia:mapa-inicio", (evento) => {
         const mapa = evento.detail.mapa || window.__miraviaMapa;
         if (!mapa) return;
 
-        ESTADOS.forEach((estado) => {
-            const marcador = L.circleMarker(estado.coords, {
-                radius: ESTILO_BASE.radius,
-                fillColor: estado.color,
-                color: "#ffffff",
-                weight: ESTILO_BASE.weight,
-                fillOpacity: ESTILO_BASE.fillOpacity
-            }).addTo(mapa);
-
-            marcador.bindTooltip(
-                estado.nombre,
-                { permanent: false, direction: "top", className: "tooltip-estado" }
-            );
-
-            marcador.__estado = estado;
-            estado.__marcador = marcador;
-
-            marcador.on("click", (clic) => {
-                L.DomEvent.stopPropagation(clic);
-                seleccionarEstado(estado);
-            });
-        });
+        crearMarcadoresEstados(mapa);
 
         // Tocar cualquier otro punto del mapa:
         // selecciona el estado más cercano.

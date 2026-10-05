@@ -208,6 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mapa = L.map("mapaInicio", {
             zoomControl: true,
             attributionControl: true,
+            detectRetina: true,
             scrollWheelZoom: true,
             doubleClickZoom: true,
             touchZoom: true,
@@ -226,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mapaListo = true;
 
         // Entrega el mapa al selector de estados
-        // (js/selector-viaje.js crea los 32 círculos de colores).
+        // (js/selector-viaje.js crea los 32 marcadores con foto).
         window.__miraviaMapa = mapa;
         window.setTimeout(() => {
             document.dispatchEvent(new CustomEvent("miravia:mapa-inicio", {

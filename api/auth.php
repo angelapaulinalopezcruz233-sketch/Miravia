@@ -227,8 +227,17 @@ try {
             : (in_array('rol', $columnas, true) ? 'u.rol' : "'usuario'");
         $joinRoles = $tieneRoles ? 'LEFT JOIN roles r ON r.id = u.rol_id' : '';
 
+        $expresionCorreo = in_array('correo', $columnas, true)
+            && in_array('email', $columnas, true)
+            ? "COALESCE(NULLIF(u.`correo`, ''), u.`email`)"
+            : 'u.`' . $columnaCorreo . '`';
+        $expresionContrasena = in_array('contrasena', $columnas, true)
+            && in_array('password_hash', $columnas, true)
+            ? "COALESCE(NULLIF(u.`contrasena`, ''), u.`password_hash`)"
+            : 'u.`' . $columnaContrasena . '`';
+
         $condiciones = [
-            'LOWER(u.`' . $columnaCorreo . '`) = LOWER(:correo)'
+            'LOWER(' . $expresionCorreo . ') = LOWER(:correo)'
         ];
         $parametros = [':correo' => $identificadorInput];
 
@@ -239,8 +248,8 @@ try {
 
         $consulta = $pdo->prepare(
             'SELECT u.id, u.nombre, ' . $campoUsuario . ' AS usuario, '
-            . 'u.`' . $columnaCorreo . '` AS correo, '
-            . 'u.`' . $columnaContrasena . '` AS contrasena, '
+            . $expresionCorreo . ' AS correo, '
+            . $expresionContrasena . ' AS contrasena, '
             . $campoActivo . ' AS activo, ' . $campoRol . ' AS nombre_rol '
             . 'FROM usuarios u ' . $joinRoles . ' '
             . 'WHERE (' . implode(' OR ', $condiciones) . ') LIMIT 1'
