@@ -399,6 +399,7 @@ a { text-decoration: none; color: inherit; }
 /* MAPA */
 
 .mapa-caja {
+    position: relative;
     max-width: 1050px;
     margin: -26px auto 0;
     padding: 0 24px;
@@ -410,6 +411,32 @@ a { text-decoration: none; color: inherit; }
     border-radius: 20px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
     z-index: 1;
+}
+
+.btn-ver-regiones {
+    position: absolute;
+    top: 16px;
+    right: 40px;
+    z-index: 400;
+    padding: 9px 13px;
+    border: 1px solid rgba(29, 63, 58, 0.2);
+    border-radius: 8px;
+    background: rgba(244, 250, 248, 0.96);
+    color: #1d3f3a;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(29, 63, 58, 0.14);
+}
+
+.btn-ver-regiones:hover {
+    background: #ffffff;
+    border-color: #0e7c6b;
+}
+
+.btn-ver-regiones[hidden] {
+    display: none;
 }
 
 .ayuda-ubicacion {
@@ -434,6 +461,56 @@ a { text-decoration: none; color: inherit; }
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
+}
+
+.etiqueta-region-mapa {
+    width: 110px;
+    height: 26px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.etiqueta-region-mapa span {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid rgba(29, 63, 58, 0.18);
+    border-left: 3px solid var(--region-color);
+    border-radius: 4px;
+    background: rgba(244, 250, 248, 0.72);
+    color: #1d3f3a;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    box-shadow: 0 1px 5px rgba(29, 63, 58, 0.12);
+}
+
+.lista-localidades {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px;
+}
+
+.localidad-region {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 15px;
+    border: 1px solid #dce9e3;
+    border-radius: 10px;
+    background: #fff;
+    color: #113a40;
+    font: inherit;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.localidad-region:hover {
+    border-color: #0e7c6b;
+    background: #f2f8f6;
 }
 
 .tarjeta {

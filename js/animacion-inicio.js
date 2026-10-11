@@ -265,16 +265,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ------------------------------------------
        INICIO
-       · Entrada normal: animación de la Tierra.
-       · "?destinos=1": solo el mapa directo.
+       Todos los accesos reproducen la animación
+       antes de mostrar el mapa de México.
     ------------------------------------------ */
 
-    if (soloDestinos) {
-        contenedorTierra.classList.add("ocultar");
-        mostrarMapa();
-    } else {
-        secuencia();
-    }
+    secuencia();
 
     async function secuencia() {
         tierraReproduciendo = true;

@@ -1099,6 +1099,81 @@ main {
 }
 
 
+.selector-encabezado {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    padding: 8px 10px;
+
+    margin: 0 0 14px;
+
+    border: 1px solid rgba(15, 134, 134, 0.18);
+
+    border-radius: 999px;
+
+    background: rgba(15, 134, 134, 0.04);
+
+}
+
+
+.selector-chip {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 5px 10px;
+
+    border-radius: 999px;
+
+    background: var(--aqua);
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+
+    text-transform: uppercase;
+
+}
+
+
+.selector-encabezado small {
+
+    font-size: 10px;
+
+    color: var(--text-light);
+
+}
+
+
+.selector-oaxaca {
+
+    border-color: rgba(181, 123, 41, 0.28);
+
+    background: rgba(255, 180, 77, 0.08);
+
+}
+
+
+.selector-oaxaca .selector-chip {
+
+    background: #d88a1a;
+
+}
+
+
 .seleccion-box label {
 
     display: block;
