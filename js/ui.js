@@ -52,6 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     + '.misviajes-caja .vacio{padding:12px;border-radius:12px;background:#f7f4ec;color:#7a6a4f;font-weight:600;margin-bottom:10px;font-size:13.5px}'
     + '.misviajes-caja .acciones{display:flex;gap:10px;margin-top:14px}'
     + '.misviajes-caja .acciones button{flex:1;padding:11px 14px;border:none;border-radius:12px;font-weight:800;cursor:pointer}'
+    + '.guardados-lista{list-style:none;margin:14px 0;padding:0}'
+    + '.guardados-lista li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:12px;background:#f2f8f6;color:#113a40;font-weight:700;margin-bottom:8px}'
+    + '.guardados-lista small{display:block;margin-top:4px;color:#5b7a76;font-weight:600}'
+    + '.btn-quitar-guardado{flex:0 0 auto;border:0;border-radius:9px;padding:8px 10px;background:#fdeef0;color:#c0392b;font-weight:800;cursor:pointer}'
     + '.btn-cancelar-reserva{border:none;background:#fdeef0;color:#c0392b;border-radius:8px;width:26px;height:26px;cursor:pointer;font-weight:800;margin-left:6px}';
   document.head.appendChild(estilos);
 
@@ -348,6 +352,87 @@ document.addEventListener('DOMContentLoaded', () => {
     fondo.classList.add('abierto');
   };
 
+  const abrirGuardados = () => {
+    const plan = leerLista('miravia_plan');
+    const fondo = document.createElement('div');
+    fondo.className = 'modal-fondo';
+
+    const caja = document.createElement('div');
+    caja.className = 'misviajes-caja';
+    caja.setAttribute('role', 'dialog');
+    caja.setAttribute('aria-modal', 'true');
+    caja.setAttribute('aria-labelledby', 'tituloGuardados');
+
+    const titulo = document.createElement('h2');
+    titulo.id = 'tituloGuardados';
+    titulo.textContent = `📌 Guardados (${plan.length})`;
+    caja.appendChild(titulo);
+
+    const descripcion = document.createElement('p');
+    descripcion.style.cssText = 'color:#5b7a76;margin:0 0 12px';
+    descripcion.textContent = 'Aquí encontrarás los lugares que agregaste a tu plan.';
+    caja.appendChild(descripcion);
+
+    if (plan.length) {
+      const lista = document.createElement('ul');
+      lista.className = 'guardados-lista';
+      plan.forEach((lugar, indice) => {
+        const elemento = document.createElement('li');
+        const informacion = document.createElement('span');
+        informacion.textContent = lugar.titulo || 'Lugar guardado';
+        if (lugar.tipo || lugar.precio) {
+          const detalle = document.createElement('small');
+          detalle.textContent = [lugar.tipo, lugar.precio].filter(Boolean).join(' · ');
+          informacion.appendChild(detalle);
+        }
+
+        const quitar = document.createElement('button');
+        quitar.type = 'button';
+        quitar.className = 'btn-quitar-guardado';
+        quitar.dataset.indice = String(indice);
+        quitar.textContent = 'Quitar';
+        elemento.append(informacion, quitar);
+        lista.appendChild(elemento);
+      });
+      caja.appendChild(lista);
+    } else {
+      const vacio = document.createElement('div');
+      vacio.className = 'vacio';
+      vacio.textContent = 'Aún no has guardado lugares. Pulsa “Agregar a mi plan” en los detalles de un destino.';
+      caja.appendChild(vacio);
+    }
+
+    const acciones = document.createElement('div');
+    acciones.className = 'acciones';
+    const cerrar = document.createElement('button');
+    cerrar.type = 'button';
+    cerrar.className = 'btn-cerrar-guardados';
+    cerrar.style.cssText = 'background:#eef4f3;color:#113a40';
+    cerrar.textContent = 'Cerrar';
+    acciones.appendChild(cerrar);
+    caja.appendChild(acciones);
+    fondo.appendChild(caja);
+
+    fondo.addEventListener('click', (evento) => {
+      if (evento.target === fondo || evento.target.closest('.btn-cerrar-guardados')) {
+        fondo.remove();
+        return;
+      }
+      const quitar = evento.target.closest('.btn-quitar-guardado');
+      if (!quitar) return;
+
+      const listaActual = leerLista('miravia_plan');
+      const [eliminado] = listaActual.splice(Number(quitar.dataset.indice), 1);
+      guardarLista('miravia_plan', listaActual);
+      fondo.remove();
+      abrirGuardados();
+      if (eliminado) mostrar(`"${eliminado.titulo || 'Lugar'}" se quitó de Guardados.`);
+    });
+
+    document.body.appendChild(fondo);
+    fondo.classList.add('abierto');
+  };
+
   /* =========================================
      PUNTOS DEL MAPA (OAXACA)
   ========================================= */
@@ -368,6 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (texto.includes('hosped')) { evento.preventDefault(); location.href = `${raiz}vista/pagina/hoteles.html`; }
       else if (texto === 'comida' || texto === 'gastronomía') { evento.preventDefault(); location.href = `${raiz}vista/pagina/comida.html`; }
       else if (texto.includes('atracc')) { evento.preventDefault(); location.href = `${raiz}inicio.html?destinos=1`; }
+      else if (texto === 'guardados') { evento.preventDefault(); abrirGuardados(); }
       else if (texto.includes('mis viajes')) { evento.preventDefault(); abrirMisViajes(); }
       else if (texto.includes('volver')) { evento.preventDefault(); history.length > 1 ? history.back() : (location.href = `${raiz}inicio.html?destinos=1`); }
       else if (enlace.getAttribute('href') === '#') { evento.preventDefault(); mostrar('Esta sección estará disponible muy pronto.'); }

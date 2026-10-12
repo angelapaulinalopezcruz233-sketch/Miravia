@@ -14,7 +14,7 @@
           href="../../lib/leaflet.css">
 
     <link rel="stylesheet"
-          href="../../estilo/estado.css?v=miravia-fotos-3">
+      href="../../estilo/estado.css?v=miravia-fotos-destinos-5">
 
 </head>
 
@@ -35,6 +35,7 @@
             <a href="#" class="activo" id="navDestinos">Destinos</a>
             <a href="#" id="navHospedaje">Hospedaje</a>
             <a href="#" id="navComida">Comida</a>
+            <a href="#" id="navGuardados">Guardados</a>
             <a href="#" id="navMisViajes">Mis viajes</a>
         </nav>
 
@@ -74,6 +75,18 @@
 
     <div class="mapa-caja">
 
+        <form class="buscador-mapa" id="formBuscarLugar" role="search">
+            <label for="buscarLugar">Buscar un lugar en el estado</label>
+            <div class="buscador-mapa-campos">
+                <input id="buscarLugar" name="lugar" type="search"
+                    placeholder="Escribe el nombre de un lugar o municipio"
+                    autocomplete="off" required>
+                <button type="submit">Buscar</button>
+            </div>
+            <p class="buscador-mapa-estado" id="estadoBusquedaLugar" role="status" aria-live="polite"></p>
+            <div class="resultados-busqueda-mapa" id="resultadosBusquedaLugar"></div>
+        </form>
+
         <div id="mapaEstado"></div>
 
         <button class="btn-ver-regiones" id="btnVerRegiones" type="button" hidden>
@@ -81,7 +94,7 @@
         </button>
 
         <p class="ayuda-ubicacion">
-            🗺️ Explora el estado en el mapa y elige una zona para conocer sus lugares.
+            🗺️ Explora el mapa y elige una región para descubrir sus destinos.
         </p>
 
     </div>
@@ -90,10 +103,10 @@
 
         <div class="seccion-cabecera">
             <h2 id="tituloRegion">Selecciona una región del mapa</h2>
-            <span>Localidades destacadas</span>
+            <span>Destinos populares</span>
         </div>
 
-        <div class="lista-localidades" id="listaLocalidadesRegion"></div>
+        <div class="rejilla" id="rejillaLugaresRegion"></div>
 
     </section>
 
@@ -174,7 +187,7 @@
 
     <script src="../../lib/leaflet.js"></script>
 
-    <script src="../js/datos-estados.js?v=miravia-mun-18"></script>
+    <script src="../js/datos-estados.js?v=miravia-fotos-destinos-5"></script>
 
     <script>
 
@@ -212,6 +225,9 @@
             "subtituloLugares"
         ).textContent =
             "Los imperdibles de " + datos.nombre;
+
+        document.querySelector("label[for='buscarLugar']").textContent =
+            "Buscar un lugar en " + datos.nombre;
 
 
         /* ==========================================
@@ -252,66 +268,11 @@
 
 
         /* ==========================================
-           DATOS DEL MUNICIPIO
-           (hoteles, restaurantes, fondas y
-            en dónde ir a visitar: generados
-            con el nombre del municipio +
-            los lugares imperdibles del estado)
-        ========================================== */
-
-        function datosMunicipio(nombre) {
-            const corto = nombre.trim().split(" ").pop();
-
-            return {
-                hoteles: [
-                    {
-                        nombre: "Hotel Central " + corto,
-                        tipo: "Hotel",
-                        ubicacion: "Centro, " + nombre,
-                        descripcion: "Hospedaje cómodo y seguro en el corazón de " + nombre + ", " + datos.nombre + ".",
-                        calificacion: "4.6",
-                        precio: "$890"
-                    },
-                    {
-                        nombre: "Cabañas y Suites " + corto,
-                        tipo: "Cabañas",
-                        ubicacion: "Zona tranquila, " + nombre,
-                        descripcion: "Cabañas tradicionales con comida casera y ambiente familiar cerca del centro de " + nombre + ".",
-                        calificacion: "4.4",
-                        precio: "$640"
-                    }
-                ],
-                restaurantes: [
-                    {
-                        nombre: "Fonda Doña " + corto,
-                        tipo: "Fonda",
-                        ubicacion: "Mercado, " + nombre,
-                        descripcion: "Fonda tradicional con mole, tlayudas y comida casera de " + datos.nombre + ".",
-                        calificacion: "4.7",
-                        precio: "$180"
-                    },
-                    {
-                        nombre: "Comedor " + corto,
-                        tipo: "Restaurante",
-                        ubicacion: "Plaza principal, " + nombre,
-                        descripcion: "Restaurante familiar con los platillos típicos de " + datos.nombre + ".",
-                        calificacion: "4.5",
-                        precio: "$220"
-                    }
-                ],
-                lugares: datos.lugares
-            };
-        }
-
-
-        /* ==========================================
            PANEL DE LA ZONA (MUNICIPIO O ESTADO)
-           Consulta TODOS los lugares reales de
-           OpenStreetMap (la misma fuente de los
-           mapas): hoteles, restaurantes, comedores,
-           fondas, taquerías, cafés y atracciones.
-           Si no hay internet, usa los datos de
-           ejemplo del estado.
+           Muestra solo atracciones cuya entrada
+           gratuita está confirmada en OpenStreetMap.
+           Los negocios y lugares de pago requieren
+           alta administrativa.
         ========================================== */
 
         const panelFondo = document.getElementById("panelFondo");
@@ -338,30 +299,14 @@
         let municipioSeleccionado = "";
         let idBusqueda = 0;
 
-        function etiquetaComida(tags) {
-            const cocina = (tags.cuisine || "").split(";")[0];
-            const mapa = {
-                taco: "Taquería", tacos: "Taquería",
-                pizza: "Pizzería", burger: "Hamburguesas",
-                seafood: "Mariscos", chicken: "Pollos",
-                ramen: "Ramen", sushi: "Sushi",
-                coffee_shop: "Café", italian: "Italiana",
-                chinese: "Comida china", japanese: "Comida japonesa"
-            };
-            return mapa[cocina] || null;
-        }
-
         function clasificarLugares(elementos) {
-            const zonas = {
-                hoteles: [],
-                comer: [],
-                atracciones: []
-            };
+            const zonas = { atracciones: [] };
 
             elementos.forEach(function (elemento) {
                 const tags = elemento.tags || {};
                 const nombre = tags.name;
-                if (!nombre) {
+                if (!nombre || tags.fee !== "no" ||
+                    ["private", "customers", "no"].includes(tags.access)) {
                     return;
                 }
                 const lat = elemento.lat || (elemento.center || {}).lat;
@@ -374,31 +319,22 @@
                     lon: lon
                 };
 
-                if (tags.tourism === "hotel") { item.tipo = "Hotel"; zonas.hoteles.push(item); }
-                else if (tags.tourism === "hostel") { item.tipo = "Hostal"; zonas.hoteles.push(item); }
-                else if (tags.tourism === "guest_house") { item.tipo = "Casa de huéspedes"; zonas.hoteles.push(item); }
-                else if (tags.tourism === "motel") { item.tipo = "Motel"; zonas.hoteles.push(item); }
-                else if (tags.amenity === "restaurant") {
-                    item.tipo = etiquetaComida(tags) || "Restaurante";
-                    zonas.comer.push(item);
-                }
-                else if (tags.amenity === "fast_food") {
-                    item.tipo = etiquetaComida(tags) || "Comida rápida";
-                    zonas.comer.push(item);
-                }
-                else if (tags.amenity === "cafe") { item.tipo = "Café"; zonas.comer.push(item); }
-                else if (tags.amenity === "food_court") { item.tipo = "Comedor"; zonas.comer.push(item); }
-                else if (tags.tourism === "museum") { item.tipo = "Museo"; zonas.atracciones.push(item); }
-                else if (tags.tourism === "viewpoint") { item.tipo = "Mirador"; zonas.atracciones.push(item); }
-                else if (tags.tourism === "gallery") { item.tipo = "Galería"; zonas.atracciones.push(item); }
-                else if (tags.tourism === "zoo") { item.tipo = "Zoológico"; zonas.atracciones.push(item); }
-                else if (tags.tourism === "theme_park") { item.tipo = "Parque de diversiones"; zonas.atracciones.push(item); }
-                else if (tags.tourism === "attraction") { item.tipo = "Atracción"; zonas.atracciones.push(item); }
-                else if (tags.historic === "archaeological_site") { item.tipo = "Zona arqueológica"; zonas.atracciones.push(item); }
-                else if (tags.historic === "ruins") { item.tipo = "Ruinas"; zonas.atracciones.push(item); }
-                else if (tags.historic === "monument") { item.tipo = "Monumento"; zonas.atracciones.push(item); }
-                else if (tags.historic === "memorial") { item.tipo = "Memorial"; zonas.atracciones.push(item); }
-                else if (tags.historic === "castle") { item.tipo = "Castillo"; zonas.atracciones.push(item); }
+                if (tags.tourism === "museum") item.tipo = "Museo";
+                else if (tags.tourism === "viewpoint") item.tipo = "Mirador";
+                else if (tags.tourism === "gallery") item.tipo = "Galería";
+                else if (tags.tourism === "zoo") item.tipo = "Zoológico";
+                else if (tags.tourism === "theme_park") item.tipo = "Parque de diversiones";
+                else if (tags.tourism === "attraction") item.tipo = "Atracción";
+                else if (tags.historic === "archaeological_site") item.tipo = "Zona arqueológica";
+                else if (tags.historic === "ruins") item.tipo = "Ruinas";
+                else if (tags.historic === "monument") item.tipo = "Monumento";
+                else if (tags.historic === "memorial") item.tipo = "Memorial";
+                else if (tags.historic === "castle") item.tipo = "Castillo";
+                else if (tags.leisure === "park") item.tipo = "Parque";
+                else return;
+
+                item.extra = "Entrada gratuita confirmada";
+                zonas.atracciones.push(item);
             });
 
             return zonas;
@@ -413,14 +349,12 @@
 
             const consulta =
                 '[out:json][timeout:25];(' +
-                'node["tourism"~"^(hotel|hostel|guest_house|motel)$"](' + bbox + ');' +
-                'way["tourism"~"^(hotel|hostel|guest_house|motel)$"](' + bbox + ');' +
-                'node["amenity"~"^(restaurant|fast_food|cafe|food_court)$"](' + bbox + ');' +
-                'way["amenity"~"^(restaurant|fast_food|cafe|food_court)$"](' + bbox + ');' +
-                'node["tourism"~"^(attraction|museum|viewpoint|gallery|zoo|theme_park)$"](' + bbox + ');' +
-                'way["tourism"~"^(attraction|museum|viewpoint|gallery|zoo|theme_park)$"](' + bbox + ');' +
-                'node["historic"~"^(archaeological_site|ruins|monument|memorial|castle)$"](' + bbox + ');' +
-                'way["historic"~"^(archaeological_site|ruins|monument|memorial|castle)$"](' + bbox + ');' +
+                'node["tourism"~"^(attraction|museum|viewpoint|gallery|zoo|theme_park)$"]["fee"="no"](' + bbox + ');' +
+                'way["tourism"~"^(attraction|museum|viewpoint|gallery|zoo|theme_park)$"]["fee"="no"](' + bbox + ');' +
+                'node["historic"~"^(archaeological_site|ruins|monument|memorial|castle)$"]["fee"="no"](' + bbox + ');' +
+                'way["historic"~"^(archaeological_site|ruins|monument|memorial|castle)$"]["fee"="no"](' + bbox + ');' +
+                'node["leisure"="park"]["fee"="no"](' + bbox + ');' +
+                'way["leisure"="park"]["fee"="no"](' + bbox + ');' +
                 ');out center tags 800;';
 
             const servidores = [
@@ -635,11 +569,10 @@
         async function abrirPanelZona(nombreZona, bounds, valorZona) {
             const miBusqueda = ++idBusqueda;
 
-            // Mientras busca, muestra esqueletos ABAJO DEL MAPA.
             tituloZona.textContent = nombreZona;
-            subtituloZona.textContent = "Buscando todos los lugares reales…";
+            subtituloZona.textContent = "Buscando lugares gratuitos confirmados…";
             contenidoZona.innerHTML =
-                `${esqueletoCarga("Reuniendo hoteles, restaurantes, comedores, fondas, taquerías y atracciones de la zona…")}`;
+                `${esqueletoCarga("Buscando atracciones con entrada gratuita confirmada…")}`;
             seccionZona.hidden = false;
             seccionZona.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -649,48 +582,25 @@
                 return; // Se abrió otra zona mientras tanto.
             }
 
-            const total = zonas
-                ? zonas.hoteles.length + zonas.comer.length + zonas.atracciones.length
-                : 0;
-
-            if (zonas && total > 0) {
-                const html =
-                    `<p class="panel-nota">Lugares reales de OpenStreetMap en la zona</p>` +
-                    seccionReal("🏨", "Hoteles y hospedaje", zonas.hoteles, 60) +
-                    seccionReal("🍴", "Restaurantes, comedores, fondas y taquerías", zonas.comer, 80) +
-                    seccionReal("✨", "Atracciones y en dónde ir a visitar", zonas.atracciones, 60);
-                panelConDatos(nombreZona, total + " lugares encontrados", html, valorZona);
+            if (zonas && zonas.atracciones.length > 0) {
+                const html = `<p class="panel-nota">Solo se muestran lugares marcados como gratuitos. Los lugares con costo requieren alta administrativa.</p>` +
+                    seccionReal("✨", "Lugares gratuitos para visitar", zonas.atracciones, 60);
+                panelConDatos(
+                    nombreZona,
+                    zonas.atracciones.length + " lugares gratuitos confirmados",
+                    html,
+                    valorZona
+                );
             } else {
-                // Sin internet o sin datos: usa los ejemplos.
-                const info = datosMunicipio(valorZona || datos.nombre);
-                const html =
-                    `<section class="panel-seccion">
-                        <h2>🏨 Hoteles en ${nombreZona}</h2>
-                        ${info.hoteles.map(function (item) {
-                            return filaReal({
-                                nombre: item.nombre,
-                                tipo: item.tipo,
-                                extra: item.ubicacion
-                            });
-                        }).join("")}
-                    </section>
-                    <section class="panel-seccion">
-                        <h2>🍴 Restaurantes y fondas</h2>
-                        ${info.restaurantes.map(function (item) {
-                            return filaReal({
-                                nombre: item.nombre,
-                                tipo: item.tipo,
-                                extra: item.ubicacion
-                            });
-                        }).join("")}
-                    </section>
-                    <section class="panel-seccion">
-                        <h2>✨ En dónde puedo ir a visitar</h2>
-                        ${info.lugares.map(function (item) {
-                            return filaReal({ nombre: item.nombre, tipo: "Atracción", extra: item.descripcion });
-                        }).join("")}
-                    </section>`;
-                panelConDatos(nombreZona, "Datos de ejemplo (sin conexión)", html, valorZona);
+                const mensaje = zonas
+                    ? "No encontramos lugares con entrada gratuita confirmada en esta zona. Los lugares con costo solo aparecerán cuando un administrador los dé de alta."
+                    : "No fue posible consultar los lugares gratuitos en este momento. Inténtalo de nuevo más tarde.";
+                panelConDatos(
+                    nombreZona,
+                    zonas ? "Sin lugares gratuitos confirmados" : "No se pudo completar la búsqueda",
+                    `<p class="panel-nota">${mensaje}</p>`,
+                    valorZona
+                );
             }
         }
 
@@ -717,14 +627,16 @@
         function tarjetaLugar(lugar) {
             return `
                 <article class="tarjeta tarjeta-lugar">
+                    ${lugar.imagen ? `
+                        <figure class="foto-destino-turistico">
+                            <img src="${lugar.imagen}" alt="Fotografía representativa de ${lugar.nombre}" loading="lazy">
+                        </figure>
+                    ` : ""}
 
                     <div class="tarjeta-contenido">
-
-                        <span class="icono-lugar">📍</span>
-
                         <h3>${lugar.nombre}</h3>
 
-                        <p>${lugar.descripcion}</p>
+                        <p class="descripcion">${lugar.descripcion}</p>
 
                         <div class="precio-fila">
                             <span class="ubicacion">Atracción imperdible</span>
@@ -811,8 +723,55 @@
             "Sierra Sur": "#c4a98f",
             "Valles Centrales": "#86b98e"
         };
-        const listaLocalidadesRegion = document.getElementById("listaLocalidadesRegion");
+        const lugaresPorRegion = {
+            "Cañada": [
+                { nombre: "Huautla de Jiménez", descripcion: "Pueblo de la Sierra Mazateca, conocido por su cultura, tradiciones y paisajes de montaña.", lat: 18.1316, lon: -96.8406 },
+                { nombre: "Teotitlán de Flores Magón", descripcion: "Puerta de entrada a la región y a los paisajes de la Reserva de la Biosfera Tehuacán-Cuicatlán.", lat: 18.1327, lon: -97.0703 },
+                { nombre: "San Juan Bautista Cuicatlán", descripcion: "Localidad rodeada por el valle y la reserva de la biosfera, ideal para conocer la naturaleza de la Cañada.", lat: 17.8000, lon: -96.9600 }
+            ],
+            "Costa": [
+                { nombre: "Puerto Escondido", descripcion: "Destino de playa famoso por sus olas, surf y ambiente costero.", lat: 15.8719, lon: -97.0767 },
+                { nombre: "Bahías de Huatulco", descripcion: "Bahías, playas y actividades en el Parque Nacional Huatulco.", lat: 15.7835, lon: -96.1336 },
+                { nombre: "Mazunte", descripcion: "Pueblo costero con playas, atardeceres y el Centro Mexicano de la Tortuga.", lat: 15.6650, lon: -96.5550 },
+                { nombre: "Zipolite", descripcion: "Playa reconocida por su ambiente relajado y su extensa costa.", lat: 15.6660, lon: -96.5150 }
+            ],
+            "Istmo": [
+                { nombre: "Juchitán de Zaragoza", descripcion: "Centro cultural del Istmo, conocido por sus mercados, gastronomía y tradiciones zapotecas.", lat: 16.4431, lon: -95.0225 },
+                { nombre: "Santo Domingo Tehuantepec", descripcion: "Ciudad histórica con arquitectura, cocina y tradiciones istmeñas.", lat: 16.3260, lon: -95.2410 },
+                { nombre: "Salina Cruz", descripcion: "Puerto del Pacífico con playas y paisajes costeros.", lat: 16.1740, lon: -95.1930 }
+            ],
+            "Mixteca": [
+                { nombre: "Heroica Ciudad de Huajuapan de León", descripcion: "Una de las principales ciudades de la Mixteca, con mercados, historia y celebraciones tradicionales.", lat: 17.8079, lon: -97.7796 },
+                { nombre: "Santiago Apoala", descripcion: "Destino natural de la Mixteca Alta con cascadas, cañones y rutas de senderismo.", lat: 17.6510, lon: -97.1360 },
+                { nombre: "Santo Domingo Yanhuitlán", descripcion: "Conjunto histórico dominico destacado por su templo y antiguo convento.", lat: 17.5230, lon: -97.3440 },
+                { nombre: "Heroica Ciudad de Tlaxiaco", descripcion: "Ciudad serrana con mercados, gastronomía y tradiciones mixtecas.", lat: 17.2690, lon: -97.6780 }
+            ],
+            "Papaloapan": [
+                { nombre: "San Juan Bautista Tuxtepec", descripcion: "Ciudad ribereña reconocida por su cultura, gastronomía y celebraciones de la Cuenca.", lat: 18.0883, lon: -96.1255 },
+                { nombre: "Presa Miguel Alemán, Temascal", descripcion: "Paisajes lacustres y actividades recreativas en la región de la presa.", lat: 18.2400, lon: -96.4000 },
+                { nombre: "Valle Nacional", descripcion: "Destino de naturaleza entre ríos, vegetación tropical y paisajes de la Cuenca.", lat: 17.7750, lon: -96.3040 }
+            ],
+            "Sierra Norte": [
+                { nombre: "Capulálpam de Méndez", descripcion: "Pueblo Mágico de montaña con arquitectura tradicional y senderos naturales.", lat: 17.3078, lon: -96.4460 },
+                { nombre: "Ixtlán de Juárez", descripcion: "Destino de ecoturismo con bosques, miradores y rutas comunitarias.", lat: 17.3310, lon: -96.4860 },
+                { nombre: "Guelatao de Juárez", descripcion: "Localidad serrana junto a su laguna y lugar de nacimiento de Benito Juárez.", lat: 17.3170, lon: -96.4970 },
+                { nombre: "Pueblos Mancomunados", descripcion: "Rutas de senderismo y ecoturismo que conectan comunidades de la Sierra Norte.", lat: 17.2330, lon: -96.5200 }
+            ],
+            "Sierra Sur": [
+                { nombre: "San José del Pacífico", descripcion: "Pueblo de montaña conocido por sus bosques, cabañas y vistas entre las nubes.", lat: 16.1820, lon: -96.4950 },
+                { nombre: "Miahuatlán de Porfirio Díaz", descripcion: "Ciudad regional con mercados, historia y gastronomía de la Sierra Sur.", lat: 16.3310, lon: -96.5960 },
+                { nombre: "Putla Villa de Guerrero", descripcion: "Localidad de clima cálido y tradiciones que conectan la Sierra Sur con la Mixteca.", lat: 17.0260, lon: -97.9290 }
+            ],
+            "Valles Centrales": [
+                { nombre: "Monte Albán", descripcion: "Antigua ciudad zapoteca y zona arqueológica con vistas panorámicas de los Valles Centrales.", lat: 17.0430, lon: -96.7670 },
+                { nombre: "Oaxaca de Juárez", descripcion: "Centro histórico, mercados, templos y gastronomía tradicional oaxaqueña.", lat: 17.0732, lon: -96.7266 },
+                { nombre: "Zona arqueológica de Mitla", descripcion: "Antiguo centro zapoteca famoso por sus grecas de piedra y conjuntos arqueológicos.", lat: 16.9280, lon: -96.3590 },
+                { nombre: "Hierve el Agua", descripcion: "Formaciones minerales, pozas naturales y miradores en el paisaje de los Valles Centrales.", lat: 16.8630, lon: -96.2750 }
+            ]
+        };
+        const rejillaLugaresRegion = document.getElementById("rejillaLugaresRegion");
         const seccionRegiones = document.getElementById("regionesOaxaca");
+        const seccionLugaresEstado = document.getElementById("seccionLugares");
         const tituloRegion = document.getElementById("tituloRegion");
         const capasPorRegion = {};
         const btnVerRegiones = document.getElementById("btnVerRegiones");
@@ -821,6 +780,8 @@
         let zoomEstadoMapa = 7;
         let regionesPorCodigo = null;
         let nombresMunicipiosPorCodigo = null;
+        let controladorBusquedaLugar = null;
+        let ultimaBusquedaLugar = 0;
 
         function encontrarRegion(caracteristica) {
             const codigo = String(caracteristica.properties.CVEGEO || "");
@@ -835,6 +796,168 @@
             const codigo = String(propiedades.CVEGEO || "");
             return (nombresMunicipiosPorCodigo && nombresMunicipiosPorCodigo[codigo]) ||
                 propiedades.NOMGEO || "Municipio";
+        }
+
+        function normalizarTexto(texto) {
+            return String(texto || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .trim()
+                .toLocaleLowerCase("es");
+        }
+
+        function buscarLugarEnEstado(consulta, bounds, signal) {
+            const parametros = new URLSearchParams({
+                format: "jsonv2",
+                q: `${consulta}, ${datos.nombre}, México`,
+                countrycodes: "mx",
+                viewbox: [
+                    bounds.getWest(),
+                    bounds.getNorth(),
+                    bounds.getEast(),
+                    bounds.getSouth()
+                ].join(","),
+                bounded: "1",
+                addressdetails: "1",
+                limit: "5"
+            });
+            return fetch(
+                "https://nominatim.openstreetmap.org/search?" + parametros.toString(),
+                { signal: signal }
+            ).then((respuesta) => {
+                if (!respuesta.ok) {
+                    throw new Error("El servicio de búsqueda respondió con el error " + respuesta.status);
+                }
+                return respuesta.json();
+            }).then((resultados) => resultados.filter((resultado) => {
+                const estadoResultado = resultado.address && resultado.address.state;
+                return estadoResultado &&
+                    normalizarTexto(estadoResultado) === normalizarTexto(datos.nombre) &&
+                    Number.isFinite(Number(resultado.lat)) &&
+                    Number.isFinite(Number(resultado.lon));
+            }));
+        }
+
+        function mostrarResultadoBusqueda(resultado) {
+            const ubicacion = [Number(resultado.lat), Number(resultado.lon)];
+            if (regionSeleccionadaMapa) {
+                mostrarTodasLasRegiones();
+            }
+            if (marcadorLugar) {
+                mapa.removeLayer(marcadorLugar);
+            }
+            const nombre = resultado.name || resultado.display_name.split(",")[0];
+            marcadorLugar = L.marker(ubicacion).addTo(mapa);
+            marcadorLugar.bindPopup(`<strong>${nombre}</strong><br>${resultado.display_name}`).openPopup();
+            mapa.setMaxBounds(limitesEstadoMapa);
+            mapa.flyTo(ubicacion, 15, { duration: 0.8 });
+            document.querySelector(".ayuda-ubicacion").textContent =
+                `📍 ${nombre}: ubicación encontrada en ${datos.nombre}.`;
+        }
+
+        const formularioBusquedaLugar = document.getElementById("formBuscarLugar");
+        const inputBusquedaLugar = document.getElementById("buscarLugar");
+        const estadoBusquedaLugar = document.getElementById("estadoBusquedaLugar");
+        const resultadosBusquedaLugar = document.getElementById("resultadosBusquedaLugar");
+
+        formularioBusquedaLugar.addEventListener("submit", async function (evento) {
+            evento.preventDefault();
+            const consulta = inputBusquedaLugar.value.trim();
+            if (!consulta) {
+                estadoBusquedaLugar.textContent = "Escribe el nombre de un lugar para buscar.";
+                inputBusquedaLugar.focus();
+                return;
+            }
+            if (!limitesEstadoMapa) {
+                estadoBusquedaLugar.textContent = "Espera a que cargue el mapa del estado e inténtalo de nuevo.";
+                return;
+            }
+
+            if (controladorBusquedaLugar) {
+                controladorBusquedaLugar.abort();
+            }
+            controladorBusquedaLugar = new AbortController();
+            const controladorActual = controladorBusquedaLugar;
+            const botonBuscar = formularioBusquedaLugar.querySelector("button[type='submit']");
+            botonBuscar.disabled = true;
+            resultadosBusquedaLugar.replaceChildren();
+            estadoBusquedaLugar.textContent = "Buscando dentro de " + datos.nombre + "…";
+
+            try {
+                const espera = Math.max(0, 1100 - (Date.now() - ultimaBusquedaLugar));
+                if (espera) {
+                    await new Promise((resolver) => window.setTimeout(resolver, espera));
+                }
+                if (controladorActual.signal.aborted) return;
+                ultimaBusquedaLugar = Date.now();
+                const resultados = await buscarLugarEnEstado(
+                    consulta,
+                    limitesEstadoMapa,
+                    controladorActual.signal
+                );
+                if (controladorBusquedaLugar !== controladorActual) return;
+
+                resultados.forEach((resultado) => {
+                    const boton = document.createElement("button");
+                    boton.type = "button";
+                    boton.className = "resultado-busqueda-mapa";
+                    boton.textContent = resultado.display_name;
+                    boton.addEventListener("click", () => mostrarResultadoBusqueda(resultado));
+                    resultadosBusquedaLugar.appendChild(boton);
+                });
+                estadoBusquedaLugar.textContent = resultados.length
+                    ? "Elige un resultado para verlo en el mapa."
+                    : `No encontramos resultados dentro de ${datos.nombre}. Prueba con otro nombre.`;
+            } catch (error) {
+                if (error.name !== "AbortError" && controladorBusquedaLugar === controladorActual) {
+                    console.error("No se pudo buscar el lugar en " + datos.nombre + ".", error);
+                    estadoBusquedaLugar.textContent =
+                        "No se pudo completar la búsqueda. Revisa tu conexión e inténtalo de nuevo.";
+                }
+            } finally {
+                if (controladorBusquedaLugar === controladorActual) {
+                    botonBuscar.disabled = false;
+                    controladorBusquedaLugar = null;
+                }
+            }
+        });
+
+        function tarjetaLugarRegion(lugar, nombreRegion) {
+            return `
+                <article class="tarjeta tarjeta-lugar tarjeta-destino-region"
+                    role="button" tabindex="0"
+                    aria-label="Mostrar ${lugar.nombre} en el mapa"
+                    data-lat="${lugar.lat}" data-lon="${lugar.lon}" data-nombre="${lugar.nombre}">
+                    <div class="tarjeta-contenido">
+                        <h3>${lugar.nombre}</h3>
+                        <p>${lugar.descripcion}</p>
+                        <div class="precio-fila">
+                            <span class="ubicacion">Región ${nombreRegion}</span>
+                        </div>
+                    </div>
+                </article>`;
+        }
+
+        function mostrarDestinoRegionEnMapa(latitud, longitud, nombre) {
+            const lat = Number(latitud);
+            const lon = Number(longitud);
+            if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+                throw new Error("No hay coordenadas válidas para el destino " + nombre);
+            }
+
+            const ubicacion = [lat, lon];
+            if (marcadorLugar) {
+                mapa.removeLayer(marcadorLugar);
+            }
+            marcadorLugar = L.marker(ubicacion).addTo(mapa);
+            marcadorLugar.bindPopup(`<strong>${nombre}</strong><br>Ubicación del destino`).openPopup();
+            mapa.flyTo(ubicacion, 14, { duration: 0.8 });
+            document.getElementById("mapaEstado").scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+            document.querySelector(".ayuda-ubicacion").textContent =
+                `📍 ${nombre}: ubicación señalada en el mapa.`;
         }
 
         function validarRegionesOaxaca(geo, indice) {
@@ -888,16 +1011,13 @@
 
             regionSeleccionadaMapa = nombreRegion;
             municipioSeleccionado = "";
-            tituloRegion.textContent = nombreRegion;
-            const municipiosRegion = (capasPorRegion[nombreRegion] || [])
-                .map((capa) => capa.feature.properties)
-                .sort((a, b) => obtenerNombreMunicipio(a).localeCompare(obtenerNombreMunicipio(b), "es"));
-            listaLocalidadesRegion.innerHTML = municipiosRegion.map((municipio) => `
-                <button class="localidad-region" type="button" data-cvegeo="${municipio.CVEGEO}">
-                    <span>${obtenerNombreMunicipio(municipio)}</span><span aria-hidden="true">→</span>
-                </button>
-            `).join("");
+            tituloRegion.textContent = "Destinos populares: " + nombreRegion;
+            const lugares = lugaresPorRegion[nombreRegion] || [];
+            rejillaLugaresRegion.innerHTML = lugares
+                .map((lugar) => tarjetaLugarRegion(lugar, nombreRegion))
+                .join("");
             seccionRegiones.hidden = false;
+            seccionLugaresEstado.hidden = true;
             btnVerRegiones.hidden = false;
 
             Object.entries(capasPorRegion).forEach(([nombre, capas]) => {
@@ -930,13 +1050,14 @@
                 mapa.setMaxBounds(limitesRegionMapa);
             }
             document.querySelector(".ayuda-ubicacion").textContent =
-                `🗺️ ${nombreRegion}: los límites de sus municipios están marcados en el mapa. Pulsa uno para ver sus lugares.`;
+                `🗺️ ${nombreRegion}: explora los destinos destacados abajo o selecciona un municipio para buscar lugares gratuitos.`;
         }
 
         function mostrarTodasLasRegiones() {
             regionSeleccionadaMapa = "";
             municipioSeleccionado = "";
             seccionRegiones.hidden = true;
+            seccionLugaresEstado.hidden = false;
             btnVerRegiones.hidden = true;
             Object.entries(capasPorRegion).forEach(([nombre, capas]) => {
                 capas.forEach((capa) => {
@@ -960,26 +1081,23 @@
                 mapa.setMaxBounds(limitesEstadoMapa);
             }
             document.querySelector(".ayuda-ubicacion").textContent =
-                "🗺️ Toca una región coloreada del mapa para ver sus municipios.";
+                "🗺️ Toca una región coloreada del mapa para descubrir sus destinos populares.";
         }
 
         btnVerRegiones.addEventListener("click", mostrarTodasLasRegiones);
 
-        listaLocalidadesRegion.addEventListener("click", function (evento) {
-            const boton = evento.target.closest("[data-cvegeo]");
-            if (!boton) return;
+        rejillaLugaresRegion.addEventListener("click", function (evento) {
+            const tarjeta = evento.target.closest(".tarjeta-destino-region");
+            if (!tarjeta) return;
+            mostrarDestinoRegionEnMapa(tarjeta.dataset.lat, tarjeta.dataset.lon, tarjeta.dataset.nombre);
+        });
 
-            const codigo = boton.dataset.cvegeo;
-            const capa = (capasPorRegion[regionSeleccionadaMapa] || [])
-                .find((elemento) => String(elemento.feature.properties.CVEGEO) === codigo);
-            if (!capa) {
-                throw new Error("No se encontró el polígono municipal " + codigo);
-            }
-            const nombre = obtenerNombreMunicipio(capa.feature.properties);
-            const bounds = capa.getBounds();
-            municipioSeleccionado = nombre;
-            mapa.flyToBounds(bounds, { padding: [24, 24], maxZoom: 12, duration: 0.8 });
-            abrirPanelZona(nombre, bounds, nombre);
+        rejillaLugaresRegion.addEventListener("keydown", function (evento) {
+            if (evento.key !== "Enter" && evento.key !== " ") return;
+            const tarjeta = evento.target.closest(".tarjeta-destino-region");
+            if (!tarjeta) return;
+            evento.preventDefault();
+            mostrarDestinoRegionEnMapa(tarjeta.dataset.lat, tarjeta.dataset.lon, tarjeta.dataset.nombre);
         });
 
         if (valorEstado === "oaxaca") {
@@ -1193,7 +1311,7 @@
         /* ==========================================
            MENÚ SUPERIOR DEL ESTADO
            Destinos = este estado · Hospedaje y
-           Comida = lugares reales de TODO el estado
+           Comida = lugares dados de alta por Miravia
            · Mis viajes = viajes armados
         ========================================== */
 
@@ -1207,40 +1325,11 @@
             seccionZona.scrollIntoView({ behavior: "smooth", block: "start" });
         }
 
-        async function abrirPanelEstadoCategoria(icono, titulo, clave) {
-            const miBusqueda = ++idBusqueda;
+        function abrirPanelEstadoCategoria(icono, titulo) {
             abrirPanelSimple(
                 icono + " " + titulo + " de " + datos.nombre,
-                "Buscando todos los lugares reales…",
-                `<p class="panel-cargando">⏳ Reuniendo ${titulo.toLowerCase()} de todo el estado…</p>
-                ${esqueletoCarga("Lugares reales en camino…")}`
-            );
-            let zonas = null;
-            if (capaMunicipiosGlobal) {
-                zonas = await buscarLugaresReales(capaMunicipiosGlobal.getBounds());
-            }
-            if (miBusqueda !== idBusqueda) {
-                return;
-            }
-            const lista = zonas ? zonas[clave] : [];
-            let html;
-            if (lista.length) {
-                html =
-                    `<p class="panel-nota">Lugares reales de OpenStreetMap en ${datos.nombre}</p>` +
-                    seccionReal(icono, titulo, lista, 9999);
-            } else {
-                html =
-                    `<section class="panel-seccion"><h2>${icono} ${titulo}</h2>` +
-                    (datos[clave] || []).map(function (item) {
-                        return filaReal({ nombre: item.nombre, tipo: item.tipo, extra: item.ubicacion });
-                    }).join("") +
-                    `</section>
-                    <p class="panel-nota">Mostrando ejemplos (sin conexión con el mapa de lugares).</p>`;
-            }
-            abrirPanelSimple(
-                icono + " " + titulo + " de " + datos.nombre,
-                lista.length ? lista.length + " lugares encontrados" : "Ejemplos de " + datos.nombre,
-                html
+                "Publicación administrada por Miravia",
+                `<p class="panel-nota">Los negocios y lugares con costo solo se mostrarán cuando un administrador los dé de alta.</p>`
             );
         }
 
@@ -1294,13 +1383,13 @@
         document.getElementById("navHospedaje").addEventListener("click", function (evento) {
             evento.preventDefault();
             evento.stopPropagation();
-            abrirPanelEstadoCategoria("🏨", "Hoteles, cabañas y hospedaje", "hoteles");
+            abrirPanelEstadoCategoria("🏨", "Hoteles, cabañas y hospedaje");
         });
 
         document.getElementById("navComida").addEventListener("click", function (evento) {
             evento.preventDefault();
             evento.stopPropagation();
-            abrirPanelEstadoCategoria("🍴", "Comedores, restaurantes y fondas", "comer");
+            abrirPanelEstadoCategoria("🍴", "Comedores, restaurantes y fondas");
         });
 
         document.getElementById("navMisViajes").addEventListener("click", function (evento) {
@@ -1311,7 +1400,7 @@
 
     </script>
 
-    <script src="../../js/ui.js?v=miravia-ui-2"></script>
+    <script src="../../js/ui.js?v=miravia-ui-3"></script>
 
     <script src="../../js/chatbot.js"></script>
 
