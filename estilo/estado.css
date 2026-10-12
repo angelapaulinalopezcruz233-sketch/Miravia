@@ -312,6 +312,35 @@ a { text-decoration: none; color: inherit; }
     flex-wrap: wrap;
 }
 
+.foto-destino-turistico {
+    width: 100%;
+    margin: 0;
+}
+
+.foto-destino-turistico img {
+    display: block;
+    width: 100%;
+    height: 190px;
+    border-radius: 12px;
+    background: #e5efeb;
+    object-fit: cover;
+}
+
+.foto-destino-turistico figcaption {
+    margin-top: 5px;
+    color: #6a8580;
+    font-size: 10px;
+}
+
+.tarjeta-destino-region {
+    cursor: pointer;
+}
+
+.tarjeta-destino-region:focus-visible {
+    outline: 3px solid #0e7c6b;
+    outline-offset: 3px;
+}
+
 .tarjeta-imagen {
     flex: 0 0 300px;
     max-width: 100%;
@@ -405,6 +434,95 @@ a { text-decoration: none; color: inherit; }
     padding: 0 24px;
 }
 
+.buscador-mapa {
+    position: relative;
+    z-index: 2;
+    max-width: 660px;
+    margin: 0 auto 14px;
+    padding: 16px;
+    border: 1px solid #dce9e3;
+    border-radius: 14px;
+    background: #f7fbf9;
+    box-shadow: 0 5px 16px rgba(8, 40, 34, 0.08);
+}
+
+.buscador-mapa label {
+    display: block;
+    margin-bottom: 8px;
+    color: #113a40;
+    font-weight: 800;
+}
+
+.buscador-mapa-campos {
+    display: flex;
+    gap: 8px;
+}
+
+.buscador-mapa-campos input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 13px;
+    border: 1px solid #cbded6;
+    border-radius: 9px;
+    color: #113a40;
+    font: inherit;
+}
+
+.buscador-mapa-campos input:focus {
+    outline: 3px solid rgba(14, 124, 107, 0.2);
+    border-color: #0e7c6b;
+}
+
+.buscador-mapa-campos button {
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 9px;
+    background: #0e7c6b;
+    color: #fff;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.buscador-mapa-campos button:hover {
+    background: #0c5a4d;
+}
+
+.buscador-mapa-campos button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.buscador-mapa-estado {
+    margin: 8px 0 0;
+    color: #5b7a76;
+    font-size: 13px;
+}
+
+.resultados-busqueda-mapa:not(:empty) {
+    display: grid;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.resultado-busqueda-mapa {
+    padding: 9px 11px;
+    border: 1px solid #dce9e3;
+    border-radius: 8px;
+    background: #fff;
+    color: #113a40;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.resultado-busqueda-mapa:hover,
+.resultado-busqueda-mapa:focus-visible {
+    border-color: #0e7c6b;
+    background: #f2f8f6;
+    outline: none;
+}
+
 #mapaEstado {
     width: 100%;
     height: 320px;
@@ -485,34 +603,6 @@ a { text-decoration: none; color: inherit; }
     box-shadow: 0 1px 5px rgba(29, 63, 58, 0.12);
 }
 
-.lista-localidades {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 10px;
-}
-
-.localidad-region {
-    display: flex;
-    min-height: 48px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 15px;
-    border: 1px solid #dce9e3;
-    border-radius: 10px;
-    background: #fff;
-    color: #113a40;
-    font: inherit;
-    font-weight: 700;
-    text-align: left;
-    cursor: pointer;
-}
-
-.localidad-region:hover {
-    border-color: #0e7c6b;
-    background: #f2f8f6;
-}
-
 .tarjeta {
     background: #ffffff;
     border-radius: 18px;
@@ -570,8 +660,6 @@ a { text-decoration: none; color: inherit; }
 
 .btn-detalles:hover { background: #0c5a4d; }
 
-.tarjeta-lugar .icono-lugar { font-size: 26px; }
-
 /* FOOTER */
 
 .pie {
@@ -587,4 +675,7 @@ a { text-decoration: none; color: inherit; }
     .barra nav { gap: 14px; font-size: 13.5px; }
     .hero-estado h1 { font-size: 30px; }
     .btn-volver { position: static; margin-bottom: 14px; }
+    .buscador-mapa { padding: 12px; }
+    .buscador-mapa-campos button { padding: 10px 13px; }
+    .foto-destino-turistico img { height: 170px; }
 }

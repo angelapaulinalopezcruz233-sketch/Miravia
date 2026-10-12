@@ -26,9 +26,21 @@ const DATOS_ESTADOS = {
       { nombre: "Mercado 20 de Noviembre", tipo: "MERCADO", precio: "$180", calificacion: "4.7", ubicacion: "Oaxaca de Juárez, Oaxaca", descripcion: "Tlayudas, memelas, tasajo y antojitos típicos con sabor auténtico de la ciudad." }
     ],
     lugares: [
-      { nombre: "Monte Albán", descripcion: "Sitio arqueológico zapoteca con vistas panorámicas y una de las ciudades prehispánicas más importantes del país." },
-      { nombre: "Hierve el Agua", descripcion: "Formaciones calcáreas y albercas naturales con paisajes impresionantes en la Sierra Sur." },
-      { nombre: "Puerto Escondido", descripcion: "Playas de olas perfectas para surfear, restaurantes rústicos y un ambiente relajado del pacífico." }
+      {
+        nombre: "Monte Albán",
+        descripcion: "Sitio arqueológico zapoteca con vistas panorámicas y una de las ciudades prehispánicas más importantes del país.",
+        imagen: "../../img/lugares/monte-alban.png"
+      },
+      {
+        nombre: "Hierve el Agua",
+        descripcion: "Cascadas petrificadas, pozas naturales y vistas de las montañas oaxaqueñas.",
+        imagen: "../../img/lugares/hierve-el-agua.png"
+      },
+      {
+        nombre: "Puerto Escondido",
+        descripcion: "Playas de olas perfectas para surfear, restaurantes rústicos y un ambiente relajado del pacífico.",
+        imagen: "../../img/lugares/puerto-escondido.png"
+      }
     ]
   },
   chihuahua: { nombre: "Chihuahua", capital: "Chihuahua", coords: [28.63, -106.07], descripcion: "Las Barrancas del Cobre, más grandes que el Gran Cañón, y el histórico Chepe Express." },
