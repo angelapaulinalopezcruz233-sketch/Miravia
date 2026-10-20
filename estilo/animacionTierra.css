@@ -44,7 +44,7 @@
    LOGO
 ========================================= */
 
-.logo-tierra {
+#pantallaTierra .logo-tierra {
 
     position: absolute;
 
@@ -75,7 +75,7 @@
    INFORMACIÓN
 ========================================= */
 
-.informacion-tierra {
+#pantallaTierra .informacion-tierra {
 
     position: absolute;
 
@@ -96,7 +96,7 @@
 }
 
 
-.informacion-tierra h1 {
+#pantallaTierra .informacion-tierra h1 {
 
     font-size: 40px;
 
@@ -106,7 +106,7 @@
 }
 
 
-.informacion-tierra p {
+#pantallaTierra .informacion-tierra p {
 
     font-size: 17px;
 
@@ -118,7 +118,7 @@
    UBICACIÓN
 ========================================= */
 
-.ubicacion {
+#pantallaTierra .ubicacion {
 
     position: absolute;
 
@@ -160,7 +160,7 @@
    PUNTO
 ========================================= */
 
-.punto {
+#pantallaTierra .punto {
 
     width: 12px;
 
@@ -214,7 +214,7 @@
    CONTENEDOR DEL MAPA Y BOTÓN ENTRAR
 ========================================= */
 
-#contenedorMapa {
+#pantallaTierra #contenedorMapa {
     position: absolute;
     top: 0;
     left: 0;
@@ -226,12 +226,12 @@
     transition: opacity 2s ease;
 }
 
-#contenedorMapa.visible {
+#pantallaTierra #contenedorMapa.visible {
     opacity: 1;
     pointer-events: auto;
 }
 
-.boton-entrar {
+#pantallaTierra .boton-entrar {
     position: absolute;
     left: 50%;
     bottom: 110px;
@@ -250,17 +250,17 @@
     opacity: 0;
 }
 
-.boton-entrar.visible {
+#pantallaTierra .boton-entrar.visible {
     opacity: 1;
 }
 
-.boton-entrar:hover {
+#pantallaTierra .boton-entrar:hover {
     transform: translateX(-50%) scale(1.05);
     background: #ffc266;
 }
 
 /* Para ocultar la interfaz 3D cuando entra el mapa */
-.ocultar-interfaz {
+#pantallaTierra .ocultar-interfaz {
     opacity: 0;
     transition: opacity 1s ease;
     pointer-events: none;
@@ -273,7 +273,7 @@
 
 @media (max-width: 600px) {
 
-    .logo-tierra {
+    #pantallaTierra .logo-tierra {
 
         font-size: 24px;
 
@@ -281,13 +281,13 @@
     }
 
 
-    .informacion-tierra h1 {
+    #pantallaTierra .informacion-tierra h1 {
 
         font-size: 28px;
     }
 
 
-    .informacion-tierra p {
+    #pantallaTierra .informacion-tierra p {
 
         font-size: 14px;
     }

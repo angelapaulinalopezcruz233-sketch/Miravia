@@ -12,7 +12,37 @@ const DATOS_ESTADOS = {
   "baja-california-sur": { nombre: "Baja California Sur", capital: "La Paz", coords: [25.04, -111.66], descripcion: "Hogar de Los Cabos y el mar de Cortés, con playas y avistamientos de ballenas inolvidables." },
   campeche: { nombre: "Campeche", capital: "San Francisco de Campeche", coords: [19.83, -90.53], descripcion: "Ciudad amurallada colonial, Patrimonio de la Humanidad, y ruinas mayas como Edzná." },
   chiapas: { nombre: "Chiapas", capital: "Tuxtla Gutiérrez", coords: [16.75, -93.12], descripcion: "Cañón del Sumidero, San Cristóbal de las Casas, Cascadas de Agua Azul y las ruinas de Palenque." },
-  oaxaca: { nombre: "Oaxaca", capital: "Oaxaca de Juárez", coords: [17.07, -96.72], descripcion: "Monte Albán, Hierve el Agua, mole, tlayudas y las playas de Huatulco y Puerto Escondido." },
+  oaxaca: {
+    nombre: "Oaxaca",
+    capital: "Oaxaca de Juárez",
+    coords: [17.07, -96.72],
+    descripcion: "Monte Albán, Hierve el Agua, mole, tlayudas y las playas de Huatulco y Puerto Escondido.",
+    hoteles: [
+      { nombre: "Casa de los Vientos", tipo: "HOTEL", precio: "$1,750", calificacion: "4.7", ubicacion: "Centro Histórico, Oaxaca de Juárez", descripcion: "Hotel boutique con encanto colonial, terraza y desayuno tradicional oaxaqueño." },
+      { nombre: "Hotel Oaxaca Real", tipo: "BOUTIQUE", precio: "$2,200", calificacion: "4.8", ubicacion: "Oaxaca de Juárez, Oaxaca", descripcion: "Alojamiento elegante cerca del centro, ideal para explorar iglesias, mercados y cafés." }
+    ],
+    restaurantes: [
+      { nombre: "Los Danzantes Oaxaca", tipo: "MEXICANA", precio: "$420", calificacion: "4.8", ubicacion: "Centro Histórico, Oaxaca de Juárez", descripcion: "Gastronomía oaxaqueña con mole, mezcal y ambiente artístico en una casona histórica." },
+      { nombre: "Mercado 20 de Noviembre", tipo: "MERCADO", precio: "$180", calificacion: "4.7", ubicacion: "Oaxaca de Juárez, Oaxaca", descripcion: "Tlayudas, memelas, tasajo y antojitos típicos con sabor auténtico de la ciudad." }
+    ],
+    lugares: [
+      {
+        nombre: "Monte Albán",
+        descripcion: "Sitio arqueológico zapoteca con vistas panorámicas y una de las ciudades prehispánicas más importantes del país.",
+        imagen: "../../img/lugares/monte-alban.png"
+      },
+      {
+        nombre: "Hierve el Agua",
+        descripcion: "Cascadas petrificadas, pozas naturales y vistas de las montañas oaxaqueñas.",
+        imagen: "../../img/lugares/hierve-el-agua.png"
+      },
+      {
+        nombre: "Puerto Escondido",
+        descripcion: "Playas de olas perfectas para surfear, restaurantes rústicos y un ambiente relajado del pacífico.",
+        imagen: "../../img/lugares/puerto-escondido.png"
+      }
+    ]
+  },
   chihuahua: { nombre: "Chihuahua", capital: "Chihuahua", coords: [28.63, -106.07], descripcion: "Las Barrancas del Cobre, más grandes que el Gran Cañón, y el histórico Chepe Express." },
   "ciudad-de-mexico": { nombre: "Ciudad de México", capital: "Ciudad de México", coords: [19.43, -99.13], descripcion: "Museos, el Zócalo, Teotihuacán cerca y una de las mejores gastronomías del mundo." },
   coahuila: { nombre: "Coahuila", capital: "Saltillo", coords: [25.43, -100.99], descripcion: "Desierto con zona del silencio, huellas de dinosaurios y viñedos del norte." },

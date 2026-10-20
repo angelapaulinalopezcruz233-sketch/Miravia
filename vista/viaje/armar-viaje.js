@@ -129,22 +129,38 @@ document.addEventListener("DOMContentLoaded", () => {
     function pintarHoteles() {
         fuente.hoteles.forEach((hotel) => {
             const tarjeta = document.createElement("article");
-            tarjeta.className = "tarjeta";
+            tarjeta.className = "tarjeta hospedaje-card";
+            tarjeta.setAttribute("role", "button");
+            tarjeta.setAttribute("tabindex", "0");
+            tarjeta.setAttribute("aria-pressed", "false");
             tarjeta.innerHTML =
-                `<span class="tipo-etiqueta">${hotel.tipo}</span>` +
-                `<h3>${hotel.nombre}</h3>` +
-                `<p class="ubicacion">📍 ${hotel.ubicacion}</p>` +
+                `<div class="hospedaje-foto"><img src="../../img/lugares/hotel.png" alt="" loading="lazy"><span class="tipo-etiqueta">${hotel.tipo}</span></div>` +
+                `<div class="hospedaje-cuerpo"><h3>${hotel.nombre}</h3>` +
+                `<p class="ubicacion">${hotel.ubicacion}</p>` +
                 `<p class="descripcion">${hotel.descripcion}</p>` +
-                `<p class="pie"><span class="calificacion">★ <strong>${hotel.calificacion}</strong></span>` +
-                `<span class="precio">desde <strong>${hotel.precio}</strong>/noche</span></p>`;
-            tarjeta.addEventListener("click", () => {
+                `<div class="hospedaje-pie"><span class="calificacion">★ <strong>${hotel.calificacion}</strong><small> calificación</small></span>` +
+                `<span class="precio"><small>Desde / noche</small><strong>${hotel.precio}</strong></span></div></div>`;
+
+            const seleccionarHospedaje = () => {
                 tarjetasHoteles.querySelectorAll(".tarjeta").forEach((item) =>
-                    item.classList.remove("elegida")
+                    {
+                        item.classList.remove("elegida");
+                        item.setAttribute("aria-pressed", "false");
+                    }
                 );
                 tarjeta.classList.add("elegida");
+                tarjeta.setAttribute("aria-pressed", "true");
                 plan.hotel = hotel;
                 avisoSeleccion.textContent = "";
                 actualizarTotal();
+            };
+
+            tarjeta.addEventListener("click", seleccionarHospedaje);
+            tarjeta.addEventListener("keydown", (evento) => {
+                if (evento.key === "Enter" || evento.key === " ") {
+                    evento.preventDefault();
+                    seleccionarHospedaje();
+                }
             });
             tarjetasHoteles.appendChild(tarjeta);
         });

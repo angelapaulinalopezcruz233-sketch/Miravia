@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   const destinos = { oaxaca: 'vista/pagina/oaxaca-de-juarez.html', chiapas: 'vista/estados/chiapas.html' };
+  const regionesOaxaca = {
+    'valles-centrales': [['oaxaca-de-juarez', 'Oaxaca de Juárez'], ['san-jeronimo-tlacolula', 'San Jerónimo Tlacochahuaya'], ['zaachila', 'Zaachila']],
+    'sierra-norte': [['santiago-comaltepec', 'Santiago Comaltepec'], ['santa-maria-yao', 'Santa María Yalina'], ['santiago-ylalague', 'Santiago Yalague']],
+    'sierra-sur': [['pino-suarez', 'Pino Suárez'], ['santa-maria-del-tule', 'Santa María del Tule'], ['tejupan', 'Tejúpam de la Unión']],
+    'costa': [['puerto-escondido', 'Puerto Escondido'], ['huatulco', 'Huatulco'], ['salina-cruz', 'Salina Cruz']],
+    'istmo': [['juchitan', 'Juchitán de Zaragoza'], ['matias-romero', 'Matías Romero'], ['tehuantepec', 'Tehuantepec']],
+    'mixteca': [['heroica-zaachila', 'Heroica Zaachila'], ['santiago-lachos', 'Santiago Lachiguiri'], ['nochixtlan', 'Nochixtlán']],
+    'canada': [['candelaria-loxicha', 'Candelaria Loxicha'], ['tuxtepec', 'Tuxtepec'], ['valles-centrales', 'Valles Centrales']]
+  };
   const municipios = {
     oaxaca: [['oaxaca-de-juarez', 'Oaxaca de Juárez']],
     'quintana-roo': [['benito-juarez', 'Benito Juárez']],
@@ -7,7 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     jalisco: [['puerto-vallarta', 'Puerto Vallarta']], yucatan: [['merida', 'Mérida']], puebla: [['puebla', 'Puebla']],
     chiapas: [['tuxtla', 'Tuxtla Gutiérrez'], ['san-cristobal', 'San Cristóbal de las Casas']]
   };
-  const estado = document.getElementById('estado'), municipio = document.getElementById('municipio'), explorar = document.getElementById('btnExplorar'), buscador = document.querySelector('.hero-buscador input');
+  const estado = document.getElementById('estado'), municipio = document.getElementById('municipio'), region = document.getElementById('region'), labelRegion = document.getElementById('labelRegion'), labelMunicipio = document.getElementById('labelMunicipio'), explorar = document.getElementById('btnExplorar'), buscador = document.querySelector('.hero-buscador input');
+  const selectorChip = document.getElementById('selectorChip');
+  const selectorEncabezado = document.getElementById('selectorEncabezado');
   const aviso = document.createElement('div'); aviso.className = 'aviso-sistema'; aviso.setAttribute('role', 'status'); document.body.appendChild(aviso);
   let temporizador;
   const notificar = (mensaje) => { aviso.textContent = mensaje; aviso.classList.add('visible'); clearTimeout(temporizador); temporizador = setTimeout(() => aviso.classList.remove('visible'), 3200); };
@@ -24,12 +35,99 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('logoMiravia')?.addEventListener('click', () => { window.location.href = 'inicio.html'; });
 
   /* =========================================
-     ESTADO / MUNICIPIO / EXPLORAR
+     ESTADO / REGIÓN / MUNICIPIO / EXPLORAR
   ========================================= */
   if (estado && municipio && explorar) {
     municipio.disabled = true;
-    estado.addEventListener('change', () => { municipio.innerHTML = '<option value="">Selecciona un municipio</option>'; (municipios[estado.value] || []).forEach(([valor, texto]) => municipio.add(new Option(texto, valor))); municipio.disabled = !estado.value; });
-    explorar.addEventListener('click', (evento) => { evento.preventDefault(); if (!estado.value) return notificar('Selecciona un estado para explorar sus destinos.'); if (!municipio.value) return notificar('Selecciona un municipio para continuar.'); irADestino(estado.value); });
+    municipio.hidden = true;
+    if (labelMunicipio) labelMunicipio.style.display = 'none';
+
+    if (region) {
+      region.hidden = true;
+      region.disabled = true;
+      region.innerHTML = '<option value="">Selecciona una región</option>';
+    }
+    if (labelRegion) labelRegion.style.display = 'none';
+
+    const cargarMunicipiosDeRegion = (valorRegion) => {
+      municipio.innerHTML = '<option value="">Selecciona un municipio</option>';
+      if (!valorRegion || !regionesOaxaca[valorRegion]) {
+        municipio.disabled = true;
+        municipio.hidden = true;
+        if (labelMunicipio) labelMunicipio.style.display = 'none';
+        return;
+      }
+      regionesOaxaca[valorRegion].forEach(([valor, texto]) => municipio.add(new Option(texto, valor)));
+      municipio.hidden = false;
+      municipio.disabled = false;
+      if (labelMunicipio) labelMunicipio.style.display = 'block';
+    };
+
+    estado.addEventListener('change', () => {
+      const esOaxaca = estado.value === 'oaxaca';
+
+      if (selectorChip) {
+        selectorChip.textContent = esOaxaca ? 'Ruta por regiones' : 'Destino general';
+      }
+
+      if (selectorEncabezado) {
+        selectorEncabezado.classList.toggle('selector-oaxaca', esOaxaca);
+      }
+
+      if (labelMunicipio) {
+        labelMunicipio.textContent = esOaxaca ? 'Municipio de la región' : 'Municipio';
+      }
+
+      municipio.innerHTML = '<option value="">Selecciona un municipio</option>';
+      municipio.disabled = true;
+      municipio.hidden = true;
+      if (labelMunicipio) labelMunicipio.style.display = 'none';
+
+      if (region) {
+        if (esOaxaca) {
+          region.innerHTML = '<option value="">Selecciona una región</option>' + Object.entries(regionesOaxaca).map(([valor, _]) => `<option value="${valor}">${valor.replace(/-/g, ' ').replace(/\b\w/g, (letra) => letra.toUpperCase())}</option>`).join('');
+          region.hidden = false;
+          region.disabled = false;
+          if (labelRegion) labelRegion.style.display = 'block';
+          if (labelRegion) labelRegion.textContent = '¿En qué región te gustaría viajar?';
+          return;
+        }
+        region.hidden = true;
+        region.disabled = true;
+        region.innerHTML = '<option value="">Selecciona una región</option>';
+        if (labelRegion) labelRegion.style.display = 'none';
+      }
+
+      (municipios[estado.value] || []).forEach(([valor, texto]) => municipio.add(new Option(texto, valor)));
+      municipio.hidden = !estado.value;
+      municipio.disabled = !estado.value;
+      if (labelMunicipio) labelMunicipio.style.display = estado.value ? 'block' : 'none';
+    });
+
+    if (region) {
+      region.addEventListener('change', () => {
+        if (estado.value === 'oaxaca') {
+          cargarMunicipiosDeRegion(region.value);
+          return;
+        }
+        municipio.hidden = false;
+      });
+    }
+
+    explorar.addEventListener('click', (evento) => {
+      evento.preventDefault();
+      if (!estado.value) return notificar('Selecciona un estado para explorar sus destinos.');
+
+      if (estado.value === 'oaxaca') {
+        if (!region.value) return notificar('Selecciona una región de Oaxaca para continuar.');
+        if (!municipio.value) return notificar('Selecciona un municipio de la región para continuar.');
+        window.location.href = `vista/estados/estado.html?estado=${encodeURIComponent(estado.value)}&municipio=${encodeURIComponent(municipio.value)}`;
+        return;
+      }
+
+      if (!municipio.value) return notificar('Selecciona un municipio para continuar.');
+      irADestino(estado.value);
+    });
   }
 
   /* =========================================
@@ -176,7 +274,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (enlace.classList.contains('experiencia-card')) return scrollHacia(document.getElementById('destinos'));
     if (enlace.classList.contains('link-explorar')) {
       const nombre = (enlace.closest('article')?.querySelector('h3') || {}).textContent || '';
-      return irADestino(buscarEstado(nombre) || 'oaxaca');
+      const destino = enlace.dataset.destino || buscarEstado(nombre) || 'oaxaca';
+      const seleccionEstado = document.getElementById('estado');
+      if (seleccionEstado) {
+        seleccionEstado.value = destino;
+        seleccionEstado.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      const section = document.querySelector('.explora-mexico');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      const region = document.getElementById('region');
+      const municipio = document.getElementById('municipio');
+      if (destino === 'oaxaca' && region && municipio) {
+        region.value = 'valles-centrales';
+        region.dispatchEvent(new Event('change', { bubbles: true }));
+        if (municipio.options.length > 1) {
+          municipio.value = municipio.options[1].value;
+        }
+      }
+      return;
     }
     if (enlace.closest('footer')) return notificar('Esta sección estará disponible muy pronto.');
     notificar('Esta sección estará disponible muy pronto.');
