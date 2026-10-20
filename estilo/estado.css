@@ -531,6 +531,18 @@ a { text-decoration: none; color: inherit; }
     z-index: 1;
 }
 
+.tooltip-municipio {
+    padding: 1px 3px;
+    border: 0;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: none;
+    color: #123f3d;
+    font-size: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
 .btn-ver-regiones {
     position: absolute;
     top: 16px;

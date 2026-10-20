@@ -460,7 +460,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (boton && !boton.matches('.estado, .municipio, #btnExplorar')) {
       if (boton.classList.contains('btn-volver')) {
-        history.length > 1 ? history.back() : (location.href = `${raiz}inicio.html?destinos=1`);
+        if (boton.closest('.hero-estado')) {
+          location.href = `${raiz}inicio.html?destinos=1`;
+        } else {
+          history.length > 1 ? history.back() : (location.href = `${raiz}inicio.html?destinos=1`);
+        }
         return;
       }
       if (boton.classList.contains('btn-detalles') || boton.classList.contains('btn-card')) {

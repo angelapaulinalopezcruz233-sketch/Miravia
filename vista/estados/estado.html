@@ -14,7 +14,7 @@
           href="../../lib/leaflet.css">
 
     <link rel="stylesheet"
-      href="../../estilo/estado.css?v=miravia-fotos-destinos-5">
+      href="../../estilo/estado.css?v=miravia-municipios-6">
 
 </head>
 
@@ -94,7 +94,7 @@
         </button>
 
         <p class="ayuda-ubicacion">
-            🗺️ Explora el mapa y elige una región para descubrir sus destinos.
+            🗺️ Los nombres de los municipios aparecen en el mapa. Haz clic en uno para explorar.
         </p>
 
     </div>
@@ -187,7 +187,7 @@
 
     <script src="../../lib/leaflet.js"></script>
 
-    <script src="../js/datos-estados.js?v=miravia-fotos-destinos-5"></script>
+    <script src="../js/datos-estados.js?v=miravia-fotos-destinos-9"></script>
 
     <script>
 
@@ -630,6 +630,9 @@
                     ${lugar.imagen ? `
                         <figure class="foto-destino-turistico">
                             <img src="${lugar.imagen}" alt="Fotografía representativa de ${lugar.nombre}" loading="lazy">
+                            ${lugar.credito && lugar.fuente ? `
+                                <figcaption><a href="${lugar.fuente}" target="_blank" rel="noopener noreferrer">${lugar.credito}</a></figcaption>
+                            ` : ""}
                         </figure>
                     ` : ""}
 
@@ -1021,20 +1024,29 @@
             btnVerRegiones.hidden = false;
 
             Object.entries(capasPorRegion).forEach(([nombre, capas]) => {
-                capas.forEach((capa) => capa.setStyle({
-                    color: nombre === nombreRegion ? "#f4faf8" : coloresRegiones[nombre],
-                    opacity: nombre === nombreRegion ? 0.95 : 0,
-                    weight: nombre === nombreRegion ? 1.2 : 0,
-                    fillOpacity: nombre === nombreRegion ? 0.72 : 0
-                }));
+                capas.forEach((capa) => {
+                    capa.setStyle({
+                        color: nombre === nombreRegion ? "#f4faf8" : coloresRegiones[nombre],
+                        opacity: nombre === nombreRegion ? 0.95 : 0,
+                        weight: nombre === nombreRegion ? 1.2 : 0,
+                        fillOpacity: nombre === nombreRegion ? 0.72 : 0
+                    });
+                    if (nombre === nombreRegion) {
+                        capa.openTooltip();
+                    } else {
+                        capa.closeTooltip();
+                    }
+                });
 
                 if (nombre === nombreRegion) {
                     capas.forEach((capa) => {
                         capa.unbindTooltip();
                         capa.bindTooltip(obtenerNombreMunicipio(capa.feature.properties), {
-                            sticky: true,
-                            className: "tooltip-estado"
+                            permanent: true,
+                            direction: "center",
+                            className: "tooltip-estado tooltip-municipio"
                         });
+                        capa.openTooltip();
                     });
                 }
             });
@@ -1050,7 +1062,7 @@
                 mapa.setMaxBounds(limitesRegionMapa);
             }
             document.querySelector(".ayuda-ubicacion").textContent =
-                `🗺️ ${nombreRegion}: explora los destinos destacados abajo o selecciona un municipio para buscar lugares gratuitos.`;
+                `🗺️ ${nombreRegion}: haz clic en el municipio para explorar sus lugares.`;
         }
 
         function mostrarTodasLasRegiones() {
@@ -1069,9 +1081,11 @@
                     });
                     capa.unbindTooltip();
                     capa.bindTooltip(obtenerNombreMunicipio(capa.feature.properties), {
-                        sticky: true,
-                        className: "tooltip-estado"
+                        permanent: true,
+                        direction: "center",
+                        className: "tooltip-estado tooltip-municipio"
                     });
+                    capa.openTooltip();
                 });
             });
             if (limitesEstadoMapa) {
@@ -1081,7 +1095,7 @@
                 mapa.setMaxBounds(limitesEstadoMapa);
             }
             document.querySelector(".ayuda-ubicacion").textContent =
-                "🗺️ Toca una región coloreada del mapa para descubrir sus destinos populares.";
+                "🗺️ Los nombres de los municipios aparecen en el mapa. Haz clic en uno para explorar.";
         }
 
         btnVerRegiones.addEventListener("click", mostrarTodasLasRegiones);
@@ -1103,7 +1117,7 @@
         if (valorEstado === "oaxaca") {
             mapa.setView([17.0, -96.5], 7);
             document.querySelector(".ayuda-ubicacion").textContent =
-                "🗺️ Toca una región coloreada del mapa para ver sus localidades destacadas.";
+                "🗺️ Los nombres de los municipios aparecen en el mapa. Haz clic en uno para explorar.";
         }
 
         const cargarGeojsonMunicipios = function () {
@@ -1147,6 +1161,30 @@
                 // del estado ya no hace falta.
                 mapa.removeLayer(marcador);
 
+                function abrirMunicipio(nombre, capa, nombreRegion) {
+                    if (valorEstado === "oaxaca") {
+                        if (regionSeleccionadaMapa !== nombreRegion) {
+                            seleccionarRegion(nombreRegion);
+                        }
+                        capa.setStyle({
+                            color: "#f4faf8",
+                            weight: 1.5,
+                            fillColor: "#d5c98f",
+                            fillOpacity: 0.88
+                        });
+                    } else {
+                        capa.setStyle({
+                            weight: 3,
+                            fillColor: "#ffb347",
+                            fillOpacity: 0.65
+                        });
+                    }
+
+                    municipioSeleccionado = nombre;
+                    cerrarPopupMapa();
+                    abrirPanelZona(nombre, capa.getBounds(), nombre);
+                }
+
                 const capaMunicipios = L.geoJSON(geo, {
                     style: function (caracteristica) {
                         if (valorEstado === "oaxaca") {
@@ -1166,12 +1204,19 @@
                         };
                     },
                     onEachFeature: function (caracteristica, capa) {
+                        const nombreMunicipio = valorEstado === "oaxaca"
+                            ? obtenerNombreMunicipio(caracteristica.properties)
+                            : caracteristica.properties.NOMGEO || "Municipio";
+                        const nombreRegion = valorEstado === "oaxaca"
+                            ? encontrarRegion(caracteristica)
+                            : "";
+
                         if (valorEstado === "oaxaca") {
-                            const nombreRegion = encontrarRegion(caracteristica);
                             (capasPorRegion[nombreRegion] ||= []).push(capa);
-                            capa.bindTooltip(obtenerNombreMunicipio(caracteristica.properties), {
-                                sticky: true,
-                                className: "tooltip-estado"
+                            capa.bindTooltip(nombreMunicipio, {
+                                permanent: true,
+                                direction: "center",
+                                className: "tooltip-estado tooltip-municipio"
                             });
                             capa.on("mouseover", function () {
                                 if (!regionSeleccionadaMapa || regionSeleccionadaMapa === nombreRegion) {
@@ -1194,11 +1239,7 @@
                             });
                             capa.on("click", function () {
                                 if (regionSeleccionadaMapa === nombreRegion) {
-                                    const nombreMunicipio = obtenerNombreMunicipio(caracteristica.properties);
-                                    municipioSeleccionado = nombreMunicipio;
-                                    capa.setStyle({ fillColor: "#d5c98f", fillOpacity: 0.88 });
-                                    cerrarPopupMapa();
-                                    abrirPanelZona(nombreMunicipio, capa.getBounds(), nombreMunicipio);
+                                    abrirMunicipio(nombreMunicipio, capa, nombreRegion);
                                     return;
                                 }
                                 seleccionarRegion(nombreRegion);
@@ -1206,12 +1247,10 @@
                             return;
                         }
 
-                        const nombre =
-                            caracteristica.properties.NOMGEO || "Municipio";
-
-                        capa.bindTooltip(nombre, {
-                            sticky: true,
-                            className: "tooltip-estado"
+                        capa.bindTooltip(nombreMunicipio, {
+                            permanent: true,
+                            direction: "center",
+                            className: "tooltip-estado tooltip-municipio"
                         });
 
                         capa.on("mouseover", function () {
@@ -1223,22 +1262,10 @@
                         });
 
                         capa.on("click", function () {
-                            capa.setStyle({
-                                weight: 3,
-                                fillColor: "#ffb347",
-                                fillOpacity: 0.65
-                            });
-                            // Se recuerda el municipio elegido
-                            // para "Armar mi viaje paso a paso".
-                            municipioSeleccionado = nombre;
-                            // Al tocar el municipio se abre el
-                            // panel con TODOS sus lugares reales.
-                            cerrarPopupMapa();
-                            abrirPanelZona(nombre, capa.getBounds(), nombre);
+                            abrirMunicipio(nombreMunicipio, capa, nombreRegion);
                         });
                     }
                 }).addTo(mapa);
-
                 capaMunicipiosGlobal = capaMunicipios;
 
                 // El mapa se queda SOLO en este estado:

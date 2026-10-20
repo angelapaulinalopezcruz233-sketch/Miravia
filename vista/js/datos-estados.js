@@ -10,8 +10,64 @@ const DATOS_ESTADOS = {
   aguascalientes: { nombre: "Aguascalientes", capital: "Aguascalientes", coords: [21.89, -102.29], descripcion: "Famosa por su Feria de San Marcos, la más grande de México, y sus aguas termales." },
   "baja-california": { nombre: "Baja California", capital: "Mexicali", coords: [30.84, -115.28], descripcion: "Tierra del vino mexicano en el Valle de Guadalupe y playas como Ensenada y Rosarito." },
   "baja-california-sur": { nombre: "Baja California Sur", capital: "La Paz", coords: [25.04, -111.66], descripcion: "Hogar de Los Cabos y el mar de Cortés, con playas y avistamientos de ballenas inolvidables." },
-  campeche: { nombre: "Campeche", capital: "San Francisco de Campeche", coords: [19.83, -90.53], descripcion: "Ciudad amurallada colonial, Patrimonio de la Humanidad, y ruinas mayas como Edzná." },
-  chiapas: { nombre: "Chiapas", capital: "Tuxtla Gutiérrez", coords: [16.75, -93.12], descripcion: "Cañón del Sumidero, San Cristóbal de las Casas, Cascadas de Agua Azul y las ruinas de Palenque." },
+  campeche: {
+    nombre: "Campeche",
+    capital: "San Francisco de Campeche",
+    coords: [19.83, -90.53],
+    descripcion: "Ciudad amurallada colonial, Patrimonio de la Humanidad, y ruinas mayas como Edzná.",
+    lugares: [
+      {
+        nombre: "Ciudad amurallada de Campeche",
+        descripcion: "Recorre sus murallas coloniales y las fachadas de colores del centro histórico.",
+        imagen: "../../img/lugares/campeche-murallas.jpg",
+        credito: "Old City Walls and Colonial Facades — Adam Jones · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Old_City_Walls_and_Colonial_Facades_-_Campeche_-_Mexico.jpg"
+      },
+      {
+        nombre: "Centro histórico de Campeche",
+        descripcion: "Plazas, arquitectura colonial y un centro histórico reconocido como Patrimonio de la Humanidad.",
+        imagen: "../../img/lugares/campeche-centro-historico.jpg",
+        credito: "Independence Square, Campeche — Sharon Hahn Darlin · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Independence_Square_(Plaza_de_La_Independencia),_Campeche,_Mexico.jpg"
+      },
+      {
+        nombre: "Zona arqueológica de Edzná",
+        descripcion: "Explora la antigua ciudad maya y sus templos monumentales entre la selva campechana.",
+        imagen: "../../img/lugares/campeche-edzna.jpg",
+        credito: "The Acropolis at Edzná — Adam Jones · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:The_Acropolis_-_Edzna_Archaeological_Site_-_Campeche_State_-_Mexico_-_03.jpg"
+      }
+    ]
+  },
+  chiapas: {
+    nombre: "Chiapas",
+    capital: "Tuxtla Gutiérrez",
+    coords: [16.75, -93.12],
+    descripcion: "Cañón del Sumidero, San Cristóbal de las Casas, Cascadas de Agua Azul y las ruinas de Palenque.",
+    lugares: [
+      {
+        nombre: "Cañón del Sumidero",
+        descripcion: "Navega entre paredes de roca imponentes y disfruta los paisajes del río Grijalva.",
+        imagen: "../../img/lugares/chiapas-canon-del-sumidero.jpg",
+        credito: "Cañón del Sumidero — Christopher Javier Cuenca García · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Ca%C3%B1on_del_Sumidero,_Chiapas,_M%C3%A9xico.jpg"
+      },
+      {
+        nombre: "San Cristóbal de las Casas",
+        descripcion: "Calles empedradas, casas coloridas y la cúpula de la iglesia entre las montañas chiapanecas.",
+        imagen: "../../img/lugares/chiapas-san-cristobal.jpg",
+        credito: "Street Scene with Church Cupola — Adam Jones · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Street_Scene_with_Church_Cupola_-_San_Cristobal_de_las_Casas_-_Chiapas_-_Mexico.jpg"
+      },
+      {
+        nombre: "Cascadas de Agua Azul y las ruinas de Palenque",
+        descripcion: "Descubre las cascadas turquesa de Agua Azul y la antigua ciudad maya de Palenque.",
+        imagen: "../../img/lugares/chiapas-agua-azul-palenque.jpg",
+        credito: "Cascadas de Agua Azul — Carlos Valenzuela · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cascadas_de_Agua_Azul2020p3.jpg"
+      }
+    ]
+  },
   oaxaca: {
     nombre: "Oaxaca",
     capital: "Oaxaca de Juárez",
@@ -48,21 +104,224 @@ const DATOS_ESTADOS = {
   coahuila: { nombre: "Coahuila", capital: "Saltillo", coords: [25.43, -100.99], descripcion: "Desierto con zona del silencio, huellas de dinosaurios y viñedos del norte." },
   colima: { nombre: "Colima", capital: "Colima", coords: [19.24, -103.72], descripcion: "El volcán de fuego, playas tranquilas en Manzanillo y tumbas de tiro en el Cerro de la Campana." },
   durango: { nombre: "Durango", capital: "Victoria de Durango", coords: [24.02, -104.65], descripcion: "Pueblos del mexicano, Sierra Madre Occidental y sets de cine del viejo oeste." },
-  guerrero: { nombre: "Guerrero", capital: "Chilpancingo", coords: [17.55, -99.50], descripcion: "Acapulco y su bahía, Taxco la ciudad plateada y grutas impresionantes." },
-  hidalgo: { nombre: "Hidalgo", capital: "Pachuca", coords: [20.10, -98.76], descripcion: "Barranca de Metztitlán, prismas basálticos de Santa María Regla y las luces de Pachuca." },
-  "estado-de-mexico": { nombre: "Estado de México", capital: "Toluca", coords: [19.29, -99.65], descripcion: "Pirámides de Teotihuacán, Nevado de Toluca y el Cosmovitral de Toluca." },
-  michoacan: { nombre: "Michoacán", capital: "Morelia", coords: [19.70, -101.19], descripcion: "Morelia colonial, la mariposa monarca, Pátzcuaro y su noche de muertos única." },
+  guerrero: {
+    nombre: "Guerrero",
+    capital: "Chilpancingo",
+    coords: [17.55, -99.50],
+    descripcion: "Acapulco y su bahía, Taxco la ciudad plateada y grutas impresionantes.",
+    lugares: [
+      {
+        nombre: "Acapulco y su bahía",
+        descripcion: "Disfruta las vistas de la bahía de Santa Lucía y las playas de Acapulco.",
+        imagen: "../../img/lugares/guerrero-acapulco.jpg",
+        credito: "Santa Lucía Bay in Acapulco — Nam · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Santa_Lucia_Bay_in_Acapulco,_Mexico.jpg"
+      },
+      {
+        nombre: "Taxco, ciudad plateada y grutas",
+        descripcion: "Recorre las calles empedradas de Taxco y descubre las cercanas Grutas de Cacahuamilpa.",
+        imagen: "../../img/lugares/guerrero-taxco.jpg",
+        credito: "View of Taxco from the cable car — Melissa Guadalupe Huertas · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:View_of_Taxco_from_the_cable_car,_Mexico.jpg"
+      }
+    ]
+  },
+  hidalgo: {
+    nombre: "Hidalgo",
+    capital: "Pachuca",
+    coords: [20.10, -98.76],
+    descripcion: "Barranca de Metztitlán, prismas basálticos de Santa María Regla y las luces de Pachuca.",
+    lugares: [
+      {
+        nombre: "Barranca de Metztitlán",
+        descripcion: "Explora la Reserva de la Biosfera de la Barranca de Metztitlán y visita el exconvento de los Santos Reyes.",
+        imagen: "../../img/lugares/hidalgo-metztitlan.jpg",
+        credito: "HeyDiallexLoL (Maria de los Angeles) · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:1_Metztitl%C3%A1n_%22Templo_y_exconvento_de_los_santos_Reyes%22_en_el_estado_de_Hidalgo,_esta_dentro_de_la_Reserva_de_la_Biosfera_de_la_Barranca_de_Metztitl%C3%A1n.jpg"
+      },
+      {
+        nombre: "Prismas basálticos de Santa María Regla",
+        descripcion: "Conoce las formaciones de roca volcánica y las cascadas de Huasca de Ocampo.",
+        imagen: "../../img/lugares/hidalgo-prismas-basalticos.jpg",
+        credito: "Diego Delso · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Prismas_Bas%C3%A1lticos,_Huasca_de_Ocampo,_Hidalgo,_M%C3%A9xico,_2013-10-10,_DD_10.JPG"
+      }
+    ]
+  },
+  "estado-de-mexico": {
+    nombre: "Estado de México",
+    capital: "Toluca",
+    coords: [19.29, -99.65],
+    descripcion: "Pirámides de Teotihuacán, Nevado de Toluca y el Cosmovitral de Toluca.",
+    lugares: [
+      {
+        nombre: "Pirámides de Teotihuacán",
+        descripcion: "Recorre la antigua ciudad y admira la Pirámide del Sol y la Pirámide de la Luna.",
+        imagen: "../../img/lugares/estado-mexico-teotihuacan.jpg",
+        credito: "Diego Delso · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Teotihuac%C3%A1n,_M%C3%A9xico,_2013-10-13,_DD_93.JPG"
+      },
+      {
+        nombre: "Nevado de Toluca",
+        descripcion: "Contempla el cráter volcánico y la Laguna del Sol en el Xinantécatl.",
+        imagen: "../../img/lugares/estado-mexico-nevado-toluca.jpg",
+        credito: "Juan Carlos Fonseca Mata · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Nevado_de_Toluca,_Lago_de_Sol_4.jpg"
+      },
+      {
+        nombre: "Cosmovitral de Toluca",
+        descripcion: "Visita el Jardín Botánico y admira los coloridos vitrales monumentales de Toluca.",
+        imagen: "../../img/lugares/estado-mexico-cosmovitral.jpg",
+        credito: "Juan Carlos Fonseca Mata · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cosmovitral_(Toluca,_M%C3%A9xico)_I.jpg"
+      }
+    ]
+  },
+  michoacan: {
+    nombre: "Michoacán",
+    capital: "Morelia",
+    coords: [19.70, -101.19],
+    descripcion: "Morelia colonial, la mariposa monarca, Pátzcuaro y su noche de muertos única.",
+    lugares: [
+      {
+        nombre: "Morelia colonial",
+        descripcion: "Admira la catedral y la arquitectura colonial del centro histórico de Morelia.",
+        imagen: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Santa_Iglesia_Catedral%2CMorelia%2CEstado_de_Michoac%C3%A1n%2CM%C3%A9xico.jpg",
+        credito: "Enrique López-Tamayo Biosca · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Santa_Iglesia_Catedral,Morelia,Estado_de_Michoac%C3%A1n,M%C3%A9xico.jpg"
+      },
+      {
+        nombre: "La mariposa monarca",
+        descripcion: "Visita los santuarios de la mariposa monarca en los bosques de Michoacán.",
+        imagen: "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/ButterfliesChincua08.JPG/1280px-ButterfliesChincua08.JPG",
+        credito: "AlejandroLinaresGarcia · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:ButterfliesChincua08.JPG"
+      },
+      {
+        nombre: "Pátzcuaro y su noche de muertos única",
+        descripcion: "Vive las tradiciones del Día de Muertos en la región del lago de Pátzcuaro y la isla de Janitzio.",
+        imagen: "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Noche_de_Muertos_en_Janitzio.jpg/1280px-Noche_de_Muertos_en_Janitzio.jpg",
+        credito: "Miguel Angel Mandujano Contreras · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Noche_de_Muertos_en_Janitzio.jpg"
+      }
+    ]
+  },
   "nuevo-leon": { nombre: "Nuevo León", capital: "Monterrey", coords: [25.67, -100.31], descripcion: "Monterrey con su Cerro de la Silla, Grutas de García, la Cascada Cola de Caballo y la ruta del queso." },
-  morelos: { nombre: "Morelos", capital: "Cuernavaca", coords: [18.68, -99.10], descripcion: "La ciudad de la eterna primavera, Tepoztlán místico y las lagunas de Zempoala." },
+  morelos: {
+    nombre: "Morelos",
+    capital: "Cuernavaca",
+    coords: [18.68, -99.10],
+    descripcion: "La ciudad de la eterna primavera, Tepoztlán místico y las lagunas de Zempoala.",
+    lugares: [
+      {
+        nombre: "Cuernavaca, ciudad de la eterna primavera",
+        descripcion: "Visita Cuernavaca y conoce el Palacio de Cortés, uno de los edificios históricos más emblemáticos de Morelos.",
+        imagen: "../../img/lugares/morelos-cuernavaca.jpg",
+        credito: "Palacio de Cortés Cuernavaca — LuisS211 · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Palacio_de_Cort%C3%A9s_Cuernavaca,_Morelos.jpg"
+      },
+      {
+        nombre: "Tepoztlán místico y las lagunas de Zempoala",
+        descripcion: "Recorre las calles de Tepoztlán y disfruta los paisajes naturales de Morelos.",
+        imagen: "../../img/lugares/morelos-tepoztlan.jpg",
+        credito: "Camino a la Pirámide del Tepozteco — R.gonzalez94 · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Camino_a_la_Piramide_del_Tepozteco.jpg"
+      }
+    ]
+  },
   nayarit: { nombre: "Nayarit", capital: "Tepic", coords: [21.75, -104.85], descripcion: "Riviera Nayarit, la isla de Mexcaltitán y olas de clase mundial en San Blas." },
   "san-luis-potosi": { nombre: "San Luis Potosí", capital: "San Luis Potosí", coords: [22.16, -100.99], descripcion: "La Huasteca Potosina con sus cascadas turquesa y el mágico Real de Catorce." },
-  queretaro: { nombre: "Querétaro", capital: "Querétaro", coords: [20.59, -100.39], descripcion: "Centro histórico Patrimonio de la Humanidad, Peña de Bernal y la ruta del vino y queso." },
+  queretaro: {
+    nombre: "Querétaro",
+    capital: "Querétaro",
+    coords: [20.59, -100.39],
+    descripcion: "Centro histórico Patrimonio de la Humanidad, Peña de Bernal y la ruta del vino y queso.",
+    lugares: [
+      {
+        nombre: "Centro histórico Patrimonio de la Humanidad",
+        descripcion: "Recorre las calles históricas de Querétaro y admira su emblemático acueducto de cantera.",
+        imagen: "../../img/lugares/queretaro-centro-historico.jpg",
+        credito: "Acueducto de Querétaro — Pabloangulo84 · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Acueducto_de_Quer%C3%A9taro_2.JPG"
+      },
+      {
+        nombre: "Peña de Bernal y la ruta del vino y queso",
+        descripcion: "Visita Bernal y contempla uno de los monolitos más grandes del mundo, cerca de viñedos y queserías.",
+        imagen: "../../img/lugares/queretaro-pena-de-bernal.jpg",
+        credito: "Peña de Bernal — Juan Carlos Fonseca Mata · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Pe%C3%B1a_de_Bernal_(Quer%C3%A9taro,_M%C3%A9xico).jpg"
+      }
+    ]
+  },
   sinaloa: { nombre: "Sinaloa", capital: "Culiacán", coords: [24.81, -107.39], descripcion: "Mazatlán y su malecón, playas doradas y mariscos de primera." },
   sonora: { nombre: "Sonora", capital: "Hermosillo", coords: [29.07, -110.96], descripcion: "Desierto de Altar, San Carlos y sus playas del mar de Cortés, tierra de la carne asada." },
-  tabasco: { nombre: "Tabasco", capital: "Villahermosa", coords: [17.99, -92.93], descripcion: "Parque de la Venta con cabezas olmecas y la majestuosa selva del Usumacinta." },
+  tabasco: {
+    nombre: "Tabasco",
+    capital: "Villahermosa",
+    coords: [17.99, -92.93],
+    descripcion: "Parque de la Venta con cabezas olmecas y la majestuosa selva del Usumacinta.",
+    lugares: [
+      {
+        nombre: "Parque Museo La Venta",
+        descripcion: "Un museo al aire libre entre la selva, famoso por sus cabezas colosales y esculturas olmecas.",
+        imagen: "../../img/lugares/tabasco-parque-la-venta.jpg",
+        credito: "Colossal Head at Parque-Museo La Venta — Arian Zwegers · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Villahermosa,_Parque-Museo_La_Venta,_Colossal_Head_(20686566115).jpg"
+      }
+    ]
+  },
   tamaulipas: { nombre: "Tamaulipas", capital: "Ciudad Victoria", coords: [23.74, -99.14], descripcion: "El Cielo biosfera estrellada, playas de Tampico y cuevas impresionantes." },
-  tlaxcala: { nombre: "Tlaxcala", capital: "Tlaxcala", coords: [19.32, -98.24], descripcion: "El estado más pequeño: murales, pirámides de Cacaxtla y pulque tradicional." },
-  veracruz: { nombre: "Veracruz", capital: "Xalapa", coords: [19.17, -96.13], descripcion: "Cuna del son jarocho, el Tajín, ríos de rápidos y el café de Coatepec." },
+  tlaxcala: {
+    nombre: "Tlaxcala",
+    capital: "Tlaxcala",
+    coords: [19.32, -98.24],
+    descripcion: "El estado más pequeño: murales, pirámides de Cacaxtla y pulque tradicional.",
+    lugares: [
+      {
+        nombre: "Murales del Palacio de Gobierno",
+        descripcion: "Admira los murales de Desiderio Hernández Xochitiotzin, que narran la historia de Tlaxcala.",
+        imagen: "../../img/lugares/tlaxcala-murales.jpg",
+        credito: "Detalle de mural en el Palacio de Gobierno de Tlaxcala — Ajenoalien · CC0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Detalle_de_mural_Desiderio_Hern%C3%A1ndez_palacio_de_gobierno_tlaxcala.jpg"
+      },
+      {
+        nombre: "Pirámides de Cacaxtla y pulque tradicional",
+        descripcion: "Descubre la zona arqueológica de Cacaxtla y sus antiguos murales, entre los más destacados de Mesoamérica.",
+        imagen: "../../img/lugares/tlaxcala-cacaxtla.jpg",
+        credito: "Mural de Cacaxtla — CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Mexico.Tlax.Cacaxtla.01.jpg"
+      }
+    ]
+  },
+  veracruz: {
+    nombre: "Veracruz",
+    capital: "Xalapa",
+    coords: [19.17, -96.13],
+    descripcion: "Cuna del son jarocho, el Tajín, ríos de rápidos y el café de Coatepec.",
+    lugares: [
+      {
+        nombre: "Puerto de Veracruz y son jarocho",
+        descripcion: "Disfruta el malecón, la brisa del Golfo y la música tradicional veracruzana.",
+        imagen: "../../img/lugares/veracruz-son-jarocho.jpg",
+        credito: "Vista del Malecón de Veracruz — Luis Alvaz · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Vista_del_Malec%C3%B3n_de_Veracruz_01.jpg"
+      },
+      {
+        nombre: "El Tajín",
+        descripcion: "Explora la antigua ciudad totonaca y la Pirámide de los Nichos, emblema arqueológico de Veracruz.",
+        imagen: "../../img/lugares/veracruz-el-tajin.jpg",
+        credito: "El Tajín — Juan Carlos Fonseca Mata · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:El_Taj%C3%ADn_(Veracruz)_11.jpg"
+      },
+      {
+        nombre: "Rápidos de Jalcomulco y café de Coatepec",
+        descripcion: "Aventura entre los rápidos de Jalcomulco y disfruta el café de la región de Coatepec.",
+        imagen: "../../img/lugares/veracruz-jalcomulco.jpg",
+        credito: "Río en Jalcomulco — Koffermejia · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Abajo_del_puente_de_Jalcomulco.jpg"
+      }
+    ]
+  },
   zacatecas: { nombre: "Zacatecas", capital: "Zacatecas", coords: [22.77, -102.58], descripcion: "Mina El Edén, cerro de la Bufa y una de las ciudades coloniales más bellas." },
 
   /* ---------- ESTADOS CON DATOS COMPLETOS ---------- */
@@ -97,9 +356,27 @@ const DATOS_ESTADOS = {
       { nombre: "Restaurante Arca", tipo: "AUTOR", precio: "$700", calificacion: "4.7", ubicacion: "Tulum, Quintana Roo", descripcion: "Cocina de autor con fuego, productos locales y ambiente selvático." }
     ],
     lugares: [
-      { nombre: "Zona Arqueológica de Tulum", descripcion: "Ruinas mayas acantiladas frente al mar Caribe, de las vistas más fotografiadas de México." },
-      { nombre: "Cenote Dos Ojos", descripcion: "Cenote de agua cristalina ideal para snorkel y buceo en caverna." },
-      { nombre: "Isla Mujeres", descripcion: "Playas de arena suave, el Parque Garrafón y travesías en barco desde Cancún." }
+      {
+        nombre: "Zona Arqueológica de Tulum",
+        descripcion: "Ruinas mayas acantiladas frente al mar Caribe, de las vistas más fotografiadas de México.",
+        imagen: "../../img/lugares/quintana-roo-tulum.jpg",
+        credito: "Zona Arqueológica de Tulum — ERVIN ESCOBAR · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:ZONA_ARQUEOLOGICA_DE_TULUM_-_panoramio.jpg"
+      },
+      {
+        nombre: "Cenote Dos Ojos",
+        descripcion: "Cenote de agua cristalina ideal para snorkel y buceo en caverna.",
+        imagen: "../../img/lugares/quintana-roo-cenote-dos-ojos.jpg",
+        credito: "Cenote Dos Ojos - 5 — eugene_o · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:20230324_-_Cenote_Dos_Ojos_-_5.jpg"
+      },
+      {
+        nombre: "Isla Mujeres",
+        descripcion: "Playas de arena suave, el Parque Garrafón y travesías en barco desde Cancún.",
+        imagen: "../../img/lugares/quintana-roo-isla-mujeres.jpg",
+        credito: "Hermosa Caleta beach Isla Mujeres QR 01 — Bernard DUPONT · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Hermosa_Caleta_beach_Isla_Mujeres_QR_01.jpg"
+      }
     ]
   },
 
@@ -133,9 +410,27 @@ const DATOS_ESTADOS = {
       { nombre: "Ku'uk", tipo: "AUTOR", precio: "$850", calificacion: "4.8", ubicacion: "Mérida, Yucatán", descripcion: "Alta cocina maya con técnicas modernas y maíz como protagonista." }
     ],
     lugares: [
-      { nombre: "Chichén Itzá", descripcion: "Una de las nuevas 7 maravillas del mundo: el Templo de Kukulkán y el cenote sagrado." },
-      { nombre: "Paseo de Montejo", descripcion: "El paseo más elegante de Mérida, con mansiones y museos." },
-      { nombre: "Cenote Ik Kil", descripcion: "Cenote abierto rodeado de selva, a minutos de Chichén Itzá." }
+      {
+        nombre: "Chichén Itzá",
+        descripcion: "Una de las nuevas 7 maravillas del mundo: el Templo de Kukulkán y el cenote sagrado.",
+        imagen: "../../img/lugares/yucatan-chichen-itza.jpg",
+        credito: "Pirámide de Kukulkán — Altairisfar · Dominio público",
+        fuente: "https://commons.wikimedia.org/wiki/File:Pyramid_of_Kukulkan_Chichen_Itza_01.JPG"
+      },
+      {
+        nombre: "Paseo de Montejo",
+        descripcion: "El paseo más elegante de Mérida, con mansiones y museos.",
+        imagen: "../../img/lugares/yucatan-paseo-de-montejo.jpg",
+        credito: "Monumento Felipe Carrillo Puerto — Sharon Hahn Darlin · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Monumento_Felipe_Carrillo_Puerto,_Paseo_de_Montejo,_Merida,_Yucatan,_Mexico.jpg"
+      },
+      {
+        nombre: "Cenote Ik Kil",
+        descripcion: "Cenote abierto rodeado de selva, a minutos de Chichén Itzá.",
+        imagen: "../../img/lugares/yucatan-cenote-ik-kil.jpg",
+        credito: "Cenote Ik Kil — Shinya Suzuki · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cenote_Ik_Kil,_Yucatan,_Dec_2011_-_06.jpg"
+      }
     ]
   },
 
@@ -151,9 +446,27 @@ const DATOS_ESTADOS = {
       { nombre: "La Casa del Mendrugo", tipo: "AUTOR", precio: "$620", calificacion: "4.8", ubicacion: "Centro, Puebla", descripcion: "Cocina novohispana en una casona del siglo XVII." }
     ],
     lugares: [
-      { nombre: "Gran Pirámide de Cholula", descripcion: "La pirámide más grande del mundo por volumen, con la iglesia de los Remedios arriba." },
-      { nombre: "Catedral de Puebla", descripcion: "Una de las catedrales más imponentes de México en el zócalo poblano." },
-      { nombre: "Callejón de los Sapos", descripcion: "Barrio de antigüedades, cafés y leyendas en el centro histórico." }
+      {
+        nombre: "Gran Pirámide de Cholula",
+        descripcion: "La pirámide más grande del mundo por volumen, con la iglesia de los Remedios arriba.",
+        imagen: "../../img/lugares/puebla-cholula.jpg",
+        credito: "Gran Pirámide de Cholula — Diego Delso · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Gran_Pir%C3%A1mide_de_Cholula,_Puebla,_M%C3%A9xico,_2013-10-12,_DD_03.JPG"
+      },
+      {
+        nombre: "Catedral de Puebla",
+        descripcion: "Una de las catedrales más imponentes de México en el zócalo poblano.",
+        imagen: "../../img/lugares/puebla-catedral.jpg",
+        credito: "Catedral Basílica de Puebla — Juan Carlos Fonseca Mata · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Catedral_Bas%C3%ADlica_de_Puebla_(M%C3%A9xico).jpg"
+      },
+      {
+        nombre: "Callejón de los Sapos",
+        descripcion: "Barrio de antigüedades, cafés y leyendas en el centro histórico.",
+        imagen: "../../img/lugares/puebla-callejon-sapos.jpg",
+        credito: "Callejón de los Sapos — Gusvel · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Callej%C3%B3n_de_los_sapos.JPG"
+      }
     ]
   },
 
@@ -169,9 +482,27 @@ const DATOS_ESTADOS = {
       { nombre: "Contramar", tipo: "MARISCOS", precio: "$700", calificacion: "4.8", ubicacion: "Roma Norte, CDMX", descripcion: "El restaurante de mariscos más celebrado de la ciudad." }
     ],
     lugares: [
-      { nombre: "Museo Nacional de Antropología", descripcion: "El museo más importante de México: la Piedra del Sol y salas mayas y mexicas." },
-      { nombre: "Teotihuacán", descripcion: "Pirámides del Sol y de la Luna a solo una hora de la ciudad." },
-      { nombre: "Xochimilco", descripcion: "Trajineras por los canales aztecas, patrimonio de la humanidad." }
+      {
+        nombre: "Museo Nacional de Antropología",
+        descripcion: "Descubre la Piedra del Sol y las colecciones de las culturas prehispánicas de México.",
+        imagen: "../../img/lugares/cdmx-museo-antropologia.jpg",
+        credito: "Manuel de Corselas · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Piedra_del_Sol._Museo_Nacional_de_Antropolog%C3%ADa,_M%C3%A9xico._MPLC_01.jpg"
+      },
+      {
+        nombre: "Teotihuacán",
+        descripcion: "Recorre la antigua ciudad y admira la Pirámide del Sol y la Pirámide de la Luna.",
+        imagen: "../../img/lugares/cdmx-teotihuacan.jpg",
+        credito: "Daniel Case · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Pyramid_of_the_Sun,_Teotihuacan,_from_path_to_parking_lot.jpg"
+      },
+      {
+        nombre: "Xochimilco",
+        descripcion: "Navega en trajinera por los canales históricos de Xochimilco, patrimonio de la humanidad.",
+        imagen: "../../img/lugares/cdmx-xochimilco.jpg",
+        credito: "Juan Carlos Fonseca Mata · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Trajinera_de_Xochimilco_-_Ciudad_de_M%C3%A9xico.jpg"
+      }
     ]
   },
 
@@ -191,7 +522,7 @@ const DATOS_ESTADOS = {
         { nombre: `Restaurante La Capital`, tipo: "MEXICANA", precio: "$250", calificacion: "4.4", ubicacion: capital, descripcion: `Comida mexicana tradicional con lo mejor de la cocina de ${base.nombre}.` },
         { nombre: `Mercado Municipal de ${capital}`, tipo: "MERCADO", precio: "$120", calificacion: "4.2", ubicacion: capital, descripcion: "Antojitos locales, frutas de temporada y sabor auténtico." }
       ],
-      lugares: atracciones.slice(0, 3).map((texto) => ({ nombre: texto.charAt(0).toUpperCase() + texto.slice(1), descripcion: `Un imperdible de ${base.nombre} que no te puedes perder.` }))
+      lugares: base.lugares || atracciones.slice(0, 3).map((texto) => ({ nombre: texto.charAt(0).toUpperCase() + texto.slice(1), descripcion: `Un imperdible de ${base.nombre} que no te puedes perder.` }))
     });
   },
 
