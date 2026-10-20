@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Asistente de viaje por etapas: destinos, hospedaje, comida y presupuesto final. -->
 <html lang="es">
 
 <head>
@@ -18,7 +19,7 @@
           href="../../lib/leaflet.css">
 
     <link rel="stylesheet"
-            href="../../estilo/armar-viaje.css?v=miravia-mapa-15">
+            href="../../estilo/armar-viaje.css?v=miravia-ruta-4">
 
 </head>
 
@@ -33,10 +34,8 @@
                 ← Volver
             </button>
 
-            <div class="logo" id="logoMiravia" title="Inicio">
-                MIRAVIA
-            </div>
-
+            <span class="etiqueta">🧭 ARMA TU VIAJE</span>
+            <h1>Planea tu visita paso a paso</h1>
             <p class="destino-elegido" id="destinoElegido">
                 Preparando tu viaje...
             </p>
@@ -47,21 +46,26 @@
 
             <div class="paso-ind" data-paso="1">
                 <span class="paso-num">1</span>
-                <span class="paso-nombre">Hospedaje</span>
+                <span class="paso-nombre">Lugares</span>
             </div>
 
             <div class="paso-ind" data-paso="2">
                 <span class="paso-num">2</span>
-                <span class="paso-nombre">Comida</span>
+                <span class="paso-nombre">Hospedaje</span>
             </div>
 
             <div class="paso-ind" data-paso="3">
                 <span class="paso-num">3</span>
-                <span class="paso-nombre">Lugares</span>
+                <span class="paso-nombre">Comida</span>
             </div>
 
             <div class="paso-ind" data-paso="4">
                 <span class="paso-num">4</span>
+                <span class="paso-nombre">Ruta</span>
+            </div>
+
+            <div class="paso-ind" data-paso="5">
+                <span class="paso-num">5</span>
                 <span class="paso-nombre">Resumen</span>
             </div>
 
@@ -69,11 +73,11 @@
 
         <section class="contenedor-paso">
 
-            <div class="paso" id="paso1" hidden>
+            <div class="paso" id="paso2" hidden>
 
-                <h2>Paso 1 · ¿En dónde te vas a hospedar?</h2>
+                <h2>Paso 2 · ¿En dónde te vas a hospedar?</h2>
 
-                <p class="paso-descripcion">Elige el hospedaje perfecto para tu viaje.</p>
+                <p class="paso-descripcion">Elige un hospedaje registrado cerca de tu destino.</p>
 
                 <div class="tarjetas" id="tarjetasHoteles"></div>
 
@@ -89,40 +93,89 @@
 
             </div>
 
-            <div class="paso" id="paso2" hidden>
+            <div class="paso" id="paso3" hidden>
 
-                <h2>Paso 2 · ¿Qué quieres comer?</h2>
+                <h2>Paso 3 · ¿En dónde quieres comer?</h2>
 
-                <p class="paso-descripcion">Elige un restaurante para probar el sabor del estado.</p>
+                <p class="paso-descripcion">Elige dónde comer cerca de tu destino.</p>
 
                 <div class="tarjetas" id="tarjetasRestaurantes"></div>
 
             </div>
 
-            <div class="paso" id="paso3" hidden>
+            <div class="paso" id="paso1" hidden>
 
-                <h2>Paso 3 · ¿Qué lugares vas a conocer?</h2>
+                <h2>Paso 1 · ¿Qué lugares quieres visitar?</h2>
 
-                <p class="paso-descripcion">Elige hasta 3 lugares turísticos (toca para marcar o desmarcar).</p>
+                <p class="paso-descripcion">Puedes elegir todos los destinos que quieras (5 o más también).</p>
 
+                <p class="seleccion-lugares" id="contadorLugares" aria-live="polite"></p>
                 <div class="tarjetas" id="tarjetasLugares"></div>
 
             </div>
 
             <div class="paso" id="paso4" hidden>
 
-                <h2>Paso 4 · Tu viaje a <span id="resumenEstado">...</span> está listo</h2>
+                <h2>Paso 4 · ¿Cómo llegarás?</h2>
+                <p class="paso-descripcion">Si estás en México, usa tu ubicación. Si vienes de otro país, elige el aeropuerto al que llegarás.</p>
+
+                <section class="ruta-panel" aria-label="Origen y transporte">
+                    <button class="btn btn-suave" id="btnUsarUbicacion" type="button">Usar mi ubicación</button>
+                    <p class="ruta-origen" id="rutaOrigen" role="status" aria-live="polite">También puedes elegir un aeropuerto de llegada.</p>
+
+                    <label for="aeropuertoLlegada">Elige desde dónde sales</label>
+                    <select id="aeropuertoLlegada">
+                        <option value="">Elige un aeropuerto</option>
+                        <option value="aicm">Ciudad de México · AICM</option>
+                        <option value="gdl">Guadalajara · Miguel Hidalgo</option>
+                        <option value="cun">Cancún · Aeropuerto Internacional</option>
+                        <option value="oax">Oaxaca · Xoxocotlán</option>
+                        <option value="pxm">Puerto Escondido · Aeropuerto Internacional</option>
+                        <option value="hux">Huatulco · Aeropuerto Internacional</option>
+                        <option value="mty">Monterrey · Mariano Escobedo</option>
+                        <option value="tij">Tijuana · Aeropuerto Internacional</option>
+                        <option value="pvr">Puerto Vallarta · Aeropuerto Internacional</option>
+                    </select>
+
+                    <label for="modoTransporte">¿Cómo quieres viajar?</label>
+                    <select id="modoTransporte">
+                        <option value="urbano">Urban / combi</option>
+                        <option value="camion">Camión / autobús</option>
+                        <option value="taxi">Taxi</option>
+                        <option value="avion">Avión</option>
+                        <option value="carro">Mi carro (calcular gasolina)</option>
+                    </select>
+                    <p id="recomendacionTransporte" class="ruta-nota" aria-live="polite"></p>
+
+                    <section class="gasolina-panel" id="panelGasolina" aria-labelledby="tituloGasolina" hidden>
+                        <h3 id="tituloGasolina">Estimado de gasolina</h3>
+                        <p>Calculamos un trayecto aproximado sin guardar una ruta en tu plan.</p>
+                        <label for="rendimientoVehiculo">Rendimiento de tu carro (km por litro)</label>
+                        <input id="rendimientoVehiculo" type="number" min="4" max="40" step="0.5" value="12" inputmode="decimal">
+                        <p id="costoGasolina" class="gasolina-resultado" aria-live="polite"></p>
+                        <p class="ruta-nota">Estimado con gasolina a $24.50 por litro. El precio real y el consumo pueden variar.</p>
+                    </section>
+
+                    <button class="btn btn-grad" id="btnCalcularRuta" type="button">Calcular ruta aproximada</button>
+                    <p class="ruta-resultado" id="rutaResultado" role="status" aria-live="polite"></p>
+                    <div class="mini-mapa" id="miniMapa" hidden></div>
+                    <p class="ruta-nota">Las rutas y tiempos son aproximados. No se incluyen tarifas de taxi, autobús o avión.</p>
+                </section>
+
+            </div>
+
+            <div class="paso" id="paso5" hidden>
+
+                <h2>Paso 5 · Tu viaje a <span id="resumenEstado">...</span> está listo</h2>
 
                 <p class="paso-descripcion">Así se ve tu viaje armado paso a paso.</p>
 
-                <div class="mini-mapa" id="miniMapa"></div>
-
                 <div class="itinerario" id="itinerario"></div>
 
-                <section class="calculadora-viaje" id="calculadoraViaje" aria-labelledby="tituloCalculadora" hidden>
+                <section class="calculadora-viaje" id="calculadoraViaje" aria-labelledby="tituloCalculadora">
                     <div class="calculadora-encabezado">
                         <h3 id="tituloCalculadora">Calculadora de viaje</h3>
-                        <p>Ajusta el grupo y las comidas para actualizar el estimado.</p>
+                        <p>El estimado incluye hospedaje y comidas seleccionados; el traslado es aproximado y no incluye entradas.</p>
                     </div>
 
                     <div class="calculadora-controles">
@@ -143,21 +196,23 @@
                     <div class="calculadora-resultado" aria-live="polite">
                         <p><span>Hospedaje</span><strong id="costoCalculadoHotel">$0</strong></p>
                         <p><span>Comidas</span><strong id="costoCalculadoComidas">$0</strong></p>
+                        <p id="filaGasolina" hidden><span>Gasolina aproximada</span><strong id="costoCalculadoGasolina">$0</strong></p>
                         <p class="calculadora-total"><span>Total estimado</span><strong id="costoCalculadoTotal">$0</strong></p>
                     </div>
                 </section>
 
                 <div class="acciones-finales">
 
-                    <button class="btn btn-grad" id="btnVerEstado" type="button">
-                        Ver página completa del estado
+                    <button class="btn btn-grad" id="btnGuardarViaje" type="button">
+                        Guardar viaje
                     </button>
 
-                    <button class="btn btn-suave" id="btnOtroViaje" type="button">
-                        Armar otro viaje
+                    <button class="btn btn-suave" id="btnVerEstado" type="button">
+                        Volver al estado
                     </button>
 
                 </div>
+                <p class="mensaje-guardar-viaje" id="mensajeGuardarViaje" role="status" aria-live="polite"></p>
 
             </div>
 
@@ -179,7 +234,7 @@
 
             </div>
 
-            <button class="btn btn-grad" id="btnSiguiente" type="button" aria-expanded="false" aria-controls="calculadoraViaje">
+            <button class="btn btn-grad" id="btnSiguiente" type="button">
                 Siguiente
             </button>
 
@@ -190,7 +245,7 @@
     <script src="../../lib/leaflet.js"></script>
     <script src="../js/datos-estados.js?v=miravia-mun-18"></script>
     <script src="../../js/chatbot.js"></script>
-    <script src="armar-viaje.js?v=miravia-wiz-20"></script>
+    <script src="armar-viaje.js?v=miravia-ruta-4"></script>
 
 </body>
 
