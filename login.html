@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head><!--modificado AGTH-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inicia sesión o crea tu cuenta en MIRAVIA para comenzar tu próximo viaje.">
+
+    <title>Acceso | MIRAVIA</title>
+
+    <link rel="stylesheet" href="estilo/login.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/login.js" defer></script>
+</head>
+
+<body>
+    <main class="pagina-acceso">
+
+        <section class="panel-visual">
+            <a href="inicio.html" class="marca">MIRAVIA<span>.</span></a>
+
+            <div class="texto-visual">
+                <p class="etiqueta">DESCUBRE · EXPLORA · VIAJA</p>
+                <h1>El mundo tiene mucho que contarte.</h1>
+                <p>
+                    Crea tu cuenta y comienza a descubrir lugares,
+                    experiencias y destinos inolvidables.
+                </p>
+            </div>
+
+            <div id="loginGlobo" class="globo"></div>
+
+            <p class="pie-visual">Tu próxima aventura comienza aquí.</p>
+        </section>
+
+        <section class="panel-formulario">
+            <div class="formulario-contenido">
+
+                <a href="inicio.html" class="volver">← Volver al inicio</a>
+
+                <div class="encabezado-formulario">
+                    <span class="icono-viaje">✈</span>
+                    <p class="etiqueta">BIENVENIDO A MIRAVIA</p>
+                    <h2 id="tituloAcceso">Iniciar sesión</h2>
+                    <p id="descripcionAcceso">
+                        Entra a MIRAVIA para continuar tu viaje.
+                    </p>
+                </div>
+
+                <!-- FORMULARIO DE INICIO DE SESIÓN -->
+                <form id="formLogin" method="POST">
+                    <div class="campo">
+                        <label for="correo">Correo electrónico</label>
+                        <input
+                            type="email"
+                            id="correo"
+                            name="correo"
+                            placeholder="tucorreo@ejemplo.com"
+                            autocomplete="email"
+                            maxlength="190"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="password">Contraseña</label>
+
+                        <div class="campo-password">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Ingresa tu contraseña"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                id="mostrarPassword"
+                                class="mostrar-password"
+                                aria-label="Mostrar u ocultar contraseña"
+                            >👁</button>
+                        </div>
+                    </div>
+
+                    <label class="recordar">
+                        <input type="checkbox" id="recordarme" name="recordarme">
+                        <span>Recordarme</span>
+                    </label>
+
+                    <p id="mensajeLogin" class="mensaje" role="alert" aria-live="polite"></p>
+
+                    <button type="submit" id="btnLogin" class="boton-principal">
+                        Iniciar sesión
+                    </button>
+
+                    <p class="cambio-formulario">
+                        ¿Todavía no tienes cuenta?
+                        <a href="#registro" id="mostrarRegistro">Regístrate aquí</a>
+                    </p>
+                </form>
+
+                <!-- FORMULARIO DE REGISTRO -->
+                <form id="formRegistro" hidden>
+                    <div class="campo">
+                        <label for="nombreRegistro">Nombre completo</label>
+                        <input
+                            type="text"
+                            id="nombreRegistro"
+                            name="nombre"
+                            placeholder="Tu nombre completo"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="correoRegistro">Correo electrónico</label>
+                        <input
+                            type="email"
+                            id="correoRegistro"
+                            name="correo"
+                            placeholder="tucorreo@ejemplo.com"
+                            autocomplete="email"
+                            maxlength="190"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="contrasenaRegistro">Contraseña</label>
+                        <input
+                            type="password"
+                            id="contrasenaRegistro"
+                            name="contrasena"
+                            placeholder="Mínimo 8 caracteres"
+                            autocomplete="new-password"
+                            minlength="8"
+                            maxlength="72"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="confirmarRegistro">Confirmar contraseña</label>
+                        <input
+                            type="password"
+                            id="confirmarRegistro"
+                            name="confirmar"
+                            placeholder="Escribe de nuevo tu contraseña"
+                            autocomplete="new-password"
+                            minlength="8"
+                            maxlength="72"
+                            required
+                        >
+                    </div>
+
+                    <p id="mensajeRegistro" class="mensaje" role="alert" aria-live="polite"></p>
+
+                    <button type="submit" id="btnRegistro" class="boton-principal">
+                        Crear cuenta
+                    </button>
+
+                    <p class="cambio-formulario">
+                        ¿Ya tienes una cuenta?
+                        <a href="#login" id="mostrarLogin">Inicia sesión</a>
+                    </p>
+                </form>
+
+                <p class="nota-privacidad">
+                    Al crear tu cuenta, tus datos se guardarán en MIRAVIA
+                    para que puedas acceder con tus credenciales.
+                </p>
+
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

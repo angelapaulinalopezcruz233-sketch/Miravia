@@ -5,7 +5,7 @@ declare(strict_types=1);
 function conectarBaseDatos(): PDO
 {
     $host = '127.0.0.1';
-    $baseDatos = 'miraviaDB';
+    $baseDatos = 'miravia_db';
     $usuario = 'root';
     $contrasena = '';
 

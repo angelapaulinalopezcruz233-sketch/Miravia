@@ -242,6 +242,157 @@ body {
     color: #0c5a4d;
 }
 
+.hospedaje-card {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid rgba(18, 54, 66, 0.1);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 12px 28px rgba(4, 29, 44, 0.2);
+}
+
+.hospedaje-card:hover {
+    border-color: rgba(47, 154, 144, 0.45);
+    box-shadow: 0 18px 36px rgba(4, 29, 44, 0.28);
+}
+
+.hospedaje-card:focus-visible {
+    outline: 3px solid #9ff3e0;
+    outline-offset: 3px;
+}
+
+.hospedaje-foto {
+    position: relative;
+    aspect-ratio: 16 / 8;
+    overflow: hidden;
+    background: #d8e9e2;
+}
+
+.hospedaje-foto::after {
+    position: absolute;
+    inset: 35% 0 0;
+    background: linear-gradient(transparent, rgba(5, 25, 31, 0.55));
+    content: "";
+    pointer-events: none;
+}
+
+.hospedaje-foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.hospedaje-card:hover .hospedaje-foto img {
+    transform: scale(1.04);
+}
+
+.hospedaje-card .tipo-etiqueta {
+    position: absolute;
+    z-index: 1;
+    bottom: 14px;
+    left: 16px;
+    margin: 0;
+    padding: 5px 10px;
+    background: rgba(8, 35, 40, 0.8);
+    color: #fff;
+    letter-spacing: 0.08em;
+    backdrop-filter: blur(8px);
+}
+
+.hospedaje-cuerpo {
+    padding: 18px;
+}
+
+.hospedaje-card h3 {
+    margin: 0 0 6px;
+    color: #153a40;
+    font-size: 19px;
+    line-height: 1.25;
+}
+
+.hospedaje-card .ubicacion {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    margin-bottom: 10px;
+    color: #56716f;
+    font-size: 12.5px;
+}
+
+.hospedaje-card .ubicacion::before {
+    color: #168574;
+    content: "●";
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.hospedaje-card .descripcion {
+    min-height: 58px;
+    margin-bottom: 16px;
+    color: #516965;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.hospedaje-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-top: 13px;
+    border-top: 1px solid #e7efeb;
+}
+
+.hospedaje-card .calificacion {
+    color: #bd7417;
+    font-size: 14px;
+}
+
+.hospedaje-card .calificacion strong {
+    color: #193d42;
+}
+
+.hospedaje-card .calificacion small,
+.hospedaje-card .precio small {
+    display: block;
+    color: #70837f;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.hospedaje-card .precio {
+    display: grid;
+    justify-items: end;
+    color: #0c5a4d;
+    font-size: 20px;
+    line-height: 1.15;
+}
+
+.hospedaje-card .precio strong {
+    color: #0c5a4d;
+}
+
+.hospedaje-card.elegida {
+    border-color: #279884;
+    box-shadow: 0 0 0 3px rgba(85, 205, 183, 0.22), 0 18px 36px rgba(4, 29, 44, 0.28);
+}
+
+.hospedaje-card.elegida::after {
+    position: absolute;
+    z-index: 2;
+    top: 12px;
+    right: 12px;
+    float: none;
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    background: #e6fff5;
+    color: #0c5a4d;
+    content: "✓ Seleccionado";
+}
+
 .estadia-panel {
     display: flex;
     align-items: center;
@@ -660,6 +811,14 @@ body {
 ======================================== */
 
 @media (max-width: 620px) {
+
+    .tarjetas {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hospedaje-foto {
+        aspect-ratio: 16 / 9;
+    }
 
     .calculadora-controles {
         grid-template-columns: 1fr;
