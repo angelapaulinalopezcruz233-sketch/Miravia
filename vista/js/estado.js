@@ -1,3 +1,4 @@
+// Actualiza el selector de municipios al cambiar el estado y prepara la navegación.
 const estado = document.getElementById("estado");
 
 const municipio = document.getElementById("municipio");
