@@ -191,7 +191,7 @@
 
     <script src="../../lib/leaflet.js"></script>
 
-    <script src="../js/datos-estados.js?v=miravia-fotos-destinos-9"></script>
+    <script src="../js/datos-estados.js?v=miravia-fotos-destinos-25"></script>
 
     <script>
 
@@ -208,6 +208,13 @@
         if (!datos) {
             location.replace("../../inicio.html?destinos=1");
             throw new Error("Estado desconocido: " + valorEstado);
+        }
+
+        if (datos.imagenPortada) {
+            const heroEstado = document.querySelector(".hero-estado");
+            heroEstado.classList.add("con-imagen");
+            heroEstado.style.backgroundImage =
+                `linear-gradient(135deg, rgba(12, 90, 77, 0.82), rgba(18, 180, 143, 0.62)), url("${datos.imagenPortada}")`;
         }
 
         /* ---------- TITULOS ---------- */

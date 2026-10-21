@@ -62,6 +62,12 @@ a { text-decoration: none; color: inherit; }
     text-align: center;
 }
 
+.hero-estado.con-imagen {
+    background-position: center 42%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .hero-estado .etiqueta {
     display: inline-block;
     background: rgba(255, 255, 255, 0.18);
@@ -684,4 +690,5 @@ a { text-decoration: none; color: inherit; }
     .buscador-mapa { padding: 12px; }
     .buscador-mapa-campos button { padding: 10px 13px; }
     .foto-destino-turistico img { height: 170px; }
+    #seccionLugares .seccion-cabecera { display: grid; gap: 6px; }
 }

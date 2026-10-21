@@ -7,9 +7,95 @@ const DATOS_ESTADOS = {
 
   /* ---------- BASE DE TODOS LOS ESTADOS ---------- */
 
-  aguascalientes: { nombre: "Aguascalientes", capital: "Aguascalientes", coords: [21.89, -102.29], descripcion: "Famosa por su Feria de San Marcos, la más grande de México, y sus aguas termales." },
-  "baja-california": { nombre: "Baja California", capital: "Mexicali", coords: [30.84, -115.28], descripcion: "Tierra del vino mexicano en el Valle de Guadalupe y playas como Ensenada y Rosarito." },
-  "baja-california-sur": { nombre: "Baja California Sur", capital: "La Paz", coords: [25.04, -111.66], descripcion: "Hogar de Los Cabos y el mar de Cortés, con playas y avistamientos de ballenas inolvidables." },
+  aguascalientes: {
+    nombre: "Aguascalientes",
+    capital: "Aguascalientes",
+    coords: [21.89, -102.29],
+    descripcion: "Disfruta el centro histórico, el Jardín de San Marcos y el Pueblo Mágico de Calvillo.",
+    lugares: [
+      {
+        nombre: "Centro histórico y Catedral de Aguascalientes",
+        descripcion: "Recorre la Plaza de la Patria y conoce la catedral y los edificios históricos del centro.",
+        imagen: "../../img/lugares/aguascalientes-centro-historico.png",
+        credito: "Catedral y plaza principal de Aguascalientes — Luisalvaz · CC0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Catedral_de_Aguascalientes_y_plaza_principal_desde_un_dron_01.png"
+      },
+      {
+        nombre: "Jardín de San Marcos",
+        descripcion: "Visita este jardín tradicional, famoso por sus jardines, sus fuentes y la Feria Nacional de San Marcos.",
+        imagen: "../../img/lugares/aguascalientes-jardin-san-marcos.jpg",
+        credito: "Jardín de San Marcos — Luis Alvaz · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:El_Jardín_de_San_Marcos_en_Aguascalientes_01.jpg"
+      },
+      {
+        nombre: "Calvillo, Pueblo Mágico",
+        descripcion: "Descubre la parroquia del Señor del Salitre y las calles de este pueblo famoso por sus guayabas.",
+        imagen: "../../img/lugares/aguascalientes-calvillo.jpg",
+        credito: "Parroquia del Señor del Salitre en Calvillo — Luisalvaz · CC BY 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Vista_a%C3%A9rea_de_la_Parroquia_del_Se%C3%B1or_del_Salitre_en_Calvillo,_Aguascalientes_01.jpg"
+      }
+    ]
+  },
+  "baja-california": {
+    nombre: "Baja California",
+    capital: "Mexicali",
+    coords: [30.84, -115.28],
+    imagenPortada: "../../img/lugares/baja-california-valle-guadalupe.jpg",
+    descripcion: "Recorre los viñedos del Valle de Guadalupe, conoce La Bufadora en Ensenada y disfruta las playas de Rosarito.",
+    lugares: [
+      {
+        nombre: "Valle de Guadalupe",
+        descripcion: "Visita los viñedos y disfruta los paisajes de la reconocida región vinícola de Baja California.",
+        imagen: "../../img/lugares/baja-california-valle-guadalupe.jpg",
+        credito: "Viñedo en el Valle de Guadalupe — Tomascastelazo · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Guadalupe_valley.jpg"
+      },
+      {
+        nombre: "La Bufadora, Ensenada",
+        descripcion: "Observa este géiser marino natural, donde las olas chocan contra la costa rocosa.",
+        imagen: "../../img/lugares/baja-california-bufadora.jpg",
+        credito: "La Bufadora — Alex Tapia · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:La_Bufadora,_Ensenada,_Mexico.jpg"
+      },
+      {
+        nombre: "Playas de Rosarito",
+        descripcion: "Relájate frente al Pacífico y disfruta la costa de Rosarito, al sur de Tijuana.",
+        imagen: "../../img/lugares/baja-california-rosarito.jpg",
+        credito: "Playa de Rosarito — Kennybozzle · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Rosarito_Beach,_Baja_California,_Mexico.jpg"
+      }
+    ]
+  },
+  "baja-california-sur": {
+    nombre: "Baja California Sur",
+    capital: "La Paz",
+    coords: [25.04, -111.66],
+    imagenPortada: "../../img/lugares/baja-california-sur-el-arco.jpg",
+    descripcion: "Explora Los Cabos, Playa Balandra en La Paz y la histórica Misión de Loreto junto al mar de Cortés.",
+    lugares: [
+      {
+        nombre: "El Arco de Cabo San Lucas",
+        descripcion: "Admira esta formación rocosa junto al mar de Cortés, en el extremo sur de la península.",
+        imagen: "../../img/lugares/baja-california-sur-el-arco.jpg",
+        credito: "El Arco de Cabo San Lucas — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:El_Arco,_Cabo_San_Lucas,_Baja_California_Sur_(16638939645).jpg"
+      },
+      {
+        nombre: "Playa Balandra",
+        descripcion: "Disfruta sus aguas tranquilas y poco profundas y contempla el famoso Hongo de Balandra.",
+        imagen: "../../img/lugares/baja-california-sur-balandra.jpg",
+        credito: "Playa Balandra — Pequeño mar · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Playa_Balandra,_Baja_California_Sur.jpg"
+      },
+      {
+        nombre: "Misión de Nuestra Señora de Loreto",
+        descripcion: "Visita la misión histórica de Loreto y conoce uno de los sitios emblemáticos de la península.",
+        imagen: "../../img/lugares/baja-california-sur-loreto.jpg",
+        credito: "Misión de Nuestra Señora de Loreto — Kirt Edblom · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Misi%C3%B3n_de_Nuestra_Se%C3%B1ora_de_Loreto_-_Baja_California_Sur_(14563317428).jpg"
+      }
+    ]
+  },
   campeche: {
     nombre: "Campeche",
     capital: "San Francisco de Campeche",
@@ -99,11 +185,126 @@ const DATOS_ESTADOS = {
       }
     ]
   },
-  chihuahua: { nombre: "Chihuahua", capital: "Chihuahua", coords: [28.63, -106.07], descripcion: "Las Barrancas del Cobre, más grandes que el Gran Cañón, y el histórico Chepe Express." },
+  chihuahua: {
+    nombre: "Chihuahua",
+    capital: "Chihuahua",
+    coords: [28.63, -106.07],
+    imagenPortada: "../../img/lugares/chihuahua-barrancas-cobre.jpg",
+    descripcion: "Explora las Barrancas del Cobre, la cascada de Basaseachi y la antigua ciudad de Paquimé.",
+    lugares: [
+      {
+        nombre: "Barrancas del Cobre",
+        descripcion: "Contempla los paisajes de la Sierra Tarahumara y recorre los miradores del cañón.",
+        imagen: "../../img/lugares/chihuahua-barrancas-cobre.jpg",
+        credito: "Barrancas del Cobre — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Barrancas_del_Cobre,_Chihuahua_(32525951550).jpg"
+      },
+      {
+        nombre: "Cascada de Basaseachi",
+        descripcion: "Visita una de las cascadas más altas de México, en el parque nacional del mismo nombre.",
+        imagen: "../../img/lugares/chihuahua-basaseachi.jpg",
+        credito: "Cascada de Basaseachi — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cascada_de_Basaseachi,_Sierra_Madre_Occidental,_Chihuahua.jpg"
+      },
+      {
+        nombre: "Zona arqueológica de Paquimé",
+        descripcion: "Recorre las antiguas construcciones de adobe de esta ciudad prehispánica en Casas Grandes.",
+        imagen: "../../img/lugares/chihuahua-paquime.jpg",
+        credito: "Zona arqueológica de Paquimé — Levi bernardo · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Zona_arqueol%C3%B3gica_de_Paquim%C3%A9_2020.jpg"
+      }
+    ]
+  },
   "ciudad-de-mexico": { nombre: "Ciudad de México", capital: "Ciudad de México", coords: [19.43, -99.13], descripcion: "Museos, el Zócalo, Teotihuacán cerca y una de las mejores gastronomías del mundo." },
-  coahuila: { nombre: "Coahuila", capital: "Saltillo", coords: [25.43, -100.99], descripcion: "Desierto con zona del silencio, huellas de dinosaurios y viñedos del norte." },
-  colima: { nombre: "Colima", capital: "Colima", coords: [19.24, -103.72], descripcion: "El volcán de fuego, playas tranquilas en Manzanillo y tumbas de tiro en el Cerro de la Campana." },
-  durango: { nombre: "Durango", capital: "Victoria de Durango", coords: [24.02, -104.65], descripcion: "Pueblos del mexicano, Sierra Madre Occidental y sets de cine del viejo oeste." },
+  coahuila: {
+    nombre: "Coahuila",
+    capital: "Saltillo",
+    coords: [25.43, -100.99],
+    imagenPortada: "../../img/lugares/coahuila-dunas-bilbao.jpg",
+    descripcion: "Explora las pozas azules de Cuatro Ciénegas, las Dunas de Bilbao y el Pueblo Mágico de Parras.",
+    lugares: [
+      {
+        nombre: "Cuatro Ciénegas y la Poza Azul",
+        descripcion: "Descubre las pozas de agua cristalina y los paisajes únicos del valle de Cuatro Ciénegas.",
+        imagen: "../../img/lugares/coahuila-cuatro-cienegas.jpg",
+        credito: "Poza Azul, Cuatro Ciénegas — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Poza_Azul,_Cuatro_Ci%C3%A9negas,_Coahuila_(22622991294).jpg"
+      },
+      {
+        nombre: "Dunas de Bilbao",
+        descripcion: "Camina por este paisaje de arena en Viesca y disfruta sus atardeceres en el desierto.",
+        imagen: "../../img/lugares/coahuila-dunas-bilbao.jpg",
+        credito: "Dunas de Bilbao — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Dunas_de_Bilbao,_Viesca,_Coahuila_(22731683007).jpg"
+      },
+      {
+        nombre: "Parras de la Fuente",
+        descripcion: "Visita sus viñedos, calles tradicionales y la iglesia del Santo Madero.",
+        imagen: "../../img/lugares/coahuila-parras.jpg",
+        credito: "Iglesia del Santo Madero, Parras — Filiberto Lara Salcido · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Iglesia_del_Santo_Madero_-_Parras_de_la_Fuente,_Coahuila_Mexico.jpg"
+      }
+    ]
+  },
+  colima: {
+    nombre: "Colima",
+    capital: "Colima",
+    coords: [19.24, -103.72],
+    descripcion: "El Volcán de Fuego, las playas de Manzanillo y el Pueblo Mágico de Comala.",
+    lugares: [
+      {
+        nombre: "Volcán de Fuego de Colima",
+        descripcion: "Admira uno de los volcanes más activos de México desde los miradores de la región.",
+        imagen: "../../img/lugares/colima-volcan.jpg",
+        credito: "Volcán de Fuego de Colima — Michbalbi · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Volc%C3%A1n_de_Fuego_de_Colima.jpg"
+      },
+      {
+        nombre: "Comala, Pueblo Mágico",
+        descripcion: "Pasea por su plaza, sus calles blancas y sus portales con vistas al Volcán de Fuego.",
+        imagen: "../../img/lugares/colima-comala.jpg",
+        credito: "Plaza de Comala — Irene Soria Guzmán · CC BY 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Plaza_de_Comala.jpg"
+      },
+      {
+        nombre: "Bahía de Santiago, Manzanillo",
+        descripcion: "Disfruta las playas y las vistas del Pacífico en una de las bahías más conocidas de Colima.",
+        imagen: "../../img/lugares/colima-manzanillo.jpg",
+        credito: "Bahía de Santiago, Manzanillo — Ale Ramos M · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Bah%C3%ADa_De_Santiago_en_Manzanillo,_Colima,_M%C3%A9xico.jpg"
+      }
+    ]
+  },
+  durango: {
+    nombre: "Durango",
+    capital: "Victoria de Durango",
+    coords: [24.02, -104.65],
+    imagenPortada: "../../img/lugares/durango-centro.jpg",
+    descripcion: "Descubre el centro histórico de Durango, las cascadas de Mexiquillo y el puente colgante de Ojuela.",
+    lugares: [
+      {
+        nombre: "Catedral y centro histórico de Durango",
+        descripcion: "Recorre la Plaza de Armas y admira la arquitectura de la Catedral Basílica.",
+        imagen: "../../img/lugares/durango-catedral.jpg",
+        credito: "Catedral Basílica de Durango — Alvaro Dioni · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Catedral_Basilica_de_Durango_01.jpg"
+      },
+      {
+        nombre: "Parque Natural Mexiquillo",
+        descripcion: "Disfruta sus cascadas, bosques y formaciones rocosas en la Sierra Madre Occidental.",
+        imagen: "../../img/lugares/durango-mexiquillo.jpg",
+        credito: "Cascada de Mexiquillo — Raer · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cascada_de_Mexiquillo.jpg"
+      },
+      {
+        nombre: "Puente colgante de Ojuela",
+        descripcion: "Conoce este histórico puente minero suspendido sobre el paisaje semidesértico de Mapimí.",
+        imagen: "../../img/lugares/durango-puente-ojuela.jpg",
+        credito: "Puente de la Ojuela — Isaac Salvador Pérez · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Puente_de_la_Ojuela,_Durango.jpg"
+      }
+    ]
+  },
   guerrero: {
     nombre: "Guerrero",
     capital: "Chilpancingo",
@@ -206,7 +407,36 @@ const DATOS_ESTADOS = {
       }
     ]
   },
-  "nuevo-leon": { nombre: "Nuevo León", capital: "Monterrey", coords: [25.67, -100.31], descripcion: "Monterrey con su Cerro de la Silla, Grutas de García, la Cascada Cola de Caballo y la ruta del queso." },
+  "nuevo-leon": {
+    nombre: "Nuevo León",
+    capital: "Monterrey",
+    coords: [25.67, -100.31],
+    imagenPortada: "../../img/lugares/nuevo-leon-cerro-silla.jpg",
+    descripcion: "Disfruta las vistas del Cerro de la Silla, las Grutas de García y la Cascada Cola de Caballo.",
+    lugares: [
+      {
+        nombre: "Cerro de la Silla",
+        descripcion: "Admira el ícono natural de Monterrey y disfruta sus paisajes de montaña.",
+        imagen: "../../img/lugares/nuevo-leon-cerro-silla.jpg",
+        credito: "Cerro de la Silla — Ginamer · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cerro_de_la_Silla,_Monterrey,_N.L.jpg"
+      },
+      {
+        nombre: "Cascada Cola de Caballo",
+        descripcion: "Visita esta cascada rodeada de vegetación en el municipio de Santiago.",
+        imagen: "../../img/lugares/nuevo-leon-cola-caballo.jpg",
+        credito: "Cascada Cola de Caballo — Fernando2812l · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cascada_Cola_de_Caballo,_Nuevo_Leon.JPG"
+      },
+      {
+        nombre: "Grutas de García",
+        descripcion: "Recorre sus cavernas y contempla las formaciones de piedra caliza.",
+        imagen: "../../img/lugares/nuevo-leon-grutas-garcia.jpg",
+        credito: "Grutas de García — Phyrexian · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Grutas_de_Garc%C3%ADa_0447.jpg"
+      }
+    ]
+  },
   morelos: {
     nombre: "Morelos",
     capital: "Cuernavaca",
@@ -229,8 +459,65 @@ const DATOS_ESTADOS = {
       }
     ]
   },
-  nayarit: { nombre: "Nayarit", capital: "Tepic", coords: [21.75, -104.85], descripcion: "Riviera Nayarit, la isla de Mexcaltitán y olas de clase mundial en San Blas." },
-  "san-luis-potosi": { nombre: "San Luis Potosí", capital: "San Luis Potosí", coords: [22.16, -100.99], descripcion: "La Huasteca Potosina con sus cascadas turquesa y el mágico Real de Catorce." },
+  nayarit: {
+    nombre: "Nayarit",
+    capital: "Tepic",
+    coords: [21.75, -104.85],
+    imagenPortada: "../../img/lugares/nayarit-sayulita.jpg",
+    descripcion: "Descubre las playas de Sayulita, la isla de Mexcaltitán y la bahía de Matanchén, cerca de San Blas.",
+    lugares: [
+      {
+        nombre: "Sayulita, Riviera Nayarit",
+        descripcion: "Disfruta la playa, el ambiente del pueblo y las olas de este destino de la Riviera Nayarit.",
+        imagen: "../../img/lugares/nayarit-sayulita.jpg",
+        credito: "Playa de Sayulita — Grapesy · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Sayulita_Playa.jpg"
+      },
+      {
+        nombre: "Isla de Mexcaltitán",
+        descripcion: "Recorre en lancha esta isla rodeada de canales y manglares en el norte de Nayarit.",
+        imagen: "../../img/lugares/nayarit-mexcaltitan.jpg",
+        credito: "Isla de Mexcaltitán — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Isla_Mexcaltit%C3%A1n,_Nayarit-_Mexcaltitl%C3%A1n_Island,_Nayarit_(11933745263).jpg"
+      },
+      {
+        nombre: "Bahía de Matanchén y San Blas",
+        descripcion: "Relájate en la costa de Matanchén y conoce el puerto histórico de San Blas.",
+        imagen: "../../img/lugares/nayarit-matanchen.jpg",
+        credito: "Bahía de Matanchén — House · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Bah%C3%ADa_de_Matanchen.JPG"
+      }
+    ]
+  },
+  "san-luis-potosi": {
+    nombre: "San Luis Potosí",
+    capital: "San Luis Potosí",
+    coords: [22.16, -100.99],
+    descripcion: "Las cascadas de la Huasteca Potosina, el jardín surrealista de Xilitla y el pueblo histórico de Real de Catorce.",
+    lugares: [
+      {
+        nombre: "Cascada de Tamul",
+        descripcion: "Contempla la imponente caída de agua en el corazón de la Huasteca Potosina.",
+        imagen: "../../img/lugares/san-luis-potosi-tamul.jpg",
+        credito: "Cascada de Tamul — Sarkel · CC BY 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cascada_de_Tamul.jpg"
+      },
+      {
+        nombre: "Jardín surrealista de Las Pozas, Xilitla",
+        descripcion: "Recorre el jardín escultórico de Edward James, rodeado por la vegetación de la Huasteca.",
+        imagen: "../../img/lugares/san-luis-potosi-las-pozas.jpg",
+        credito: "Las Pozas — Adam Jones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Las_Pozas_-_Edward_James_Surrealist_Garden_-_San_Luis_Potosi_-_Mexico_-_02_(32553055548).jpg"
+      },
+      {
+        nombre: "Real de Catorce",
+        descripcion: "Descubre sus calles empedradas, arquitectura histórica y paisajes del Altiplano potosino.",
+        imagen: "../../img/lugares/san-luis-potosi-real-de-catorce.jpg",
+        credito: "Real de Catorce — Jess fernandez · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Real_de_Catorce,_San_Luis_Potos%C3%AD.jpg"
+      }
+    ]
+  },
   queretaro: {
     nombre: "Querétaro",
     capital: "Querétaro",
@@ -253,8 +540,66 @@ const DATOS_ESTADOS = {
       }
     ]
   },
-  sinaloa: { nombre: "Sinaloa", capital: "Culiacán", coords: [24.81, -107.39], descripcion: "Mazatlán y su malecón, playas doradas y mariscos de primera." },
-  sonora: { nombre: "Sonora", capital: "Hermosillo", coords: [29.07, -110.96], descripcion: "Desierto de Altar, San Carlos y sus playas del mar de Cortés, tierra de la carne asada." },
+  sinaloa: {
+    nombre: "Sinaloa",
+    capital: "Culiacán",
+    coords: [24.81, -107.39],
+    imagenPortada: "../../img/lugares/sinaloa-mazatlan-portada.jpg",
+    descripcion: "Recorre el malecón de Mazatlán, conoce la histórica Plazuela Machado y disfruta la playa de la Isla de la Piedra.",
+    lugares: [
+      {
+        nombre: "Malecón de Mazatlán",
+        descripcion: "Camina junto al Pacífico y contempla el atardecer desde uno de los malecones más largos de México.",
+        imagen: "../../img/lugares/sinaloa-mazatlan-portada.jpg",
+        credito: "Atardecer en el malecón de Mazatlán — Adam Jones · CC BY 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Sunset_along_the_Malecon_-_Mazatlan_-_Sinaloa_-_Mexico_-_01.jpg"
+      },
+      {
+        nombre: "Plazuela Machado, Centro Histórico",
+        descripcion: "Disfruta la arquitectura, los cafés y el ambiente cultural de esta plaza tradicional de Mazatlán.",
+        imagen: "../../img/lugares/sinaloa-plazuela-machado.jpg",
+        credito: "Plazuela Machado — Gzzz · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Plazuela_Machado_Mazatl%C3%A1n.jpg"
+      },
+      {
+        nombre: "Isla de la Piedra",
+        descripcion: "Relájate en sus playas y disfruta la costa y la gastronomía local, a un corto trayecto en lancha desde Mazatlán.",
+        imagen: "../../img/lugares/sinaloa-isla-piedra.jpg",
+        credito: "Isla de la Piedra — Gzzz · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Isla_de_la_Piedra_(3).jpg"
+      }
+    ]
+  },
+  sonora: {
+    nombre: "Sonora",
+    capital: "Hermosillo",
+    coords: [29.07, -110.96],
+    imagenPortada: "../../img/lugares/sonora-san-carlos.jpg",
+    descripcion: "Descubre San Carlos y el mar de Cortés, la Reserva de la Biosfera El Pinacate y Bahía de Kino.",
+    lugares: [
+      {
+        nombre: "San Carlos y el mar de Cortés",
+        descripcion: "Disfruta las playas y los paisajes desérticos de San Carlos, junto al mar de Cortés.",
+        imagen: "../../img/lugares/sonora-san-carlos.jpg",
+        credito: "San Carlos, Sonora — Victor Hugo de Lafuente Flores · CC BY 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:San_Carlos,_Sonora,_México.jpg"
+      },
+      {
+        nombre: "Reserva de la Biosfera El Pinacate",
+        descripcion: "Explora el paisaje volcánico, los cráteres y los campos de lava de esta reserva natural.",
+        imagen: "../../img/lugares/sonora-el-pinacate.jpg",
+        credito: "Reserva de la Biosfera El Pinacate — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Reserva_de_la_Biosfera_El_Pinacate,_Sonora-Biosphere_Reserve,_El_Pinacate,_Sonora_(23095506996).jpg"
+      },
+      {
+        nombre: "Bahía de Kino",
+        descripcion: "Relájate en las playas del golfo de California y disfruta la costa sonorense.",
+        imagen: "../../img/lugares/sonora-bahia-kino.jpg",
+        credito: "Bahía de Kino — Comisión Mexicana de Filmaciones · CC BY-SA 2.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Bahia_de_Kino,_Hermosillo,_Sonora_(23106114122).jpg"
+      }
+    ]
+  },
   tabasco: {
     nombre: "Tabasco",
     capital: "Villahermosa",
@@ -270,7 +615,35 @@ const DATOS_ESTADOS = {
       }
     ]
   },
-  tamaulipas: { nombre: "Tamaulipas", capital: "Ciudad Victoria", coords: [23.74, -99.14], descripcion: "El Cielo biosfera estrellada, playas de Tampico y cuevas impresionantes." },
+  tamaulipas: {
+    nombre: "Tamaulipas",
+    capital: "Ciudad Victoria",
+    coords: [23.74, -99.14],
+    descripcion: "Descubre los bosques y ríos de la Reserva El Cielo, Playa Miramar y la Laguna del Carpintero.",
+    lugares: [
+      {
+        nombre: "Reserva de la Biosfera El Cielo",
+        descripcion: "Explora los arroyos y bosques de niebla de esta reserva natural en Gómez Farías.",
+        imagen: "../../img/lugares/tamaulipas-el-cielo.jpg",
+        credito: "Arroyo en la Reserva El Cielo — William L. Farr · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Cloud_forest_stream_in_El_Cielo_Biosphere_Reserve,_24_September_2003.jpg"
+      },
+      {
+        nombre: "Playa Miramar",
+        descripcion: "Disfruta el mar y la arena de esta popular playa en Ciudad Madero.",
+        imagen: "../../img/lugares/tamaulipas-playa-miramar.jpg",
+        credito: "Playa Miramar — AnbyG · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Playa_Miramar.jpg"
+      },
+      {
+        nombre: "Laguna del Carpintero",
+        descripcion: "Pasea junto a la laguna de Tampico y observa sus manglares y fauna local.",
+        imagen: "../../img/lugares/tamaulipas-laguna-carpintero.jpg",
+        credito: "Laguna del Carpintero — CarolEstefSalas · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Laguna_del_Carpintero_en_Tampico,_Tamaulipas,_Mexico.jpg"
+      }
+    ]
+  },
   tlaxcala: {
     nombre: "Tlaxcala",
     capital: "Tlaxcala",
@@ -322,7 +695,35 @@ const DATOS_ESTADOS = {
       }
     ]
   },
-  zacatecas: { nombre: "Zacatecas", capital: "Zacatecas", coords: [22.77, -102.58], descripcion: "Mina El Edén, cerro de la Bufa y una de las ciudades coloniales más bellas." },
+  zacatecas: {
+    nombre: "Zacatecas",
+    capital: "Zacatecas",
+    coords: [22.77, -102.58],
+    descripcion: "Explora su centro histórico colonial, el cerro de la Bufa y la histórica Mina El Edén.",
+    lugares: [
+      {
+        nombre: "Catedral y centro histórico de Zacatecas",
+        descripcion: "Admira la fachada barroca de la catedral y pasea por las calles del centro histórico.",
+        imagen: "../../img/lugares/zacatecas-catedral.jpg",
+        credito: "Catedral de Zacatecas — Vaquita marina · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Catedral_de_Zacatecas,_Zacatecas.jpg"
+      },
+      {
+        nombre: "Cerro de la Bufa",
+        descripcion: "Sube al emblemático cerro para disfrutar sus vistas panorámicas de la ciudad.",
+        imagen: "../../img/lugares/zacatecas-cerro-bufa.jpg",
+        credito: "Centro de Zacatecas desde el Cerro de la Bufa — JavierDo · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Zacatecas_Centro_desde_Cerro_de_la_Bufa_-_panoramio.jpg"
+      },
+      {
+        nombre: "Mina El Edén",
+        descripcion: "Conoce la historia minera de Zacatecas recorriendo los túneles de esta antigua mina.",
+        imagen: "../../img/lugares/zacatecas-mina-eden.jpg",
+        credito: "Mina El Edén — JavierDo · CC BY-SA 3.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Mina_El_Ed%C3%A9n_-_panoramio.jpg"
+      }
+    ]
+  },
 
   /* ---------- ESTADOS CON DATOS COMPLETOS ---------- */
 
@@ -338,9 +739,27 @@ const DATOS_ESTADOS = {
       { nombre: "La Tequila Cocina de Autor", tipo: "AUTOR", precio: "$650", calificacion: "4.6", ubicacion: "Guadalajara, Jalisco", descripcion: "Alta cocina jalisciense con maridaje de tequilas artesanales." }
     ],
     lugares: [
-      { nombre: "Centro Histórico de Guadalajara", descripcion: "Catedral, Hospicio Cabañas con murales de Orozco y Plaza de los Mariachis." },
-      { nombre: "Tequila, Jalisco", descripcion: "Pueblo Mágico donde nace el tequila: haciendas, destilerías y campos agaveros." },
-      { nombre: "Malecón de Puerto Vallarta", descripcion: "Playas, arte callejero y atardeceres frente al mar de Cortés." }
+      {
+        nombre: "Centro Histórico de Guadalajara",
+        descripcion: "Catedral, Hospicio Cabañas con murales de Orozco y Plaza de los Mariachis.",
+        imagen: "../../img/lugares/jalisco-guadalajara.jpg",
+        credito: "Catedral metropolitana de Guadalajara — ProtoplasmaKid · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Catedral_metropolitana_de_Guadalajara_01.jpg"
+      },
+      {
+        nombre: "Tequila, Jalisco",
+        descripcion: "Pueblo Mágico donde nace el tequila: haciendas, destilerías y campos agaveros.",
+        imagen: "../../img/lugares/jalisco-tequila.jpg",
+        credito: "Paisaje agavero de Tequila — Juan Carlos Fonseca Mata · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Paisaje_agavero_(Tequila,_Jalisco)_1.jpg"
+      },
+      {
+        nombre: "Malecón de Puerto Vallarta",
+        descripcion: "Playas, arte callejero y atardeceres frente a la bahía de Banderas.",
+        imagen: "../../img/lugares/jalisco-puerto-vallarta.jpg",
+        credito: "Malecón de Puerto Vallarta — Another Believer · CC BY-SA 4.0",
+        fuente: "https://commons.wikimedia.org/wiki/File:Malec%C3%B3n,_Puerto_Vallarta,_February_2023.jpg"
+      }
     ]
   },
 
