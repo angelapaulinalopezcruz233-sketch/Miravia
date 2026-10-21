@@ -74,12 +74,12 @@ const DATOS_ESTADOS = {
     coords: [17.07, -96.72],
     descripcion: "Monte Albán, Hierve el Agua, mole, tlayudas y las playas de Huatulco y Puerto Escondido.",
     hoteles: [
-      { nombre: "Casa de los Vientos", tipo: "HOTEL", precio: "$1,750", calificacion: "4.7", ubicacion: "Centro Histórico, Oaxaca de Juárez", descripcion: "Hotel boutique con encanto colonial, terraza y desayuno tradicional oaxaqueño." },
-      { nombre: "Hotel Oaxaca Real", tipo: "BOUTIQUE", precio: "$2,200", calificacion: "4.8", ubicacion: "Oaxaca de Juárez, Oaxaca", descripcion: "Alojamiento elegante cerca del centro, ideal para explorar iglesias, mercados y cafés." }
+      { nombre: "Casa de los Vientos", tipo: "HOTEL", precio: "$1,750", calificacion: "4.7", ubicacion: "Centro Histórico, Oaxaca de Juárez", region: "Valles Centrales", descripcion: "Hotel boutique con encanto colonial, terraza y desayuno tradicional oaxaqueño." },
+      { nombre: "Hotel Oaxaca Real", tipo: "BOUTIQUE", precio: "$2,200", calificacion: "4.8", ubicacion: "Oaxaca de Juárez, Oaxaca", region: "Valles Centrales", descripcion: "Alojamiento elegante cerca del centro, ideal para explorar iglesias, mercados y cafés." }
     ],
     restaurantes: [
-      { nombre: "Los Danzantes Oaxaca", tipo: "MEXICANA", precio: "$420", calificacion: "4.8", ubicacion: "Centro Histórico, Oaxaca de Juárez", descripcion: "Gastronomía oaxaqueña con mole, mezcal y ambiente artístico en una casona histórica." },
-      { nombre: "Mercado 20 de Noviembre", tipo: "MERCADO", precio: "$180", calificacion: "4.7", ubicacion: "Oaxaca de Juárez, Oaxaca", descripcion: "Tlayudas, memelas, tasajo y antojitos típicos con sabor auténtico de la ciudad." }
+      { nombre: "Los Danzantes Oaxaca", tipo: "MEXICANA", precio: "$420", calificacion: "4.8", ubicacion: "Centro Histórico, Oaxaca de Juárez", region: "Valles Centrales", descripcion: "Gastronomía oaxaqueña con mole, mezcal y ambiente artístico en una casona histórica." },
+      { nombre: "Mercado 20 de Noviembre", tipo: "MERCADO", precio: "$180", calificacion: "4.7", ubicacion: "Oaxaca de Juárez, Oaxaca", region: "Valles Centrales", descripcion: "Tlayudas, memelas, tasajo y antojitos típicos con sabor auténtico de la ciudad." }
     ],
     lugares: [
       {
@@ -506,28 +506,67 @@ const DATOS_ESTADOS = {
     ]
   },
 
-  /* ---------- PLANTILLA PARA LOS DEMÁS ESTADOS ---------- */
+
+    /* ---------- PLANTILLA PARA LOS DEMÁS ESTADOS ---------- */
 
   plantilla: function (valor) {
     const base = this[valor];
-    if (!base || !base.nombre) return null;
+
+    if (!base || !base.nombre || !base.descripcion) return null;
+
     const capital = base.capital;
-    const atracciones = base.descripcion.split(",").map((parte) => parte.replace(/\sy\s$|\.$/g, "").trim()).filter(Boolean);
+    const atracciones = base.descripcion
+      .split(",")
+      .map((parte) => parte.replace(/\s+y\s*$|\.$/g, "").trim())
+      .filter(Boolean);
+
     return Object.assign({}, base, {
       hoteles: [
-        { nombre: `Hotel Central ${capital}`, tipo: "HOTEL", precio: "$950", calificacion: "4.3", ubicacion: `Centro, ${capital}`, descripcion: `Hospedaje cómodo y bien ubicado para conocer ${base.nombre}.` },
-        { nombre: `Cabañas y Suites ${base.nombre}`, tipo: "CABAÑA", precio: "$800", calificacion: "4.5", ubicacion: base.nombre, descripcion: `Ambiente tranquilo rodeado de naturaleza, ideal para descansar en ${base.nombre}.` }
+        {
+          nombre: `Hotel Central ${capital}`,
+          tipo: "HOTEL",
+          precio: "$950",
+          calificacion: "4.3",
+          ubicacion: `Centro, ${capital}`,
+          descripcion: `Hospedaje cómodo y bien ubicado para conocer ${base.nombre}.`
+        },
+        {
+          nombre: `Cabañas y Suites ${base.nombre}`,
+          tipo: "CABAÑA",
+          precio: "$800",
+          calificacion: "4.5",
+          ubicacion: base.nombre,
+          descripcion: `Ambiente tranquilo rodeado de naturaleza, ideal para descansar en ${base.nombre}.`
+        }
       ],
       restaurantes: [
-        { nombre: `Restaurante La Capital`, tipo: "MEXICANA", precio: "$250", calificacion: "4.4", ubicacion: capital, descripcion: `Comida mexicana tradicional con lo mejor de la cocina de ${base.nombre}.` },
-        { nombre: `Mercado Municipal de ${capital}`, tipo: "MERCADO", precio: "$120", calificacion: "4.2", ubicacion: capital, descripcion: "Antojitos locales, frutas de temporada y sabor auténtico." }
+        {
+          nombre: "Restaurante La Capital",
+          tipo: "MEXICANA",
+          precio: "$250",
+          calificacion: "4.4",
+          ubicacion: capital,
+          descripcion: `Comida mexicana tradicional con lo mejor de la cocina de ${base.nombre}.`
+        },
+        {
+          nombre: `Mercado Municipal de ${capital}`,
+          tipo: "MERCADO",
+          precio: "$120",
+          calificacion: "4.2",
+          ubicacion: capital,
+          descripcion: "Antojitos locales, frutas de temporada y sabor auténtico."
+        }
       ],
-      lugares: base.lugares || atracciones.slice(0, 3).map((texto) => ({ nombre: texto.charAt(0).toUpperCase() + texto.slice(1), descripcion: `Un imperdible de ${base.nombre} que no te puedes perder.` }))
+      lugares: base.lugares || atracciones.slice(0, 3).map((texto) => ({
+        nombre: texto.charAt(0).toUpperCase() + texto.slice(1),
+        descripcion: `Un imperdible de ${base.nombre} que no te puedes perder.`
+      }))
     });
   },
 
+
   obtener: function (valor) {
-    return (this[valor] && this[valor].hoteles) ? this[valor] : this.plantilla(valor);
+    return this[valor] || null;
   }
 
 };

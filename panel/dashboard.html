@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miravia · Panel Propietario</title>
+    <link rel="stylesheet" href="../estilo/panel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>Miravia</span>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item active">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </a>
+            <a href="establecimientos.html" class="menu-item">
+                <i class="fa-solid fa-hotel"></i> Mis establecimientos
+            </a>
+            <a href="reservaciones.html" class="menu-item">
+                <i class="fa-solid fa-calendar-check"></i> Reservaciones
+            </a>
+            <a href="comisiones.html" class="menu-item">
+                <i class="fa-solid fa-percent"></i> Comisiones
+            </a>
+            <a href="estado-cuenta.html" class="menu-item">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Estado de cuenta
+            </a>
+            <a href="reportes.html" class="menu-item">
+                <i class="fa-solid fa-chart-pie"></i> Reportes
+            </a>
+            <a href="perfil.html" class="menu-item">
+                <i class="fa-solid fa-user"></i> Perfil
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="../inicio.html" class="menu-item logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+            </a>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <div>
+                <h1>Dashboard</h1>
+                <p class="subtitulo">Bienvenido de nuevo, <strong>Carlos Ramírez</strong></p>
+            </div>
+            <div class="topbar-actions">
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+                <div class="avatar">CR</div>
+            </div>
+        </header>
+
+        <!-- TARJETAS DE RESUMEN -->
+        <section class="cards">
+            <div class="card">
+                <div class="card-icon azul"><i class="fa-solid fa-hotel"></i></div>
+                <div>
+                    <p class="card-label">Establecimientos</p>
+                    <h2 class="card-value">3</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon verde"><i class="fa-solid fa-calendar-check"></i></div>
+                <div>
+                    <p class="card-label">Reservaciones (mes)</p>
+                    <h2 class="card-value">27</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon naranja"><i class="fa-solid fa-percent"></i></div>
+                <div>
+                    <p class="card-label">Comisión generada</p>
+                    <h2 class="card-value">$4,320</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon morado"><i class="fa-solid fa-sack-dollar"></i></div>
+                <div>
+                    <p class="card-label">Ingreso neto</p>
+                    <h2 class="card-value">$49,680</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRÁFICA -->
+        <section class="panel">
+            <div class="panel-header">
+                <h3>Comisiones por mes</h3>
+                <select class="select">
+                    <option>Últimos 6 meses</option>
+                    <option>Este año</option>
+                </select>
+            </div>
+            <div class="chart" id="chart"></div>
+        </section>
+
+        <!-- ÚLTIMAS RESERVACIONES -->
+        <section class="panel">
+            <div class="panel-header">
+                <h3>Últimas reservaciones</h3>
+                <a href="reservaciones.html" class="link">Ver todas →</a>
+            </div>
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Establecimiento</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Comisión</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-reservas"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="../js/panel-mock.js"></script>
+<script src="../js/panel-api.js"></script>
+<script src="../js/panel-dashboard.js"></script>
+</body>
+</html>

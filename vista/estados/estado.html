@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Mapa interactivo por estado: municipios, regiones, búsqueda y destinos destacados. -->
 <html lang="es">
 
 <head>
@@ -33,9 +34,9 @@
 
         <nav>
             <a href="#" class="activo" id="navDestinos">Destinos</a>
-            <a href="#" id="navHospedaje">Hospedaje</a>
-            <a href="#" id="navComida">Comida</a>
-            <a href="#" id="navGuardados">Guardados</a>
+            <a href="../pagina/hoteles.html" id="navHospedaje">Hospedaje</a>
+            <a href="../pagina/comida.html" id="navComida">Comida</a>
+            <a href="../../vista/pagina/guardados.html" id="navGuardados">Guardados</a>
             <a href="#" id="navMisViajes">Mis viajes</a>
         </nav>
 
@@ -107,6 +108,9 @@
         </div>
 
         <div class="rejilla" id="rejillaLugaresRegion"></div>
+        <button class="btn-ver-mas-opciones" id="btnMasOpcionesRegion" type="button" aria-expanded="false" hidden>
+            Ver más opciones
+        </button>
 
     </section>
 
@@ -269,10 +273,8 @@
 
         /* ==========================================
            PANEL DE LA ZONA (MUNICIPIO O ESTADO)
-           Muestra solo atracciones cuya entrada
-           gratuita está confirmada en OpenStreetMap.
-           Los negocios y lugares de pago requieren
-           alta administrativa.
+           Las atracciones gratuitas se consultan
+           aparte de los catálogos de comida y hospedaje.
         ========================================== */
 
         const panelFondo = document.getElementById("panelFondo");
@@ -305,8 +307,17 @@
             elementos.forEach(function (elemento) {
                 const tags = elemento.tags || {};
                 const nombre = tags.name;
+                const esNegocioComida =
+                    ["restaurant", "cafe", "fast_food", "food_court", "bar", "pub", "marketplace"]
+                        .includes(tags.amenity) ||
+                    ["supermarket", "convenience", "greengrocer", "food", "farm", "bakery", "butcher", "seafood"]
+                        .includes(tags.shop);
+                const esHospedaje =
+                    ["hotel", "hostel", "guest_house", "motel", "apartment", "camp_site", "caravan_site"]
+                        .includes(tags.tourism);
                 if (!nombre || tags.fee !== "no" ||
-                    ["private", "customers", "no"].includes(tags.access)) {
+                    ["private", "customers", "no"].includes(tags.access) ||
+                    esNegocioComida || esHospedaje) {
                     return;
                 }
                 const lat = elemento.lat || (elemento.center || {}).lat;
@@ -433,26 +444,6 @@
                 </div>`;
         }
 
-        /* Tarjetas de esqueleto mientras se busca
-           (la pantalla nunca se ve vacía). */
-        function esqueletoCarga(mensaje) {
-            let tarjetas = "";
-            for (let i = 0; i < 6; i++) {
-                tarjetas += `
-                    <div class="panel-item panel-item-con-foto">
-                        <div class="panel-foto esqueleto"></div>
-                        <div class="panel-item-cuerpo">
-                            <div class="esqueleto linea-etiqueta"></div>
-                            <div class="esqueleto linea-titulo"></div>
-                            <div class="esqueleto linea-texto"></div>
-                        </div>
-                    </div>`;
-            }
-            return `
-                <p class="panel-cargando">⏳ ${mensaje}</p>
-                ${tarjetas}`;
-        }
-
         /* Marcador único reutilizable para
            "Ver en el mapa" dentro del sistema. */
         let marcadorLugar = null;
@@ -534,15 +525,37 @@
             if (!lista.length) {
                 return "";
             }
-            const visibles = lista.slice(0, maximo);
-            const sobrantes = lista.length - visibles.length;
+            const opciones = lista.slice(0, maximo);
+            const visibles = opciones.slice(0, 3);
+            const adicionales = opciones.slice(3);
+            const sobrantes = lista.length - opciones.length;
             return `
                 <section class="panel-seccion">
                     <h2>${icono} ${titulo} <small>(${lista.length})</small></h2>
                     ${visibles.map(filaReal).join("")}
+                    ${adicionales.length ? `
+                        <div class="panel-opciones-adicionales" hidden>
+                            ${adicionales.map(filaReal).join("")}
+                        </div>
+                        <button class="btn-ver-mas-opciones" type="button" aria-expanded="false">
+                            Ver más opciones
+                        </button>` : ""}
                     ${sobrantes > 0 ? `<p class="panel-mas">…y ${sobrantes} más en la zona</p>` : ""}
                 </section>`;
         }
+
+        contenidoZona.addEventListener("click", function (evento) {
+            const boton = evento.target.closest(".btn-ver-mas-opciones");
+            if (!boton) {
+                return;
+            }
+
+            const opciones = boton.previousElementSibling;
+            const mostrar = opciones.hidden;
+            opciones.hidden = !mostrar;
+            boton.textContent = mostrar ? "Ver menos opciones" : "Ver más opciones";
+            boton.setAttribute("aria-expanded", String(mostrar));
+        });
 
         function panelConDatos(tituloZonaTexto, subtitulo, html, valorZona) {
             // Muestra el resultado ABAJO DEL MAPA
@@ -569,12 +582,8 @@
         async function abrirPanelZona(nombreZona, bounds, valorZona) {
             const miBusqueda = ++idBusqueda;
 
-            tituloZona.textContent = nombreZona;
-            subtituloZona.textContent = "Buscando lugares gratuitos confirmados…";
-            contenidoZona.innerHTML =
-                `${esqueletoCarga("Buscando atracciones con entrada gratuita confirmada…")}`;
-            seccionZona.hidden = false;
-            seccionZona.scrollIntoView({ behavior: "smooth", block: "start" });
+            seccionZona.hidden = true;
+            contenidoZona.replaceChildren();
 
             const zonas = await buscarLugaresReales(bounds);
 
@@ -583,8 +592,7 @@
             }
 
             if (zonas && zonas.atracciones.length > 0) {
-                const html = `<p class="panel-nota">Solo se muestran lugares marcados como gratuitos. Los lugares con costo requieren alta administrativa.</p>` +
-                    seccionReal("✨", "Lugares gratuitos para visitar", zonas.atracciones, 60);
+                const html = seccionReal("✨", "Lugares gratuitos para visitar", zonas.atracciones, 60);
                 panelConDatos(
                     nombreZona,
                     zonas.atracciones.length + " lugares gratuitos confirmados",
@@ -593,7 +601,7 @@
                 );
             } else {
                 const mensaje = zonas
-                    ? "No encontramos lugares con entrada gratuita confirmada en esta zona. Los lugares con costo solo aparecerán cuando un administrador los dé de alta."
+                    ? "No encontramos lugares con entrada gratuita confirmada en esta zona."
                     : "No fue posible consultar los lugares gratuitos en este momento. Inténtalo de nuevo más tarde.";
                 panelConDatos(
                     nombreZona,
@@ -772,11 +780,39 @@
                 { nombre: "Hierve el Agua", descripcion: "Formaciones minerales, pozas naturales y miradores en el paisaje de los Valles Centrales.", lat: 16.8630, lon: -96.2750 }
             ]
         };
+        // Comparte el catálogo de destinos regionales con el asistente de viaje.
+        if (valorEstado === "oaxaca") {
+            const destinosRegionales = Object.entries(lugaresPorRegion).flatMap(([region, lugares]) =>
+                lugares.map((lugar) => ({ ...lugar, region: region }))
+            );
+            const destinosUnicos = new Map();
+            destinosRegionales.concat(datos.lugares || []).forEach((lugar) => {
+                const clave = String(lugar.nombre || "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLocaleLowerCase("es")
+                    .trim();
+                if (clave) {
+                    destinosUnicos.set(clave, { ...(destinosUnicos.get(clave) || {}), ...lugar });
+                }
+            });
+            try {
+                localStorage.setItem("miravia_destinos_oaxaca", JSON.stringify({
+                    estado: valorEstado,
+                    lugares: Array.from(destinosUnicos.values())
+                }));
+            } catch (error) {
+                console.error("No se pudo guardar el catálogo regional de destinos.", error);
+            }
+        }
         const rejillaLugaresRegion = document.getElementById("rejillaLugaresRegion");
+        const btnMasOpcionesRegion = document.getElementById("btnMasOpcionesRegion");
         const seccionRegiones = document.getElementById("regionesOaxaca");
         const seccionLugaresEstado = document.getElementById("seccionLugares");
         const tituloRegion = document.getElementById("tituloRegion");
         const capasPorRegion = {};
+        let lugaresRegionActual = [];
+        let opcionesRegionExpandidas = false;
         const btnVerRegiones = document.getElementById("btnVerRegiones");
         let regionSeleccionadaMapa = "";
         let limitesEstadoMapa = null;
@@ -928,14 +964,14 @@
         function tarjetaLugarRegion(lugar, nombreRegion) {
             return `
                 <article class="tarjeta tarjeta-lugar tarjeta-destino-region"
-                    role="button" tabindex="0"
-                    aria-label="Mostrar ${lugar.nombre} en el mapa"
-                    data-lat="${lugar.lat}" data-lon="${lugar.lon}" data-nombre="${lugar.nombre}">
+                    data-lat="${lugar.lat}" data-lon="${lugar.lon}" data-region="${lugar.region || ""}" data-nombre="${lugar.nombre}">
                     <div class="tarjeta-contenido">
                         <h3>${lugar.nombre}</h3>
                         <p>${lugar.descripcion}</p>
                         <div class="precio-fila">
                             <span class="ubicacion">Región ${nombreRegion}</span>
+                            <button class="btn-detalles btn-mostrar-destino" type="button">Ver en el mapa</button>
+                            <button class="btn-detalles btn-visitar-destino" type="button">Visitar</button>
                         </div>
                     </div>
                 </article>`;
@@ -1015,10 +1051,9 @@
             regionSeleccionadaMapa = nombreRegion;
             municipioSeleccionado = "";
             tituloRegion.textContent = "Destinos populares: " + nombreRegion;
-            const lugares = lugaresPorRegion[nombreRegion] || [];
-            rejillaLugaresRegion.innerHTML = lugares
-                .map((lugar) => tarjetaLugarRegion(lugar, nombreRegion))
-                .join("");
+            lugaresRegionActual = lugaresPorRegion[nombreRegion] || [];
+            opcionesRegionExpandidas = false;
+            actualizarLugaresRegion();
             seccionRegiones.hidden = false;
             seccionLugaresEstado.hidden = true;
             btnVerRegiones.hidden = false;
@@ -1049,6 +1084,7 @@
                         capa.openTooltip();
                     });
                 }
+
             });
 
             const capasRegion = capasPorRegion[nombreRegion] || [];
@@ -1064,6 +1100,25 @@
             document.querySelector(".ayuda-ubicacion").textContent =
                 `🗺️ ${nombreRegion}: haz clic en el municipio para explorar sus lugares.`;
         }
+
+        function actualizarLugaresRegion() {
+            const lugaresVisibles = opcionesRegionExpandidas
+                ? lugaresRegionActual
+                : lugaresRegionActual.slice(0, 3);
+            rejillaLugaresRegion.innerHTML = lugaresVisibles
+                .map((lugar) => tarjetaLugarRegion(lugar, regionSeleccionadaMapa))
+                .join("");
+            btnMasOpcionesRegion.hidden = lugaresRegionActual.length <= 3;
+            btnMasOpcionesRegion.textContent = opcionesRegionExpandidas
+                ? "Ver menos opciones"
+                : "Ver más opciones";
+            btnMasOpcionesRegion.setAttribute("aria-expanded", String(opcionesRegionExpandidas));
+        }
+
+        btnMasOpcionesRegion.addEventListener("click", function () {
+            opcionesRegionExpandidas = !opcionesRegionExpandidas;
+            actualizarLugaresRegion();
+        });
 
         function mostrarTodasLasRegiones() {
             regionSeleccionadaMapa = "";
@@ -1103,15 +1158,20 @@
         rejillaLugaresRegion.addEventListener("click", function (evento) {
             const tarjeta = evento.target.closest(".tarjeta-destino-region");
             if (!tarjeta) return;
-            mostrarDestinoRegionEnMapa(tarjeta.dataset.lat, tarjeta.dataset.lon, tarjeta.dataset.nombre);
-        });
-
-        rejillaLugaresRegion.addEventListener("keydown", function (evento) {
-            if (evento.key !== "Enter" && evento.key !== " ") return;
-            const tarjeta = evento.target.closest(".tarjeta-destino-region");
-            if (!tarjeta) return;
-            evento.preventDefault();
-            mostrarDestinoRegionEnMapa(tarjeta.dataset.lat, tarjeta.dataset.lon, tarjeta.dataset.nombre);
+            if (evento.target.closest(".btn-visitar-destino")) {
+                const parametros = new URLSearchParams({
+                    estado: valorEstado,
+                    lugar: tarjeta.dataset.nombre,
+                    lat: tarjeta.dataset.lat,
+                    lon: tarjeta.dataset.lon
+                });
+                window.location.href =
+                    `../viaje/armar-viaje.html?${parametros.toString()}`;
+                return;
+            }
+            if (evento.target.closest(".btn-mostrar-destino")) {
+                mostrarDestinoRegionEnMapa(tarjeta.dataset.lat, tarjeta.dataset.lon, tarjeta.dataset.nombre);
+            }
         });
 
         if (valorEstado === "oaxaca") {
@@ -1337,9 +1397,9 @@
 
         /* ==========================================
            MENÚ SUPERIOR DEL ESTADO
-           Destinos = este estado · Hospedaje y
-           Comida = lugares dados de alta por Miravia
-           · Mis viajes = viajes armados
+           Destinos = mapa del estado · Hospedaje y
+           Comida = catálogos en páginas separadas
+           · Guardados = plan · Mis viajes = viajes
         ========================================== */
 
         function abrirPanelSimple(titulo, subtitulo, html) {
@@ -1350,14 +1410,6 @@
             contenidoZona.innerHTML = html;
             seccionZona.hidden = false;
             seccionZona.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        function abrirPanelEstadoCategoria(icono, titulo) {
-            abrirPanelSimple(
-                icono + " " + titulo + " de " + datos.nombre,
-                "Publicación administrada por Miravia",
-                `<p class="panel-nota">Los negocios y lugares con costo solo se mostrarán cuando un administrador los dé de alta.</p>`
-            );
         }
 
         function abrirMisViajesEstado() {
@@ -1410,13 +1462,13 @@
         document.getElementById("navHospedaje").addEventListener("click", function (evento) {
             evento.preventDefault();
             evento.stopPropagation();
-            abrirPanelEstadoCategoria("🏨", "Hoteles, cabañas y hospedaje");
+            window.location.href = "../pagina/hoteles.html";
         });
 
         document.getElementById("navComida").addEventListener("click", function (evento) {
             evento.preventDefault();
             evento.stopPropagation();
-            abrirPanelEstadoCategoria("🍴", "Comedores, restaurantes y fondas");
+            window.location.href = "../pagina/comida.html";
         });
 
         document.getElementById("navMisViajes").addEventListener("click", function (evento) {
