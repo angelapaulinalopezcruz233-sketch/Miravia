@@ -580,7 +580,7 @@ body {
     font-size: 19px;
 }
 
-.ruta-panel {
+#paso4 .ruta-panel {
     display: grid;
     gap: 10px;
     max-width: 720px;
@@ -705,6 +705,44 @@ body {
 
 .marcador-destino span {
     background: #e47735;
+}
+
+.marcador-transbordo span {
+    background: #e7a52f;
+}
+
+.marcador-visita span {
+    background: #0e8e77;
+}
+
+.vehiculo-ruta {
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+}
+
+.vehiculo-arte {
+    display: block;
+    width: 60px;
+    height: 52px;
+    transform-origin: center;
+    filter: drop-shadow(0 3px 3px rgba(18, 59, 54, 0.35));
+    will-change: transform;
+}
+
+.vehiculo-arte svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.animacion-ruta {
+    min-height: 20px;
+    color: #087f5b;
+    font-size: 14px;
+    font-weight: 800;
 }
 
 @keyframes aparecerCalculadora {
@@ -1137,4 +1175,146 @@ body {
     .navegacion {
         padding: 10px 14px 12px;
     }
+}
+
+/* Ruta por tramos: una guía clara y alegre para elegir cómo llegar. */
+#paso4 .ruta-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #c8e9df;
+    background:
+        radial-gradient(circle at 100% 0%, rgba(255, 217, 132, 0.28), transparent 34%),
+        linear-gradient(145deg, #f3fcf8, #fffaf0);
+    box-shadow: 0 14px 32px rgba(12, 90, 77, 0.09);
+}
+
+.ruta-intro {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 5px;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.78);
+    animation: aparecerRuta 0.45s ease both;
+}
+
+.ruta-insignia {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 3px solid #fff;
+    border-radius: 16px;
+    color: #8a4b11;
+    background: #ffd46b;
+    box-shadow: 0 4px 0 #f2ad3e;
+    font-size: 25px;
+}
+
+.ruta-intro h3 {
+    margin-bottom: 3px;
+    color: #17473d;
+    font-size: 18px;
+}
+
+.ruta-intro p {
+    color: #5e7770;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.alcances-ruta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin: 3px 0;
+}
+
+.alcances-ruta > div {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 7px;
+    padding: 9px;
+    border: 1px solid #e4eee8;
+    border-radius: 9px;
+    background: #fff;
+}
+
+.alcances-ruta span {
+    grid-row: span 2;
+    display: grid;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border-radius: 9px;
+    background: #e6f7ef;
+    font-size: 17px;
+}
+
+.alcances-ruta > div:nth-child(2) span { background: #fff1d2; }
+.alcances-ruta > div:nth-child(3) span { background: #e5f1ff; }
+.alcances-ruta > div:nth-child(4) span { background: #ffe8de; }
+
+.alcances-ruta strong {
+    color: #17473d;
+    font-size: 12px;
+}
+
+.alcances-ruta small {
+    color: #637a73;
+    font-size: 10px;
+    line-height: 1.3;
+}
+
+.opciones-ruta:not(:empty) {
+    padding: 12px 14px;
+    border-left: 4px solid #f1b643;
+    border-radius: 4px 9px 9px 4px;
+    color: #56451d;
+    background: #fff6db;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+    animation: aparecerRuta 0.25s ease both;
+}
+
+.ruta-panel select:focus-visible,
+.ruta-panel .btn:focus-visible {
+    outline: 3px solid #f1b643;
+    outline-offset: 3px;
+}
+
+.ruta-panel .btn-grad {
+    color: #fff;
+    background: linear-gradient(135deg, #ef8051, #e35645);
+    box-shadow: 0 5px 0 #bf4438;
+}
+
+.ruta-panel .btn-grad:not(:disabled):hover {
+    box-shadow: 0 7px 0 #bf4438;
+}
+
+@keyframes aparecerRuta {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 700px) {
+    .alcances-ruta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 420px) {
+    .ruta-intro { grid-template-columns: 42px minmax(0, 1fr); gap: 9px; padding: 11px; }
+    .ruta-insignia { width: 40px; height: 40px; border-radius: 13px; }
+    .alcances-ruta { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ruta-intro,
+    .opciones-ruta:not(:empty) { animation: none; }
 }

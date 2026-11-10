@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS municipios (
 ) ENGINE=InnoDB;
 
 -- 5. ESTABLECIMIENTOS
+-- prioridad_manual permite que administracion ordene un lugar por encima de su calificacion.
 CREATE TABLE IF NOT EXISTS establecimientos (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     propietario_id INT UNSIGNED NOT NULL,
@@ -82,6 +83,7 @@ CREATE TABLE IF NOT EXISTS establecimientos (
     lng DECIMAL(9,6) NULL,
     precio_desde DECIMAL(10,2) NULL,
     calificacion_promedio DECIMAL(2,1) DEFAULT 0,
+    prioridad_manual TINYINT(1) NOT NULL DEFAULT 0,
     comision_porcentaje DECIMAL(5,2) NOT NULL DEFAULT 8.00,
     activo TINYINT(1) NOT NULL DEFAULT 1,
     creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

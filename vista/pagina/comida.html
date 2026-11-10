@@ -1,891 +1,118 @@
 <!DOCTYPE html>
-<!-- Catálogo de opciones de comida con filtros por tipo, precio y características. -->
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Comida - Oaxaca de Juárez | ViajaMX</title>
-
+    <title>Comida en Oaxaca de Juárez | ViajaMX</title>
     <link rel="stylesheet" href="../../estilo/comida.css">
 </head>
-
 <body>
-
-    <!-- =========================================
-         NAVBAR
-    ========================================== -->
-
     <header class="encabezado">
-
-        <a href="index.html" class="logo">
-            🌴 Viaja<span>MX</span>
-        </a>
-
-        <nav class="menu">
-
-            <a href="../../inicio.html?destinos=1">
-                Destinos
-            </a>
-
-            <a href="hospedaje.html">
-                Hospedaje
-            </a>
-
-            <a href="comida.html" class="activo">
-                Comida
-            </a>
-
-            <a href="atracciones.html">
-                Atracciones
-            </a>
-
-            <a href="mis-viajes.html">
-                Mis viajes
-            </a>
-
+        <a href="#" class="logo">🌴 Viaja<span>MX</span></a>
+        <nav class="menu" aria-label="Navegación principal">
+            <a href="../../inicio.html?destinos=1">Destinos</a>
+            <a href="hoteles.html">Hospedaje</a>
+            <a href="comida.html" class="activo">Comida</a>
+            <a href="../../inicio.html?destinos=1">Atracciones</a>
+            <a href="#">Mis viajes</a>
         </nav>
-
-        <button class="btn-usuario">
-            👤
-        </button>
-
+        <button class="btn-usuario" type="button" aria-label="Abrir mi cuenta">👤</button>
     </header>
 
-
-    <!-- =========================================
-         CONTENIDO PRINCIPAL
-    ========================================== -->
-
     <main class="contenedor">
-
-        <!-- VOLVER -->
-
-        <a href="index.html" class="volver">
-            ← Volver
-        </a>
-
-
-        <!-- ENCABEZADO -->
+        <a href="oaxaca-de-juarez.html" class="volver">← Volver a Oaxaca de Juárez</a>
 
         <section class="encabezado-comida">
-
-            <div>
-
-                <span class="etiqueta">
-                    SABORES DE MÉXICO
-                </span>
-
-                <h1>
-                    Comida en Oaxaca de Juárez
-                </h1>
-
-                <p>
-                    Descubre restaurantes y lugares para disfrutar
-                    de la gastronomía de Oaxaca.
-                </p>
-
+            <div class="encabezado-copy">
+                <span class="etiqueta">🍴 SABORES DE MÉXICO</span>
+                <h1>Comida en Oaxaca de Juárez</h1>
+                <p>Descubre restaurantes y lugares para disfrutar de la gastronomía de Oaxaca.</p>
             </div>
-
-            <div class="contador">
-
-                <strong>Restaurantes</strong>
-
-                <span>
-                    24 lugares disponibles
-                </span>
-
+            <div class="contador resultado" aria-live="polite">
+                <strong id="conteo-restaurantes">0</strong>
+                <span>lugares disponibles</span>
             </div>
-
         </section>
-
-
-        <!-- =========================================
-             EXPLORADOR
-        ========================================== -->
 
         <section class="explorador-comida">
-
-
-            <!-- =====================================
-                 FILTROS
-            ====================================== -->
-
-            <aside class="panel filtros">
-
+            <aside class="panel filtros" aria-label="Filtros de comida">
                 <div class="panel-titulo">
-
-                    <div class="icono-panel">
-                        🍴
-                    </div>
-
+                    <span class="icono-panel">⚙️</span>
                     <div>
-
-                        <h2>
-                            Buscar comida
-                        </h2>
-
-                        <p>
-                            Personaliza tu búsqueda
-                        </p>
-
+                        <h2>Filtrar resultados</h2>
+                        <p>Encuentra lo que buscas</p>
                     </div>
-
                 </div>
-
 
                 <div class="filtros-contenido">
-
-
-                    <!-- PERSONAS -->
-
                     <div class="filtro">
-
-                        <label>
-                            Número de personas
-                        </label>
-
-                        <select>
-
-                            <option>
-                                1 persona
-                            </option>
-
-                            <option selected>
-                                2 personas
-                            </option>
-
-                            <option>
-                                3 personas
-                            </option>
-
-                            <option>
-                                4 personas
-                            </option>
-
-                            <option>
-                                5 personas
-                            </option>
-
-                            <option>
-                                6+ personas
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <!-- TIPO DE COMIDA -->
-
-                    <div class="filtro">
-
-                        <label>
-                            Tipo de comida
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🌮 Mexicana
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🫔 Oaxaqueña
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🍕 Internacional
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🥗 Vegetariana
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🍔 Comida rápida
-                            </span>
-
-                        </label>
-
-                    </div>
-
-
-                    <!-- TIPO DE ESTABLECIMIENTO -->
-
-                    <div class="filtro">
-
-                        <label>
-                            Tipo de establecimiento
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                Restaurante
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                Cafetería
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🍺 Bar
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🥘 Mercado
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                🌮 Comedor
-                            </span>
-
-                        </label>
-
-                    </div>
-
-
-                    <!-- PRECIO -->
-
-                    <div class="filtro">
-
-                        <label>
-                            Precio por persona
-                        </label>
-
-                        <div class="precios">
-
-                            <span>
-                                $100
-                            </span>
-
-                            <span>
-                                $1,500
-                            </span>
-
+                        <label for="buscar-restaurante">Buscar lugar</label>
+                        <div class="input-busqueda">
+                            <span aria-hidden="true">🔎</span>
+                            <input id="buscar-restaurante" type="search" placeholder="Nombre del restaurante...">
                         </div>
-
-                        <input
-                            type="range"
-                            min="100"
-                            max="1500"
-                            value="800"
-                            class="rango">
-
                     </div>
-
-
-                    <!-- CALIFICACIÓN -->
 
                     <div class="filtro">
-
-                        <label>
-                            Calificación
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                ⭐ 4.5 o más
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                ⭐ 4.0 o más
-                            </span>
-
-                        </label>
-
-                        <label class="check">
-
-                            <input type="checkbox">
-
-                            <span>
-                                ⭐ 3.5 o más
-                            </span>
-
-                        </label>
-
+                        <label>Precio por persona</label>
+                        <div class="precios">
+                            <span class="precio-minimo">$0</span>
+                            <span class="precio-maximo">Sin límite</span>
+                        </div>
+                        <input type="range" min="0" max="0" value="0" class="rango" disabled aria-label="Precio máximo por persona">
                     </div>
 
+                    <div class="filtro">
+                        <label>Calificación</label>
+                        <label class="check"><input type="checkbox"><span>⭐ 4.5 o más</span></label>
+                        <label class="check"><input type="checkbox"><span>⭐ 4.0 o más</span></label>
+                        <label class="check"><input type="checkbox"><span>⭐ 3.0 o más</span></label>
+                    </div>
 
-                    <!-- BOTÓN -->
-
-                    <button class="btn-filtros">
-
-                        Aplicar filtros
-
-                    </button>
-
-
-                    <button class="btn-limpiar">
-
-                        Limpiar filtros
-
-                    </button>
-
+                    <button class="btn-filtros" type="button">Aplicar filtros</button>
+                    <button class="btn-limpiar" type="button">Limpiar filtros</button>
                 </div>
-
             </aside>
 
-
-
-            <!-- =====================================
-                 LISTADO
-            ====================================== -->
-
-            <section class="lista-comida">
-
-
-                <!-- RESTAURANTE 1 -->
-
-                <article class="comida-card">
-
-                    <div class="comida-imagen">
-
-                        <img
-                            src="img/comida/restaurante-oaxaca.jpg"
-                            alt="Restaurante de comida oaxaqueña">
-
+            <section class="lista-comida" aria-label="Lugares para comer" aria-live="polite">
+                <div class="barra-resultados">
+                    <div>
+                        <strong>Lugares disponibles</strong>
+                        <span>Oaxaca de Juárez, Oaxaca</span>
                     </div>
-
-
-                    <div class="comida-info">
-
-                        <span class="tipo-comida">
-                            Oaxaqueña
-                        </span>
-
-                        <h2>
-                            Restaurante Los Danzantes
-                        </h2>
-
-                        <p class="ubicacion">
-                            📍 Centro Histórico
-                        </p>
-
-                        <p class="descripcion">
-
-                            Disfruta de platillos tradicionales
-                            de Oaxaca con un estilo contemporáneo.
-
-                        </p>
-
-                        <div class="calificacion">
-
-                            <span class="estrella">
-                                ★
-                            </span>
-
-                            <strong>
-                                4.8
-                            </strong>
-
-                            <span>
-                                (1,240)
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="comida-precio">
-
-                        <strong>
-                            $450
-                        </strong>
-
-                        <span>
-                            / persona
-                        </span>
-
-                        <button class="btn-detalles">
-                            Ver detalles
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- RESTAURANTE 2 -->
-
-                <article class="comida-card">
-
-                    <div class="comida-imagen">
-
-                        <img
-                            src="img/comida/casa-oaxaca.jpg"
-                            alt="Restaurante Casa Oaxaca">
-
-                    </div>
-
-
-                    <div class="comida-info">
-
-                        <span class="tipo-comida">
-                            Mexicana
-                        </span>
-
-                        <h2>
-                            Casa Oaxaca
-                        </h2>
-
-                        <p class="ubicacion">
-                            📍 Centro Histórico
-                        </p>
-
-                        <p class="descripcion">
-
-                            Cocina mexicana tradicional,
-                            mole y platillos típicos oaxaqueños.
-
-                        </p>
-
-                        <div class="calificacion">
-
-                            <span class="estrella">
-                                ★
-                            </span>
-
-                            <strong>
-                                4.7
-                            </strong>
-
-                            <span>
-                                (985)
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="comida-precio">
-
-                        <strong>
-                            $380
-                        </strong>
-
-                        <span>
-                            / persona
-                        </span>
-
-                        <button class="btn-detalles">
-                            Ver detalles
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- RESTAURANTE 3 -->
-
-                <article class="comida-card">
-
-                    <div class="comida-imagen">
-
-                        <img
-                            src="img/comida/los-pacaros.jpg"
-                            alt="Restaurante Los Pacos">
-
-                    </div>
-
-
-                    <div class="comida-info">
-
-                        <span class="tipo-comida">
-                            Oaxaqueña
-                        </span>
-
-                        <h2>
-                            Los Pacos
-                        </h2>
-
-                        <p class="ubicacion">
-                            📍 Oaxaca de Juárez
-                        </p>
-
-                        <p class="descripcion">
-
-                            Especialidad en mole oaxaqueño,
-                            tlayudas y comida tradicional.
-
-                        </p>
-
-                        <div class="calificacion">
-
-                            <span class="estrella">
-                                ★
-                            </span>
-
-                            <strong>
-                                4.6
-                            </strong>
-
-                            <span>
-                                (760)
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="comida-precio">
-
-                        <strong>
-                            $300
-                        </strong>
-
-                        <span>
-                            / persona
-                        </span>
-
-                        <button class="btn-detalles">
-                            Ver detalles
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- RESTAURANTE 4 -->
-
-                <article class="comida-card">
-
-                    <div class="comida-imagen">
-
-                        <img
-                            src="img/comida/mercado-20-noviembre.jpg"
-                            alt="Mercado 20 de Noviembre">
-
-                    </div>
-
-
-                    <div class="comida-info">
-
-                        <span class="tipo-comida">
-                            Mercado
-                        </span>
-
-                        <h2>
-                            Mercado 20 de Noviembre
-                        </h2>
-
-                        <p class="ubicacion">
-                            📍 Centro Histórico
-                        </p>
-
-                        <p class="descripcion">
-
-                            Uno de los lugares más tradicionales
-                            para probar comida típica de Oaxaca.
-
-                        </p>
-
-                        <div class="calificacion">
-
-                            <span class="estrella">
-                                ★
-                            </span>
-
-                            <strong>
-                                4.5
-                            </strong>
-
-                            <span>
-                                (1,850)
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="comida-precio">
-
-                        <strong>
-                            $180
-                        </strong>
-
-                        <span>
-                            / persona
-                        </span>
-
-                        <button class="btn-detalles">
-                            Ver detalles
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- RESTAURANTE 5 -->
-
-                <article class="comida-card">
-
-                    <div class="comida-imagen">
-
-                        <img
-                            src="img/comida/tlayudas.jpg"
-                            alt="Comida tradicional de Oaxaca">
-
-                    </div>
-
-
-                    <div class="comida-info">
-
-                        <span class="tipo-comida">
-                            Mexicana
-                        </span>
-
-                        <h2>
-                            Tlayudas El Negro
-                        </h2>
-
-                        <p class="ubicacion">
-                            📍 Oaxaca de Juárez
-                        </p>
-
-                        <p class="descripcion">
-
-                            Tlayudas, quesillo, tasajo y
-                            diferentes platillos tradicionales.
-
-                        </p>
-
-                        <div class="calificacion">
-
-                            <span class="estrella">
-                                ★
-                            </span>
-
-                            <strong>
-                                4.5
-                            </strong>
-
-                            <span>
-                                (630)
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="comida-precio">
-
-                        <strong>
-                            $200
-                        </strong>
-
-                        <span>
-                            / persona
-                        </span>
-
-                        <button class="btn-detalles">
-                            Ver detalles
-                        </button>
-
-                    </div>
-
-                </article>
-
-
-
-                <!-- RESTAURANTE 6 -->
-
-                <article class="comida-card">
-
-                    <div class="comida-imagen">
-
-                        <img
-                            src="img/comida/cafe-oaxaca.jpg"
-                            alt="Cafetería en Oaxaca">
-
-                    </div>
-
-
-                    <div class="comida-info">
-
-                        <span class="tipo-comida">
-                            Cafetería
-                        </span>
-
-                        <h2>
-                            Café Brújula
-                        </h2>
-
-                        <p class="ubicacion">
-                            📍 Centro de Oaxaca
-                        </p>
-
-                        <p class="descripcion">
-
-                            Café, desayunos y bebidas
-                            para comenzar el día.
-
-                        </p>
-
-                        <div class="calificacion">
-
-                            <span class="estrella">
-                                ★
-                            </span>
-
-                            <strong>
-                                4.6
-                            </strong>
-
-                            <span>
-                                (540)
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="comida-precio">
-
-                        <strong>
-                            $150
-                        </strong>
-
-                        <span>
-                            / persona
-                        </span>
-
-                        <button class="btn-detalles">
-                            Ver detalles
-                        </button>
-
-                    </div>
-
-                </article>
-
+                    <label class="orden-label">
+                        <span>Ordenar por</span>
+                        <select class="ordenar" aria-label="Ordenar lugares">
+                            <option>Mejor calificados</option>
+                            <option>Precio menor</option>
+                            <option>Precio mayor</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="estado-listado estado-cargando" role="status">
+                    <span class="estado-icono" aria-hidden="true">⌕</span>
+                    <strong>Buscando lugares</strong>
+                    <span>Mostraremos aquí los lugares registrados para este destino.</span>
+                </div>
             </section>
-
         </section>
-
-
-        <!-- =========================================
-             INFORMACIÓN
-        ========================================== -->
 
         <section class="informacion-comida">
-
-            <div class="informacion-icono">
-                🍴
-            </div>
-
+            <div class="informacion-icono">🌮</div>
             <div>
-
-                <span>
-                    GASTRONOMÍA DE OAXACA
-                </span>
-
-                <h2>
-                    Descubre los sabores de Oaxaca
-                </h2>
-
-                <p>
-                    Explora restaurantes, mercados y lugares
-                    tradicionales para disfrutar de la gastronomía
-                    de Oaxaca de Juárez.
-                </p>
-
+                <span>GASTRONOMÍA DE OAXACA</span>
+                <h2>Sabores que cuentan historias</h2>
+                <p>Consulta las recomendaciones de viajeros y comparte tu experiencia en cada lugar.</p>
             </div>
-
         </section>
-
     </main>
 
-
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
-
     <footer class="footer">
-
-        <p>
-            © 2026 ViajaMX · Descubre México a tu manera 🇲🇽
-        </p>
-
+        <p>© 2026 ViajaMX · Descubre México a tu manera</p>
     </footer>
 
+    <script src="../../js/ui.js"></script>
+    <script src="../../js/chatbot.js"></script>
+    <script src="../../js/comida.js"></script>
 </body>
-<script src="../../js/ui.js"></script>
-<script src="../../js/chatbot.js"></script>
-
 </html>

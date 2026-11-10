@@ -31,6 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
       enlace.href = `${raiz}vista/pagina/guardados.html`;
     }
   });
+  const navegacionPrincipal = document.querySelector('nav');
+  if (navegacionPrincipal) {
+    fetch(`${raiz}api/sesion.php`)
+      .then((respuesta) => {
+        if (!respuesta.ok) throw new Error(`La consulta de sesión respondió ${respuesta.status}.`);
+        return respuesta.json();
+      })
+      .then((sesion) => {
+        if (!sesion.usuario?.es_admin) return;
+        const enlaceAdmin = document.createElement('a');
+        enlaceAdmin.href = `${raiz}vista/pagina/administrar-lugares.html`;
+        enlaceAdmin.textContent = 'Administración';
+        navegacionPrincipal.appendChild(enlaceAdmin);
+      })
+      .catch((error) => console.error('No se pudo verificar el acceso de administración.', error));
+  }
 
   /* =========================================
      AVISOS
@@ -71,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     + '.misviajes-caja .acciones{display:flex;gap:10px;margin-top:14px}'
     + '.misviajes-caja .acciones button{flex:1;padding:11px 14px;border:none;border-radius:12px;font-weight:800;cursor:pointer}'
     + '.btn-cancelar-reserva{border:none;background:#fdeef0;color:#c0392b;border-radius:8px;width:26px;height:26px;cursor:pointer;font-weight:800;margin-left:6px}';
+  estilos.textContent += '.modal-resenas{margin-top:22px;padding-top:18px;border-top:1px solid #ddece8}.modal-resenas h3{margin:0 0 12px;color:#113a40}.modal-resenas-lista{display:grid;gap:10px;max-height:240px;overflow:auto}.resena-item{padding:12px;border-radius:12px;background:#f4fbf8}.resena-item strong{color:#113a40}.resena-item p{margin:6px 0;color:#44615d;white-space:pre-wrap}.resena-item small{color:#6b8580}.modal-resenas-acceso{margin-top:14px}.modal-resenas-acceso>a{color:#087f5b;font-weight:700}.form-resena{display:grid;gap:10px}.form-resena label{display:grid;gap:6px;color:#44615d;font-size:13px;font-weight:700}.form-resena select,.form-resena textarea{width:100%;padding:10px;border:1px solid #cfe5df;border-radius:10px;font:inherit}.form-resena textarea{min-height:90px;resize:vertical}.form-resena button{padding:11px;border:0;border-radius:10px;background:#0e7c6b;color:#fff;font-weight:800;cursor:pointer}.form-resena button:disabled{opacity:.6;cursor:wait}.form-resena-mensaje{margin:0;color:#087f5b;font-size:13px}';
   document.head.appendChild(estilos);
 
   const aviso = document.createElement('div');
@@ -108,8 +125,119 @@ document.addEventListener('DOMContentLoaded', () => {
   ========================================= */
   const normalizar = (texto) => (texto || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   const leerPrecio = (texto) => { const numero = parseInt((texto || '').replace(/[^\d]/g, ''), 10); return isNaN(numero) ? 0 : numero; };
+  const escaparHTML = (texto) => String(texto || '').replace(/[&<>"']/g, (caracter) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[caracter]);
 
   let fondoModal = null;
+  const cargarResenas = async (establecimientoId, seccion) => {
+    const lista = seccion.querySelector('.modal-resenas-lista');
+    const acceso = seccion.querySelector('.modal-resenas-acceso');
+    lista.textContent = 'Cargando comentarios...';
+
+    try {
+      const [respuestaResenas, respuestaSesion] = await Promise.all([
+        fetch(`${raiz}api/resenas.php?establecimiento_id=${encodeURIComponent(establecimientoId)}`),
+        fetch(`${raiz}api/sesion.php`)
+      ]);
+      if (!respuestaResenas.ok || !respuestaSesion.ok) {
+        throw new Error('No se pudieron consultar las reseñas o la sesión.');
+      }
+
+      const [datos, sesion] = await Promise.all([respuestaResenas.json(), respuestaSesion.json()]);
+      if (!Array.isArray(datos.resenas)) throw new Error('La respuesta de reseñas no es válida.');
+      if (fondoModal.dataset.establecimientoId !== String(establecimientoId)) return;
+
+      lista.replaceChildren();
+      if (datos.resenas.length === 0) {
+        const vacio = document.createElement('p');
+        vacio.textContent = 'Todavía no hay comentarios para este lugar.';
+        lista.appendChild(vacio);
+      } else {
+        datos.resenas.forEach((resena) => {
+          const articulo = document.createElement('article');
+          articulo.className = 'resena-item';
+          const titulo = document.createElement('strong');
+          titulo.textContent = `${resena.autor} · ${'★'.repeat(Number(resena.calificacion))}`;
+          const comentario = document.createElement('p');
+          comentario.textContent = resena.comentario;
+          const fecha = document.createElement('small');
+          fecha.textContent = new Date(`${resena.creado_en.replace(' ', 'T')}`).toLocaleDateString('es-MX');
+          articulo.append(titulo, comentario, fecha);
+          lista.appendChild(articulo);
+        });
+      }
+
+      if (sesion.usuario?.id) {
+        acceso.replaceChildren();
+        const formulario = document.createElement('form');
+        formulario.className = 'form-resena';
+        formulario.innerHTML = `
+          <label>Tu calificación
+            <select name="calificacion" required>
+              <option value="">Selecciona estrellas</option>
+              <option value="5">★★★★★ · Excelente</option>
+              <option value="4">★★★★ · Muy bueno</option>
+              <option value="3">★★★ · Bueno</option>
+              <option value="2">★★ · Regular</option>
+              <option value="1">★ · Malo</option>
+            </select>
+          </label>
+          <label>Tu comentario
+            <textarea name="comentario" maxlength="2000" required placeholder="Cuéntales a otros turistas tu experiencia"></textarea>
+          </label>
+          <button type="submit">Publicar comentario</button>
+          <p class="form-resena-mensaje" role="status"></p>`;
+        formulario.addEventListener('submit', async (evento) => {
+          evento.preventDefault();
+          const boton = formulario.querySelector('button');
+          const mensaje = formulario.querySelector('.form-resena-mensaje');
+          boton.disabled = true;
+          try {
+            const respuesta = await fetch(`${raiz}api/resenas.php`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                establecimiento_id: establecimientoId,
+                calificacion: formulario.elements.calificacion.value,
+                comentario: formulario.elements.comentario.value
+              })
+            });
+            const resultado = await respuesta.json();
+            if (!respuesta.ok) throw new Error(resultado.error || 'No se pudo publicar el comentario.');
+            mensaje.textContent = resultado.mensaje;
+            formulario.reset();
+            window.dispatchEvent(new CustomEvent('resenas:actualizadas', {
+              detail: {
+                establecimientoId,
+                promedio: resultado.calificacion_promedio,
+                cantidad: resultado.cantidad_resenas
+              }
+            }));
+            await cargarResenas(establecimientoId, seccion);
+          } catch (error) {
+            mensaje.textContent = error.message;
+          } finally {
+            boton.disabled = false;
+          }
+        });
+        acceso.appendChild(formulario);
+      } else {
+        const enlace = document.createElement('a');
+        enlace.href = `${raiz}login.html`;
+        enlace.textContent = 'Inicia sesión para dejar un comentario y calificar este lugar.';
+        acceso.appendChild(enlace);
+      }
+    } catch (error) {
+      console.error('No se pudieron cargar las reseñas.', error);
+      lista.textContent = 'No fue posible cargar los comentarios. Intenta de nuevo más tarde.';
+    }
+  };
+
   const abrirModal = (datos) => {
     if (!fondoModal) {
       fondoModal = document.createElement('div');
@@ -119,16 +247,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     fondoModal.innerHTML = `
       <div class="modal-caja">
-        ${datos.imagen ? `<img class="modal-imagen" src="${datos.imagen}" alt="${datos.titulo}">` : ''}
+        ${datos.imagen ? `<img class="modal-imagen" src="${escaparHTML(datos.imagen)}" alt="${escaparHTML(datos.titulo)}">` : ''}
         <div class="modal-cuerpo">
-          ${datos.tipo ? `<span class="modal-tipo">${datos.tipo}</span>` : ''}
-          <h2 class="modal-titulo">${datos.titulo}</h2>
-          ${datos.ubicacion ? `<p class="modal-ubicacion">📍 ${datos.ubicacion}</p>` : ''}
+          ${datos.tipo ? `<span class="modal-tipo">${escaparHTML(datos.tipo)}</span>` : ''}
+          <h2 class="modal-titulo">${escaparHTML(datos.titulo)}</h2>
+          ${datos.ubicacion ? `<p class="modal-ubicacion">📍 ${escaparHTML(datos.ubicacion)}</p>` : ''}
           <div class="modal-datos">
-            ${datos.calificacion ? `<span>★ ${datos.calificacion}</span>` : ''}
-            ${datos.precio ? `<span>${datos.precio}</span>` : ''}
+            ${datos.calificacion ? `<span>★ ${escaparHTML(datos.calificacion)}</span>` : ''}
+            ${datos.precio ? `<span>${escaparHTML(datos.precio)}</span>` : ''}
           </div>
-          ${datos.descripcion ? `<p class="modal-descripcion">${datos.descripcion}</p>` : ''}
+          ${datos.descripcion ? `<p class="modal-descripcion">${escaparHTML(datos.descripcion)}</p>` : ''}
           <div class="modal-acciones">
             ${datos.esDestino ? '<button class="btn-modal-planear" type="button">✈ Visitar</button>' : ''}
             <button class="btn-modal-plan" type="button">➕ Agregar a mi plan</button>
@@ -146,8 +274,15 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="res-total">Total estimado: <strong class="res-monto">Selecciona tus fechas</strong></div>
             <button class="btn-modal-reservar" type="button">Reservar ahora</button>
           </div>` : ''}
+          ${datos.establecimientoId ? `
+          <section class="modal-resenas">
+            <h3>Comentarios y calificaciones</h3>
+            <div class="modal-resenas-lista"></div>
+            <div class="modal-resenas-acceso"></div>
+          </section>` : ''}
         </div>
       </div>`;
+    fondoModal.dataset.establecimientoId = datos.establecimientoId ? String(datos.establecimientoId) : '';
     fondoModal.querySelector('.btn-modal-plan').addEventListener('click', () => {
       const parametros = new URLSearchParams(location.search);
       agregarAlPlan({
@@ -214,6 +349,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrar(`¡Reserva confirmada en ${datos.titulo}! ${noches} noche${noches > 1 ? 's' : ''}. Revísala en Mis viajes.`);
       });
     }
+    if (datos.establecimientoId) {
+      cargarResenas(datos.establecimientoId, fondoModal.querySelector('.modal-resenas'));
+    }
     fondoModal.classList.add('abierto');
   };
 
@@ -239,6 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
       esDestino: tarjeta.classList.contains('tarjeta-lugar') && !tarjeta.classList.contains('tarjeta-destino-region'),
       esHotel: Boolean(tarjeta.querySelector('.hotel-precio')),
       esRestaurante: Boolean(tarjeta.querySelector('.comida-precio')),
+      establecimientoId: tarjeta.dataset.establecimientoId || null,
       region: tarjeta.dataset.region || '',
       lat: Number.isFinite(latitud) ? latitud : null,
       lon: Number.isFinite(longitud) ? longitud : null,
@@ -255,9 +394,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const esHoteles = Boolean(document.querySelector('.lista-hoteles'));
     const panel = document.querySelector('.filtros, aside');
     if (!panel) return;
-    const tarjetas = Array.from(contenedorTarjetas.querySelectorAll('article'));
-    const ordenOriginal = tarjetas.slice();
-    const contador = document.querySelector('.resultado strong');
+    let tarjetas = Array.from(contenedorTarjetas.querySelectorAll('article'));
+    let ordenOriginal = tarjetas.slice();
+    const contador = document.querySelector('.resultado strong, .contador strong');
 
     const buscarInput = panel.querySelector('.input-busqueda input');
     const rangoPrecio = panel.querySelector('input.rango');
@@ -282,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const aplicar = () => {
       const busqueda = normalizar(buscarInput ? buscarInput.value : '');
-      const precioMaximo = rangoPrecio ? parseInt(rangoPrecio.value, 10) : Infinity;
+      const precioMaximo = rangoPrecio && !rangoPrecio.disabled ? parseInt(rangoPrecio.value, 10) : Infinity;
       const tiposElegidos = checkboxes.filter((caja) => caja.checked && !esCalificacion(caja)).map(textoDe).filter(Boolean);
       const umbrales = checkboxes.filter((caja) => caja.checked && esCalificacion(caja)).map(umbralDe).filter((valor) => valor > 0);
       const calificacionMinima = umbrales.length ? Math.min(...umbrales) : 0;
@@ -315,15 +454,54 @@ document.addEventListener('DOMContentLoaded', () => {
       const lista = contenedorTarjetas;
       if (modo === 0) { ordenOriginal.forEach((tarjeta) => lista.appendChild(tarjeta)); return; }
       const ordenados = visiblesOrdenables().sort((a, b) => {
-        if (modo === 3) return (parseFloat((b.querySelector('.calificacion strong') || {}).textContent) || 0) - (parseFloat((a.querySelector('.calificacion strong') || {}).textContent) || 0);
-        const precioA = leerPrecio((a.querySelector('.hotel-precio strong, .comida-precio strong') || {}).textContent);
-        const precioB = leerPrecio((b.querySelector('.hotel-precio strong, .comida-precio strong') || {}).textContent);
-        return modo === 1 ? precioA - precioB : precioB - precioA;
+        const destacados = compararPrioridad(a, b);
+        if (destacados !== 0) return destacados;
+        if (modo === 3 || (!esHoteles && modo === 0)) return compararCalificacion(b, a);
+        if (!esHoteles && modo === 1) return precioDe(a) - precioDe(b);
+        if (!esHoteles && modo === 2) return precioDe(b) - precioDe(a);
+        if (modo === 3) return compararCalificacion(b, a);
+        return modo === 1 ? precioDe(a) - precioDe(b) : precioDe(b) - precioDe(a);
       });
       ordenados.forEach((tarjeta) => lista.appendChild(tarjeta));
     };
 
     const visiblesOrdenables = () => tarjetas.filter((tarjeta) => tarjeta.style.display !== 'none');
+    const compararPrioridad = (a, b) => (Number(b.dataset.prioridadManual) || 0) - (Number(a.dataset.prioridadManual) || 0);
+    const compararCalificacion = (a, b) => (parseFloat((a.querySelector('.calificacion strong') || {}).textContent) || 0) - (parseFloat((b.querySelector('.calificacion strong') || {}).textContent) || 0);
+    const precioDe = (tarjeta) => leerPrecio((tarjeta.querySelector('.hotel-precio strong, .comida-precio strong') || {}).textContent);
+    const ordenarRecomendados = (a, b) => compararPrioridad(a, b) || compararCalificacion(b, a);
+
+    const actualizarTarjetas = () => {
+      tarjetas = Array.from(contenedorTarjetas.querySelectorAll('article'));
+      ordenOriginal = tarjetas.slice().sort(ordenarRecomendados);
+      aplicar();
+      ordenarTarjetas();
+    };
+
+    window.addEventListener('hoteles:cargados', () => {
+      actualizarTarjetas();
+    });
+    window.addEventListener('restaurantes:cargados', actualizarTarjetas);
+    window.addEventListener('resenas:actualizadas', (evento) => {
+      const { establecimientoId, promedio, cantidad } = evento.detail || {};
+      const tarjeta = tarjetas.find((item) => item.dataset.establecimientoId === String(establecimientoId));
+      if (!tarjeta) return;
+      let calificacion = tarjeta.querySelector('.calificacion');
+      if (!calificacion) {
+        calificacion = document.createElement('div');
+        calificacion.className = 'calificacion';
+        tarjeta.querySelector('.comida-info, .hotel-contenido')?.appendChild(calificacion);
+      }
+      calificacion.replaceChildren();
+      const estrella = document.createElement('span');
+      estrella.textContent = '★';
+      const valor = document.createElement('strong');
+      valor.textContent = Number(promedio).toFixed(1);
+      const numero = document.createElement('span');
+      numero.textContent = `(${cantidad})`;
+      calificacion.append(estrella, valor, numero);
+      actualizarTarjetas();
+    });
 
     const limpiar = () => {
       checkboxes.forEach((caja) => { caja.checked = false; });

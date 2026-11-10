@@ -28,18 +28,90 @@ const DATOS_ESTADOS = {
     lugares: [
       {
         nombre: "Monte Albán",
+        region: "Valles Centrales",
+        lat: 17.0439,
+        lon: -96.7677,
         descripcion: "Sitio arqueológico zapoteca con vistas panorámicas y una de las ciudades prehispánicas más importantes del país.",
         imagen: "../../img/lugares/monte-alban.png"
       },
       {
         nombre: "Hierve el Agua",
+        region: "Valles Centrales",
+        lat: 16.8697,
+        lon: -96.2753,
         descripcion: "Cascadas petrificadas, pozas naturales y vistas de las montañas oaxaqueñas.",
         imagen: "../../img/lugares/hierve-el-agua.png"
       },
       {
         nombre: "Puerto Escondido",
+        region: "Costa",
+        lat: 15.8719,
+        lon: -97.0767,
         descripcion: "Playas de olas perfectas para surfear, restaurantes rústicos y un ambiente relajado del pacífico.",
         imagen: "../../img/lugares/puerto-escondido.png"
+      },
+      {
+        nombre: "Ixtlán de Juárez",
+        region: "Sierra Norte",
+        lat: 17.3308,
+        lon: -96.4889,
+        descripcion: "Bosques de niebla, miradores y senderos comunitarios en la Sierra Norte. El último tramo se hace por carretera de montaña."
+      },
+      {
+        nombre: "Capulálpam de Méndez",
+        region: "Sierra Norte",
+        lat: 17.3082,
+        lon: -96.4464,
+        descripcion: "Pueblo Mágico serrano con arquitectura tradicional, bosque y rutas de ecoturismo."
+      },
+      {
+        nombre: "Guelatao de Juárez",
+        region: "Sierra Norte",
+        lat: 17.3170,
+        lon: -96.4970,
+        descripcion: "Localidad serrana junto a su laguna y lugar de nacimiento de Benito Juárez."
+      },
+      {
+        nombre: "Pueblos Mancomunados",
+        region: "Sierra Norte",
+        lat: 17.2330,
+        lon: -96.5200,
+        descripcion: "Comunidades de montaña conectadas por rutas de senderismo y experiencias de ecoturismo."
+      },
+      {
+        nombre: "Mitla",
+        region: "Valles Centrales",
+        lat: 16.9286,
+        lon: -96.3597,
+        descripcion: "Zona arqueológica zapoteca famosa por sus grecas de piedra y su historia."
+      },
+      {
+        nombre: "Árbol del Tule",
+        region: "Valles Centrales",
+        lat: 17.0479,
+        lon: -96.6350,
+        descripcion: "Un ahuehuete monumental en Santa María del Tule, a pocos kilómetros de Oaxaca de Juárez."
+      },
+      {
+        nombre: "Mazunte",
+        region: "Costa",
+        lat: 15.6657,
+        lon: -96.5540,
+        descripcion: "Pueblo costero de ritmo tranquilo, playas y el Centro Mexicano de la Tortuga."
+      },
+      {
+        nombre: "Bahías de Huatulco",
+        region: "Costa",
+        lat: 15.7703,
+        lon: -96.1350,
+        descripcion: "Nueve bahías, playas del Pacífico y recorridos en lancha por la costa oaxaqueña."
+      },
+      {
+        nombre: "Teotitlán del Valle",
+        region: "Valles Centrales",
+        lat: 17.0307,
+        lon: -96.5170,
+        descripcion: "Pueblo de tradición textil donde familias zapotecas crean tapetes de lana."
       }
     ]
   },

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar lugares | ViajaMX</title>
+    <link rel="stylesheet" href="../../estilo/admin-lugares.css">
+</head>
+
+<body>
+    <header class="admin-header">
+        <a href="../../inicio.html">ViajaMX</a>
+        <span>Administración de lugares</span>
+    </header>
+
+    <main class="admin-contenedor">
+        <a href="comida.html">← Volver a Comida</a>
+        <h1>Administrar lugares destacados</h1>
+        <p>El lugar marcado aparece primero, independientemente de su calificación. Si no marcas ninguno, se ordenan por calificación.</p>
+        <p id="admin-estado" role="status">Cargando lugares...</p>
+        <section id="admin-lugares" class="admin-lugares" aria-live="polite"></section>
+    </main>
+
+    <script src="../../js/admin-lugares.js"></script>
+</body>
+
+</html>

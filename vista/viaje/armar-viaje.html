@@ -19,7 +19,7 @@
           href="../../lib/leaflet.css">
 
     <link rel="stylesheet"
-            href="../../estilo/armar-viaje.css?v=miravia-ruta-4">
+            href="../../estilo/armar-viaje.css?v=miravia-ruta-8">
 
 </head>
 
@@ -107,7 +107,7 @@
 
                 <h2>Paso 1 · ¿Qué lugares quieres visitar?</h2>
 
-                <p class="paso-descripcion">Puedes elegir todos los destinos que quieras (5 o más también).</p>
+                <p class="paso-descripcion">Selecciona todos los lugares que quieras visitar del estado; calcularemos el recorrido desde el inicio que elijas.</p>
 
                 <p class="seleccion-lugares" id="contadorLugares" aria-live="polite"></p>
                 <div class="tarjetas" id="tarjetasLugares"></div>
@@ -117,35 +117,70 @@
             <div class="paso" id="paso4" hidden>
 
                 <h2>Paso 4 · ¿Cómo llegarás?</h2>
-                <p class="paso-descripcion">Si estás en México, usa tu ubicación. Si vienes de otro país, elige el aeropuerto al que llegarás.</p>
+                <p class="paso-descripcion">Planea el viaje por tramos: primero llega a la región y luego toma el transporte local.</p>
 
                 <section class="ruta-panel" aria-label="Origen y transporte">
-                    <button class="btn btn-suave" id="btnUsarUbicacion" type="button">Usar mi ubicación</button>
-                    <p class="ruta-origen" id="rutaOrigen" role="status" aria-live="polite">También puedes elegir un aeropuerto de llegada.</p>
+                    <div class="ruta-intro">
+                        <span class="ruta-insignia" aria-hidden="true">✦</span>
+                        <div>
+                            <h3>Tu aventura, tramo por tramo</h3>
+                            <p>Si la combi no llega hasta el destino, te conectamos con una central o aeropuerto y sigues desde ahí.</p>
+                        </div>
+                    </div>
 
-                    <label for="aeropuertoLlegada">Elige desde dónde sales</label>
+                    <button class="btn btn-suave" id="btnUsarUbicacion" type="button">◎ Usar mi ubicación</button>
+                    <p class="ruta-origen" id="rutaOrigen" role="status" aria-live="polite">O elige una ciudad o aeropuerto de salida.</p>
+
+                    <label for="aeropuertoLlegada">¿Desde dónde empieza el viaje?</label>
                     <select id="aeropuertoLlegada">
-                        <option value="">Elige un aeropuerto</option>
-                        <option value="aicm">Ciudad de México · AICM</option>
-                        <option value="gdl">Guadalajara · Miguel Hidalgo</option>
-                        <option value="cun">Cancún · Aeropuerto Internacional</option>
-                        <option value="oax">Oaxaca · Xoxocotlán</option>
-                        <option value="pxm">Puerto Escondido · Aeropuerto Internacional</option>
-                        <option value="hux">Huatulco · Aeropuerto Internacional</option>
-                        <option value="mty">Monterrey · Mariano Escobedo</option>
-                        <option value="tij">Tijuana · Aeropuerto Internacional</option>
-                        <option value="pvr">Puerto Vallarta · Aeropuerto Internacional</option>
+                        <option value="">Elige ciudad o aeropuerto</option>
+                        <optgroup label="Oaxaca y alrededores">
+                            <option value="oax">Oaxaca · Xoxocotlán (OAX)</option>
+                            <option value="pxm">Puerto Escondido (PXM)</option>
+                            <option value="hux">Huatulco (HUX)</option>
+                        </optgroup>
+                        <optgroup label="Centro y Bajío">
+                            <option value="aicm">Ciudad de México · AICM (MEX)</option>
+                            <option value="nlu">Santa Lucía · AIFA (NLU)</option>
+                            <option value="pbc">Puebla · Hermanos Serdán (PBC)</option>
+                            <option value="gdl">Guadalajara (GDL)</option>
+                            <option value="bjx">León · Bajío (BJX)</option>
+                            <option value="qro">Querétaro (QRO)</option>
+                        </optgroup>
+                        <optgroup label="Norte, costa y sureste">
+                            <option value="mty">Monterrey (MTY)</option>
+                            <option value="tij">Tijuana (TIJ)</option>
+                            <option value="pvr">Puerto Vallarta (PVR)</option>
+                            <option value="cun">Cancún (CUN)</option>
+                            <option value="mid">Mérida (MID)</option>
+                            <option value="ver">Veracruz (VER)</option>
+                            <option value="tgz">Tuxtla Gutiérrez (TGZ)</option>
+                            <option value="aca">Acapulco (ACA)</option>
+                            <option value="sjd">Los Cabos (SJD)</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="inicioRecorrido">¿Dónde quieres empezar a visitar?</label>
+                    <select id="inicioRecorrido">
+                        <option value="llegada">Desde donde llegué</option>
                     </select>
 
                     <label for="modoTransporte">¿Cómo quieres viajar?</label>
                     <select id="modoTransporte">
-                        <option value="urbano">Urban / combi</option>
-                        <option value="camion">Camión / autobús</option>
-                        <option value="taxi">Taxi</option>
-                        <option value="avion">Avión</option>
+                        <option value="urbano">Combi / transporte local</option>
+                        <option value="camion">Autobús foráneo</option>
+                        <option value="taxi">Taxi local</option>
+                        <option value="avion">Avión + traslado local</option>
                         <option value="carro">Mi carro (calcular gasolina)</option>
                     </select>
+                    <div class="alcances-ruta" aria-label="Alcance aproximado de cada transporte">
+                        <div><span aria-hidden="true">🚐</span><strong>Combi</strong><small>por tramo local, ~35 km</small></div>
+                        <div><span aria-hidden="true">🚕</span><strong>Taxi</strong><small>por tramo local, ~60 km</small></div>
+                        <div><span aria-hidden="true">🚌</span><strong>Autobús</strong><small>viajes entre ciudades</small></div>
+                        <div><span aria-hidden="true">✈️</span><strong>Avión</strong><small>aeropuerto + traslado final</small></div>
+                    </div>
                     <p id="recomendacionTransporte" class="ruta-nota" aria-live="polite"></p>
+                    <div id="opcionesRuta" class="opciones-ruta" aria-live="polite"></div>
 
                     <section class="gasolina-panel" id="panelGasolina" aria-labelledby="tituloGasolina" hidden>
                         <h3 id="tituloGasolina">Estimado de gasolina</h3>
@@ -159,7 +194,8 @@
                     <button class="btn btn-grad" id="btnCalcularRuta" type="button">Calcular ruta aproximada</button>
                     <p class="ruta-resultado" id="rutaResultado" role="status" aria-live="polite"></p>
                     <div class="mini-mapa" id="miniMapa" hidden></div>
-                    <p class="ruta-nota">Las rutas y tiempos son aproximados. No se incluyen tarifas de taxi, autobús o avión.</p>
+                    <p class="animacion-ruta" id="animacionRuta" role="status" aria-live="polite"></p>
+                    <p class="ruta-nota">Las rutas y tiempos son aproximados. No se confirman vuelos, horarios ni tarifas de taxi, autobús o avión.</p>
                 </section>
 
             </div>
@@ -243,9 +279,9 @@
     </main>
 
     <script src="../../lib/leaflet.js"></script>
-    <script src="../js/datos-estados.js?v=miravia-mun-18"></script>
+    <script src="../js/datos-estados.js?v=miravia-mun-20"></script>
     <script src="../../js/chatbot.js"></script>
-    <script src="armar-viaje.js?v=miravia-ruta-4"></script>
+    <script src="armar-viaje.js?v=miravia-ruta-15"></script>
 
 </body>
 

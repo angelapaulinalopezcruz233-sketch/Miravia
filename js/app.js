@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (estado.value === 'oaxaca') {
         if (!region.value) return notificar('Selecciona una región de Oaxaca para continuar.');
         if (!municipio.value) return notificar('Selecciona un municipio de la región para continuar.');
-        window.location.href = `vista/estados/estado.html?estado=${encodeURIComponent(estado.value)}&municipio=${encodeURIComponent(municipio.value)}`;
+        window.location.href = `vista/estados/estado.html?estado=${encodeURIComponent(estado.value)}&municipio=${encodeURIComponent(municipio.value)}&region=${encodeURIComponent(region.value)}`;
         return;
       }
 

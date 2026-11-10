@@ -900,6 +900,144 @@ body {
 
 }
 
+.lista-hoteles > .hotel-card {
+    display: grid;
+}
+
+.lista-hoteles > .barra-resultados {
+    margin-bottom: 0;
+}
+
+.filtros-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.orden-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.filtro-calificacion .checkbox {
+    display: flex;
+}
+
+.estado-listado {
+
+    min-height: 200px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 36px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 18px;
+
+    background: var(--white);
+
+    color: var(--text-light);
+
+    text-align: center;
+
+    box-shadow: var(--shadow);
+
+}
+
+.estado-listado strong {
+
+    color: var(--text);
+
+    font-size: 16px;
+
+}
+
+.estado-icono {
+
+    width: 52px;
+
+    height: 52px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 16px;
+
+    background: var(--aqua-light);
+
+    color: var(--green-dark);
+
+    font-size: 28px;
+
+}
+
+.estado-cargando .estado-icono {
+
+    animation: pulso-busqueda 1.3s ease-in-out infinite;
+
+}
+
+@keyframes pulso-busqueda {
+
+    50% { transform: translateY(-3px); opacity: .65; }
+
+}
+
+.estado-listado[hidden] {
+
+    display: none;
+
+}
+
+.estado-listado-error {
+
+    color: #a12622;
+
+}
+
+.hotel-card[data-prioridad-manual="1"] {
+
+    border-color: var(--aqua);
+
+}
+
+.hotel-card .hotel-contenido > .descripcion {
+
+    margin: 10px 0 0;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+.lista-hoteles > .hotel-card .hotel-precio .btn-detalles {
+
+    width: auto;
+
+}
+
+.lista-hoteles > .hotel-card .hotel-precio .btn-detalles:hover {
+
+    transform: translateY(-2px);
+
+}
+
 
 /* =========================================
    BARRA RESULTADOS
@@ -1485,12 +1623,92 @@ body {
 
 }
 
+@media (min-width: 851px) and (max-width: 1250px) {
+
+    .encabezado {
+
+        gap: 16px;
+
+        padding: 0 3%;
+
+    }
+
+    .logo {
+
+        font-size: 22px;
+
+    }
+
+    .menu {
+
+        flex: 1;
+
+        justify-content: center;
+
+        gap: clamp(10px, 1.3vw, 16px);
+
+    }
+
+    .menu a {
+
+        font-size: 14px;
+
+    }
+
+    .btn-usuario {
+
+        flex-shrink: 0;
+
+    }
+
+}
+
 
 /* =========================================
    TABLET PEQUEÑA
 ========================================= */
 
 @media (max-width: 850px) {
+
+    .encabezado {
+
+        height: auto;
+
+        flex-wrap: wrap;
+
+        gap: 14px;
+
+        padding: 14px 4%;
+
+    }
+
+    .menu {
+
+        order: 3;
+
+        width: 100%;
+
+        justify-content: flex-start;
+
+        gap: 22px;
+
+        overflow-x: auto;
+
+    }
+
+    .menu a {
+
+        padding: 8px 0;
+
+        white-space: nowrap;
+
+    }
+
+    .menu a.activo::after {
+
+        display: none;
+
+    }
 
     .encabezado-pagina {
 

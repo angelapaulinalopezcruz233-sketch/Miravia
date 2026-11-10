@@ -12,7 +12,9 @@ if (isset($_SESSION['usuario_id'])) {
         'usuario' => [
             'id' => $_SESSION['usuario_id'],
             'nombre' => $_SESSION['nombre'] ?? '',
-            'correo' => $_SESSION['correo'] ?? ''
+            'correo' => $_SESSION['correo'] ?? '',
+            'rol_id' => (int) ($_SESSION['rol_id'] ?? 0),
+            'es_admin' => (int) ($_SESSION['rol_id'] ?? 0) === 1
         ]
     ], JSON_UNESCAPED_UNICODE);
     exit;
