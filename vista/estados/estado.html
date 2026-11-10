@@ -14,7 +14,7 @@
           href="../../lib/leaflet.css">
 
     <link rel="stylesheet"
-      href="../../estilo/estado.css?v=miravia-fotos-destinos-5">
+      href="../../estilo/estado.css?v=miravia-fotos-destinos-7">
 
 </head>
 
@@ -50,21 +50,21 @@
 
     <section class="hero-estado">
 
-        <button class="btn-volver" type="button">← Volver</button>
+        <div class="hero-barra-superior">
+            <button class="btn-volver" type="button">← Volver</button>
+        </div>
 
-        <span class="etiqueta">DESCUBRE MÉXICO</span>
+        <div class="hero-contenido">
+            <span class="etiqueta">DESCUBRE MÉXICO</span>
 
-        <h1 id="nombreEstado">Cargando estado...</h1>
+            <h1 id="nombreEstado">Cargando estado...</h1>
 
-        <p id="descripcionEstado"></p>
+            <p id="descripcionEstado"></p>
 
-        <button class="btn-armar" id="btnArmar" type="button">
-            🧭 Armar mi viaje paso a paso
-        </button>
-
-        <button class="btn-armar btn-todo" id="btnTodoEstado" type="button">
-            📋 Ver todo el estado
-        </button>
+            <button class="btn-armar" id="btnArmar" type="button">
+                🧭 Armar mi viaje paso a paso
+            </button>
+        </div>
 
     </section>
 
@@ -76,12 +76,20 @@
     <div class="mapa-caja">
 
         <form class="buscador-mapa" id="formBuscarLugar" role="search">
-            <label for="buscarLugar">Buscar un lugar en el estado</label>
             <div class="buscador-mapa-campos">
+                <svg class="icono-busqueda" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
                 <input id="buscarLugar" name="lugar" type="search"
-                    placeholder="Escribe el nombre de un lugar o municipio"
+                    placeholder="Buscar en Google Maps"
+                    aria-label="Buscar un lugar en el estado"
                     autocomplete="off" required>
-                <button type="submit">Buscar</button>
+                <button type="submit" aria-label="Buscar este lugar en el mapa">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21.7 11.3 13 2.6a1.9 1.9 0 0 0-2.7 0l-1.6 1.6 4.1 4.1H4.4a1.9 1.9 0 0 0-1.9 1.9v5.6a1.9 1.9 0 0 0 1.9 1.9h8.4l-4.1 4.1 1.6 1.6a1.9 1.9 0 0 0 2.7 0l8.7-8.7a2.1 2.1 0 0 0 0-3.4ZM7.9 14.5v-5h7.8v-2l3.4 3.4-3.4 3.4v-2H7.9Z"></path>
+                    </svg>
+                </button>
             </div>
             <p class="buscador-mapa-estado" id="estadoBusquedaLugar" role="status" aria-live="polite"></p>
             <div class="resultados-busqueda-mapa" id="resultadosBusquedaLugar"></div>
@@ -226,8 +234,10 @@
         ).textContent =
             "Los imperdibles de " + datos.nombre;
 
-        document.querySelector("label[for='buscarLugar']").textContent =
-            "Buscar un lugar en " + datos.nombre;
+        document.getElementById("buscarLugar").setAttribute(
+            "aria-label",
+            "Buscar un lugar en " + datos.nombre
+        );
 
 
         /* ==========================================
@@ -1288,24 +1298,6 @@
                 url += "&municipio=" + encodeURIComponent(municipioSeleccionado);
             }
             window.location.href = url;
-        });
-
-        /* ==========================================
-           BOTÓN "VER TODO EL ESTADO"
-           (todos los lugares reales del estado:
-            la capital y todos sus municipios)
-        ========================================== */
-
-        document.getElementById("btnTodoEstado").addEventListener("click", function () {
-            if (capaMunicipiosGlobal) {
-                // Ver todo el estado: se olvida el municipio elegido.
-                municipioSeleccionado = "";
-                abrirPanelZona(
-                    datos.nombre + " (todo el estado)",
-                    capaMunicipiosGlobal.getBounds(),
-                    ""
-                );
-            }
         });
 
         /* ==========================================

@@ -369,34 +369,6 @@ body {
     color: rgba(247, 244, 239, 0.85);
 }
 
-.aviso-estado {
-    position: absolute;
-    left: 50%;
-    bottom: 110px;
-    transform: translateX(-50%);
-    width: min(92%, 420px);
-    padding: 14px 18px;
-    border-radius: 18px;
-    color: #173944;
-    background: linear-gradient(135deg, rgba(159, 243, 224, 0.96), rgba(255, 224, 166, 0.96));
-    font-weight: 700;
-    text-align: center;
-    box-shadow: 0 12px 30px rgba(244, 179, 71, 0.3);
-    pointer-events: none;
-}
-
-.aviso-estado[hidden] { display: none; }
-
-.aviso-estado em { font-style: normal; color: #0c5a4d; }
-
-.aviso-estado small {
-    display: block;
-    margin-top: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #54737a;
-}
-
 /* Chip del estado elegido */
 
 .estado-elegido-chip {

@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const mensaje = document.querySelector(".contenido .mensaje");
     const textoUbicacion = document.getElementById("textoUbicacion");
     const cajaUbicacion = document.getElementById("estadoUbicacion");
-    const avisoEstado = document.getElementById("avisoEstado");
     const elegirDestino = document.getElementById("elegirDestino");
     const btnComenzarViaje = document.getElementById("btnComenzarViaje");
     const logo = document.getElementById("logoMiravia");
@@ -370,12 +369,6 @@ document.addEventListener("DOMContentLoaded", () => {
         valorElegido = valor;
         elegirDestino.hidden = true;
 
-        avisoEstado.hidden = false;
-        avisoEstado.innerHTML =
-            `Has elegido <em>${nombre}</em><br>` +
-            `<small>Ahora oprime "Comenzar viaje" ✈</small>`;
-        gsap.from(avisoEstado, { opacity: 0, y: 16, duration: 0.4 });
-
         document.getElementById("estadoElegidoNombre").textContent = nombre;
         document.getElementById("estadoElegidoChip").hidden = false;
         const chipPunto = document.querySelector("#estadoElegidoChip .chip-punto");
@@ -403,9 +396,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         navegando = true;
-
-        avisoEstado.innerHTML = `¡Preparando tu viaje!...`;
-        avisoEstado.hidden = false;
 
         window.setTimeout(() => {
             window.location.href =
