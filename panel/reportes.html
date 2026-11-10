@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miravia · Reportes</title>
+    <link rel="stylesheet" href="../estilo/panel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>Miravia</span>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </a>
+            <a href="establecimientos.html" class="menu-item">
+                <i class="fa-solid fa-hotel"></i> Mis establecimientos
+            </a>
+            <a href="reservaciones.html" class="menu-item">
+                <i class="fa-solid fa-calendar-check"></i> Reservaciones
+            </a>
+            <a href="comisiones.html" class="menu-item">
+                <i class="fa-solid fa-percent"></i> Comisiones
+            </a>
+            <a href="estado-cuenta.html" class="menu-item">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Estado de cuenta
+            </a>
+            <a href="reportes.html" class="menu-item active">
+                <i class="fa-solid fa-chart-pie"></i> Reportes
+            </a>
+            <a href="perfil.html" class="menu-item">
+                <i class="fa-solid fa-user"></i> Perfil
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="../inicio.html" class="menu-item logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+            </a>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <div>
+                <h1>Reportes</h1>
+                <p class="subtitulo">Analiza el rendimiento de tus establecimientos</p>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn-secundario">
+                    <i class="fa-solid fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn-secundario">
+                    <i class="fa-solid fa-file-excel"></i> Excel
+                </button>
+            </div>
+        </header>
+
+        <!-- FILTROS -->
+        <section class="panel panel-filtros">
+            <div class="filtros-inline">
+                <div class="campo">
+                    <label>Fecha inicio</label>
+                    <input type="date" class="select" value="2026-05-01">
+                </div>
+                <div class="campo">
+                    <label>Fecha fin</label>
+                    <input type="date" class="select" value="2026-10-31">
+                </div>
+                <div class="campo">
+                    <label>Establecimiento</label>
+                    <select class="select">
+                        <option>Todos</option>
+                        <option>Hotel Vista Sol</option>
+                        <option>Restaurante El Faro</option>
+                        <option>Tour Cañón Azul</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label>Tipo de reporte</label>
+                    <select class="select">
+                        <option>Comisiones</option>
+                        <option>Reservaciones</option>
+                        <option>Ingresos</option>
+                    </select>
+                </div>
+                <button class="btn-primario btn-generar">
+                    <i class="fa-solid fa-filter"></i> Generar
+                </button>
+            </div>
+        </section>
+
+        <!-- TARJETAS RESUMEN -->
+        <section class="cards">
+            <div class="card">
+                <div class="card-icon azul"><i class="fa-solid fa-receipt"></i></div>
+                <div>
+                    <p class="card-label">Total facturado</p>
+                    <h2 class="card-value">$58,400</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon naranja"><i class="fa-solid fa-percent"></i></div>
+                <div>
+                    <p class="card-label">Comisión generada</p>
+                    <h2 class="card-value">$4,320</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon verde"><i class="fa-solid fa-sack-dollar"></i></div>
+                <div>
+                    <p class="card-label">Ingreso neto</p>
+                    <h2 class="card-value">$54,080</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon morado"><i class="fa-solid fa-chart-simple"></i></div>
+                <div>
+                    <p class="card-label">Promedio / reserva</p>
+                    <h2 class="card-value">$2,163</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRÁFICAS -->
+        <section class="grid-graficas">
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>Comisiones por mes</h3>
+                </div>
+                <div class="chart" id="chart-comisiones"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>Reservaciones por mes</h3>
+                </div>
+                <div class="chart" id="chart-reservaciones"></div>
+            </div>
+        </section>
+
+        <!-- TABLA RESUMEN -->
+        <section class="panel">
+            <div class="panel-header">
+                <h3>Resumen por establecimiento</h3>
+            </div>
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Establecimiento</th>
+                        <th>Tipo</th>
+                        <th>Reservaciones</th>
+                        <th>Facturado</th>
+                        <th>Comisión</th>
+                        <th>Neto</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-resumen"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="../js/panel-mock.js"></script>
+<script src="../js/panel-api.js"></script> <!-- NUEVA LÍNEA -->
+<script src="../js/panel-reportes.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 <?php
+// Abre una conexión PDO a la base MIRAVIA con errores explícitos y consultas nativas.
 declare(strict_types=1);
 
 function conectarBaseDatos(): PDO

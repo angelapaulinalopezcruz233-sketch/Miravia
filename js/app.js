@@ -1,3 +1,4 @@
+// Interacciones comunes de las páginas de hospedaje y comida.
 document.addEventListener('DOMContentLoaded', () => {
   const destinos = { oaxaca: 'vista/pagina/oaxaca-de-juarez.html', chiapas: 'vista/estados/chiapas.html' };
   const regionesOaxaca = {

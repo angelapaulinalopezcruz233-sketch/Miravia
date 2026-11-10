@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- Página completa de lugares agregados al plan; permite consultarlos y quitarlos. -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardados | MIRAVIA</title>
+    <link rel="stylesheet" href="../../estilo/hoteles.css">
+    <link rel="stylesheet" href="../../estilo/guardados.css">
+</head>
+<body>
+    <header class="encabezado">
+        <a href="../../inicio.html" class="logo">🌴 <span>MIRAVIA</span></a>
+        <nav class="menu">
+            <a href="../../inicio.html?destinos=1">Destinos</a>
+            <a href="../../vista/pagina/hoteles.html">Hospedaje</a>
+            <a href="../../vista/pagina/comida.html">Comida</a>
+            <a href="../../vista/pagina/guardados.html" class="activo" aria-current="page">Guardados</a>
+            <a href="#" id="navMisViajes">Mis viajes</a>
+        </nav>
+        <button class="btn-usuario" type="button" aria-label="Mis viajes">👤</button>
+    </header>
+
+    <main class="contenedor guardados-pagina">
+        <a class="volver" href="../../inicio.html?destinos=1">← Volver a destinos</a>
+        <section class="encabezado-pagina">
+            <div>
+                <span class="etiqueta">📌 MI PLAN</span>
+                <h1>Lugares guardados</h1>
+                <p>Todos los lugares que agregaste a tu plan, reunidos en un solo sitio.</p>
+            </div>
+        </section>
+        <p class="guardados-estado" id="guardadosEstado" role="status" aria-live="polite"></p>
+        <ul class="guardados-lista" id="guardadosLista"></ul>
+        <div class="guardados-vacio" id="guardadosVacio" hidden>
+            <h2>Aún no tienes lugares guardados</h2>
+            <p>Explora un destino y pulsa “Agregar a mi plan” en sus detalles para verlo aquí.</p>
+            <a class="guardados-explorar" href="../../inicio.html?destinos=1">Explorar destinos</a>
+        </div>
+    </main>
+
+    <script src="../../js/ui.js?v=miravia-ui-5"></script>
+    <script>
+        (() => {
+            // Elementos de la lista compartida de lugares guardados en el navegador.
+            const clavePlan = "miravia_plan";
+            const lista = document.getElementById("guardadosLista");
+            const vacio = document.getElementById("guardadosVacio");
+            const estado = document.getElementById("guardadosEstado");
+
+            // Valida el formato de almacenamiento antes de dibujar la lista.
+            function leerPlan() {
+                const contenido = localStorage.getItem(clavePlan);
+                if (!contenido) return [];
+                const plan = JSON.parse(contenido);
+                if (!Array.isArray(plan)) throw new Error("El formato de la lista guardada no es válido.");
+                return plan;
+            }
+
+            // Actualiza el contador, las tarjetas y el estado vacío de la página.
+            function renderizarPlan() {
+                let plan;
+                try {
+                    plan = leerPlan();
+                } catch (error) {
+                    console.error("No se pudo leer la lista de lugares guardados.", error);
+                    estado.textContent = "No se pudo cargar tu lista guardada. Revisa el almacenamiento del navegador.";
+                    lista.replaceChildren();
+                    vacio.hidden = true;
+                    return;
+                }
+
+                lista.replaceChildren();
+                estado.textContent = plan.length
+                    ? `${plan.length} lugar${plan.length === 1 ? "" : "es"} guardado${plan.length === 1 ? "" : "s"}`
+                    : "";
+                vacio.hidden = plan.length > 0;
+                lista.hidden = plan.length === 0;
+
+                plan.forEach((lugar, indice) => {
+                    const tarjeta = document.createElement("li");
+                    tarjeta.className = "guardado-item";
+
+                    const contenido = document.createElement("div");
+                    contenido.className = "guardado-contenido";
+                    const titulo = document.createElement("h2");
+                    titulo.textContent = lugar && lugar.titulo ? lugar.titulo : "Lugar guardado";
+                    contenido.appendChild(titulo);
+
+                    const categoria = lugar && lugar.categoria === "hotel"
+                        ? "Hospedaje"
+                        : lugar && lugar.categoria === "restaurante"
+                            ? "Comida"
+                            : lugar && lugar.tipo;
+                    const detalles = [categoria, lugar && lugar.precio].filter(Boolean);
+                    if (detalles.length) {
+                        const meta = document.createElement("p");
+                        meta.textContent = detalles.join(" · ");
+                        contenido.appendChild(meta);
+                    }
+
+                    const quitar = document.createElement("button");
+                    quitar.type = "button";
+                    quitar.className = "guardado-quitar";
+                    quitar.dataset.indice = String(indice);
+                    quitar.textContent = "Quitar";
+                    quitar.setAttribute("aria-label", `Quitar ${titulo.textContent} de Guardados`);
+
+                    const agregar = document.createElement("button");
+                    agregar.type = "button";
+                    agregar.className = "guardado-agregar";
+                    agregar.dataset.indice = String(indice);
+                    agregar.textContent = "Agregar a mi plan";
+                    agregar.setAttribute("aria-label", `Armar un viaje con ${titulo.textContent}`);
+
+                    const acciones = document.createElement("div");
+                    acciones.className = "guardado-acciones";
+                    acciones.append(agregar, quitar);
+                    tarjeta.append(contenido, acciones);
+                    lista.appendChild(tarjeta);
+                });
+            }
+
+            // Elimina el lugar seleccionado y vuelve a pintar la lista persistida.
+            lista.addEventListener("click", (evento) => {
+                const agregar = evento.target.closest(".guardado-agregar");
+                if (agregar) {
+                    try {
+                        const lugar = leerPlan()[Number(agregar.dataset.indice)];
+                        if (!lugar) throw new Error("No encontramos el lugar seleccionado.");
+                        const estadoLugar = lugar.estado || localStorage.getItem("miravia_estado") || "oaxaca";
+                        const parametros = new URLSearchParams({ estado: estadoLugar });
+                        if (!lugar.categoria || lugar.categoria === "destino") {
+                            parametros.set("lugar", lugar.titulo || "");
+                            if (lugar.region) parametros.set("region", lugar.region);
+                            if (typeof lugar.lat === "number" && Number.isFinite(lugar.lat) &&
+                                typeof lugar.lon === "number" && Number.isFinite(lugar.lon)) {
+                                parametros.set("lat", String(lugar.lat));
+                                parametros.set("lon", String(lugar.lon));
+                            }
+                        } else if (lugar.categoria === "hotel") {
+                            parametros.set("hotel", lugar.titulo || "");
+                        } else if (lugar.categoria === "restaurante") {
+                            parametros.set("restaurante", lugar.titulo || "");
+                        }
+                        if (lugar.municipio) parametros.set("municipio", lugar.municipio);
+                        window.location.href = `../viaje/armar-viaje.html?${parametros.toString()}`;
+                    } catch (error) {
+                        console.error("No se pudo abrir el plan de viaje.", error);
+                        estado.textContent = "No se pudo abrir el plan. Inténtalo de nuevo.";
+                    }
+                    return;
+                }
+                const boton = evento.target.closest(".guardado-quitar");
+                if (!boton) return;
+                try {
+                    const plan = leerPlan();
+                    const lugar = plan.splice(Number(boton.dataset.indice), 1)[0];
+                    localStorage.setItem(clavePlan, JSON.stringify(plan));
+                    renderizarPlan();
+                    estado.textContent = `${lugar && lugar.titulo ? lugar.titulo : "El lugar"} se quitó de Guardados.`;
+                } catch (error) {
+                    console.error("No se pudo actualizar la lista de lugares guardados.", error);
+                    estado.textContent = "No se pudo quitar el lugar. Inténtalo de nuevo.";
+                }
+            });
+
+            renderizarPlan();
+        })();
+    </script>
+</body>
+</html>

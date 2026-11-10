@@ -184,6 +184,19 @@ body {
     padding: 3px 9px;
 }
 
+.seleccion-lugares {
+    margin: 0 0 14px;
+    color: #9ff3e0;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.tarjeta.lugar:focus-visible {
+    outline: 3px solid #9ff3e0;
+    outline-offset: 3px;
+}
+
 .tipo-etiqueta {
     display: inline-block;
     margin-bottom: 8px;
@@ -567,6 +580,133 @@ body {
     font-size: 19px;
 }
 
+.ruta-panel {
+    display: grid;
+    gap: 10px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid rgba(159, 243, 224, 0.3);
+    border-radius: 16px;
+    background: rgba(8, 24, 36, 0.72);
+}
+
+.ruta-panel label {
+    color: #d8eee8;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ruta-panel select {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid rgba(159, 243, 224, 0.45);
+    border-radius: 9px;
+    background: #f7fffb;
+    color: #123642;
+    font: 700 14px "Nunito", sans-serif;
+}
+
+.gasolina-panel {
+    display: grid;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid #c9e9df;
+    border-radius: 12px;
+    background: #eaf7f3;
+}
+
+.gasolina-panel h3 {
+    color: #123b36;
+    font-size: 17px;
+}
+
+.gasolina-panel p {
+    color: #54736a;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.gasolina-panel label {
+    color: #123b36;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.gasolina-panel input {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid #c9ded8;
+    border-radius: 9px;
+    background: #fff;
+    color: #123b36;
+    font: 700 15px "Nunito", sans-serif;
+}
+
+.gasolina-panel .gasolina-resultado {
+    color: #087f5b;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.gasolina-panel[hidden],
+.calculadora-resultado p[hidden],
+.mini-mapa[hidden] {
+    display: none;
+}
+
+.ruta-panel .btn {
+    justify-self: start;
+}
+
+.ruta-origen,
+.ruta-resultado,
+.ruta-nota {
+    color: rgba(247, 244, 239, 0.8);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.ruta-resultado {
+    color: #9ff3e0;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.ruta-panel .mini-mapa {
+    width: 100%;
+    height: 300px;
+    margin: 4px 0;
+}
+
+.marcador-ruta {
+    border: 0;
+    background: transparent;
+}
+
+.marcador-ruta span {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(18, 59, 54, 0.35);
+}
+
+.marcador-salida span {
+    background: #087f5b;
+}
+
+.marcador-destino span {
+    background: #e47735;
+}
+
 @keyframes aparecerCalculadora {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
@@ -577,6 +717,14 @@ body {
     justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
+}
+
+.mensaje-guardar-viaje {
+    min-height: 24px;
+    margin-top: 12px;
+    color: #9ff3e0;
+    font-weight: 700;
+    text-align: center;
 }
 
 /* =========================================
@@ -676,6 +824,14 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .ruta-panel {
+        padding: 14px;
+    }
+
+    .ruta-panel .mini-mapa {
+        height: 240px;
+    }
+
     .estadia-panel {
         align-items: stretch;
         flex-direction: column;
@@ -706,4 +862,279 @@ body {
         order: -1;
     }
 
+}
+
+/* Identidad visual compartida con el resto de MIRAVIA */
+
+body {
+    color: #1d3f3a;
+    background: #f4faf8;
+}
+
+#armarViaje {
+    max-width: 1120px;
+    padding-top: 30px;
+    padding-bottom: 150px;
+}
+
+.cabecera {
+    padding: 24px 28px;
+    border-radius: 22px;
+    color: #fff;
+    text-align: left;
+    background: linear-gradient(135deg, #0c5a4d, #12b48f);
+    box-shadow: 0 10px 26px rgba(8, 127, 91, 0.12);
+}
+
+.cabecera .btn-volver {
+    position: static;
+    margin-bottom: 18px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.cabecera .btn-volver:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.cabecera .etiqueta {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.18);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.cabecera h1 {
+    margin-bottom: 5px;
+    font-size: clamp(25px, 4vw, 34px);
+}
+
+.destino-elegido {
+    margin-top: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.pasos-indicador {
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.paso-ind {
+    color: #6b8580;
+    background: #fff;
+    border-color: #ddece8;
+}
+
+.paso-num {
+    color: #43645e;
+    background: #eaf7f3;
+}
+
+.paso-ind.actual {
+    color: #087f5b;
+    background: #e2f6ef;
+    border-color: #00bfa6;
+}
+
+.paso-ind.activo {
+    color: #fff;
+    background: #0e8e77;
+    border-color: #0e8e77;
+}
+
+.paso-ind.activo .paso-num {
+    color: #0c5a4d;
+    background: #fff;
+}
+
+.contenedor-paso {
+    min-height: 320px;
+    padding: 28px;
+    border: 1px solid #ddece8;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(8, 127, 91, 0.08);
+}
+
+.paso h2 {
+    color: #123b36;
+    text-align: left;
+}
+
+.paso-descripcion {
+    color: #6b8580;
+    text-align: left;
+}
+
+.seleccion-lugares {
+    color: #087f5b;
+    text-align: left;
+}
+
+.tarjeta {
+    border-color: #ddece8;
+    background: #fff;
+    color: #123b36;
+    box-shadow: 0 6px 18px rgba(8, 127, 91, 0.08);
+}
+
+.tarjeta:hover {
+    box-shadow: 0 10px 24px rgba(8, 127, 91, 0.14);
+}
+
+.tarjeta.elegida {
+    border-color: #00bfa6;
+    box-shadow: 0 0 0 3px rgba(0, 191, 166, 0.14);
+}
+
+.tarjeta.lugar:focus-visible {
+    outline-color: #00bfa6;
+}
+
+.tipo-etiqueta {
+    color: #087f5b;
+    background: #e2f6ef;
+}
+
+.estadia-panel,
+.ruta-panel,
+.calculadora-viaje {
+    border-color: #ddece8;
+    background: #f6fbf9;
+    box-shadow: none;
+}
+
+.estadia-control label,
+.ruta-panel label,
+.calculadora-encabezado h3 {
+    color: #123b36;
+}
+
+.estadia-control input,
+.ruta-panel select,
+.calculadora-controles input {
+    border-color: #c9ded8;
+    background: #fff;
+    color: #123b36;
+}
+
+.estadia-calculo,
+.ruta-resultado,
+.calculadora-resultado strong {
+    color: #087f5b;
+}
+
+.ruta-origen,
+.ruta-nota,
+.calculadora-encabezado p,
+.calculadora-resultado p,
+.calculadora-controles label {
+    color: #54736a;
+}
+
+.mini-mapa {
+    border-color: #c9ded8;
+    box-shadow: 0 6px 18px rgba(8, 127, 91, 0.1);
+}
+
+.itinerario .bloque {
+    border: 1px solid #ddece8;
+    background: #fff;
+    color: #123b36;
+    box-shadow: 0 6px 18px rgba(8, 127, 91, 0.07);
+}
+
+.itinerario .icono {
+    background: #e2f6ef;
+}
+
+.itinerario .costo,
+.itinerario .costo.total {
+    color: #087f5b;
+}
+
+.calculadora-resultado {
+    border-color: #ddece8;
+}
+
+.calculadora-resultado .calculadora-total {
+    color: #123b36;
+}
+
+.calculadora-resultado .calculadora-total strong {
+    color: #087f5b;
+}
+
+.btn-grad {
+    color: #fff;
+    background: #0e8e77;
+    box-shadow: 0 6px 16px rgba(8, 127, 91, 0.16);
+}
+
+.btn-grad:not(:disabled):hover {
+    background: #087f5b;
+}
+
+.btn-suave {
+    color: #087f5b;
+    background: #e2f6ef;
+    border-color: #c9e9df;
+}
+
+.btn-suave:not(:disabled):hover {
+    background: #d2f1e7;
+}
+
+.navegacion {
+    max-width: none;
+    padding: 12px max(18px, calc((100vw - 1060px) / 2)) 14px;
+    border-top: 1px solid #ddece8;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 -6px 20px rgba(8, 127, 91, 0.08);
+}
+
+.total-barra {
+    color: #087f5b;
+    text-shadow: none;
+}
+
+.aviso-seleccion,
+.mensaje-guardar-viaje {
+    color: #9a5b00;
+}
+
+@media (max-width: 620px) {
+    #armarViaje {
+        padding: 16px 14px 190px;
+    }
+
+    .cabecera {
+        padding: 18px;
+    }
+
+    .pasos-indicador {
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .paso-ind {
+        gap: 5px;
+        padding: 6px 9px;
+        font-size: 12px;
+    }
+
+    .contenedor-paso {
+        padding: 20px 16px;
+    }
+
+    .navegacion {
+        padding: 10px 14px 12px;
+    }
 }

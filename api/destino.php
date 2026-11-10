@@ -1,4 +1,5 @@
 <?php
+// API de lectura: devuelve un estado con sus municipios, atracciones, hoteles y restaurantes.
 declare(strict_types=1);
 
 require_once __DIR__ . '/db.php';

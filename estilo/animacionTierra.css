@@ -14,13 +14,14 @@
 
     z-index: 9999;
 
+    
     background: #000;
 
     overflow: hidden;
 
     transition:
-        opacity 1.5s ease,
-        visibility 1.5s ease;
+        opacity 3s ease,
+        visibility 3s ease; 
 }
 
 
@@ -44,7 +45,7 @@
    LOGO
 ========================================= */
 
-#pantallaTierra .logo-tierra {
+.logo-tierra {
 
     position: absolute;
 
@@ -75,7 +76,7 @@
    INFORMACIÓN
 ========================================= */
 
-#pantallaTierra .informacion-tierra {
+.informacion-tierra {
 
     position: absolute;
 
@@ -96,7 +97,7 @@
 }
 
 
-#pantallaTierra .informacion-tierra h1 {
+.informacion-tierra h1 {
 
     font-size: 40px;
 
@@ -106,7 +107,7 @@
 }
 
 
-#pantallaTierra .informacion-tierra p {
+.informacion-tierra p {
 
     font-size: 17px;
 
@@ -118,7 +119,7 @@
    UBICACIÓN
 ========================================= */
 
-#pantallaTierra .ubicacion {
+.ubicacion {
 
     position: absolute;
 
@@ -160,7 +161,7 @@
    PUNTO
 ========================================= */
 
-#pantallaTierra .punto {
+.punto {
 
     width: 12px;
 
@@ -214,7 +215,7 @@
    CONTENEDOR DEL MAPA Y BOTÓN ENTRAR
 ========================================= */
 
-#pantallaTierra #contenedorMapa {
+#contenedorMapa {
     position: absolute;
     top: 0;
     left: 0;
@@ -226,12 +227,12 @@
     transition: opacity 2s ease;
 }
 
-#pantallaTierra #contenedorMapa.visible {
+#contenedorMapa.visible {
     opacity: 1;
     pointer-events: auto;
 }
 
-#pantallaTierra .boton-entrar {
+.boton-entrar {
     position: absolute;
     left: 50%;
     bottom: 110px;
@@ -250,17 +251,17 @@
     opacity: 0;
 }
 
-#pantallaTierra .boton-entrar.visible {
+.boton-entrar.visible {
     opacity: 1;
 }
 
-#pantallaTierra .boton-entrar:hover {
+.boton-entrar:hover {
     transform: translateX(-50%) scale(1.05);
     background: #ffc266;
 }
 
 /* Para ocultar la interfaz 3D cuando entra el mapa */
-#pantallaTierra .ocultar-interfaz {
+.ocultar-interfaz {
     opacity: 0;
     transition: opacity 1s ease;
     pointer-events: none;
@@ -273,7 +274,7 @@
 
 @media (max-width: 600px) {
 
-    #pantallaTierra .logo-tierra {
+    .logo-tierra {
 
         font-size: 24px;
 
@@ -281,13 +282,13 @@
     }
 
 
-    #pantallaTierra .informacion-tierra h1 {
+    .informacion-tierra h1 {
 
         font-size: 28px;
     }
 
 
-    #pantallaTierra .informacion-tierra p {
+    .informacion-tierra p {
 
         font-size: 14px;
     }

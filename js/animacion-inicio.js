@@ -268,7 +268,12 @@ document.addEventListener("DOMContentLoaded", () => {
        antes de mostrar el mapa de México.
     ------------------------------------------ */
 
-    secuencia();
+    if (soloDestinos) {
+        contenedorTierra.classList.add("ocultar");
+        mostrarMapa();
+    } else {
+        secuencia();
+    }
 
     async function secuencia() {
         tierraReproduciendo = true;

@@ -1,3 +1,4 @@
+// Lee la ubicación del dispositivo y presenta sus coordenadas en la página.
 const ubicacionTitulo =
     document.getElementById(
         "ubicacionTitulo"
