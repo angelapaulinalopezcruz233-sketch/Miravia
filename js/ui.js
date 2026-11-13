@@ -430,7 +430,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (boton && !boton.matches('.estado, .municipio, #btnExplorar')) {
       if (boton.classList.contains('btn-volver')) {
-        if (boton.closest('.hero-estado')) {
+        if (boton.closest('.barra')) {
+          location.href = `${raiz}inicio.html?destinos=1`;
+        } else if (boton.closest('.hero-estado')) {
           location.href = `${raiz}inicio.html?destinos=1`;
         } else {
           history.length > 1 ? history.back() : (location.href = `${raiz}inicio.html?destinos=1`);

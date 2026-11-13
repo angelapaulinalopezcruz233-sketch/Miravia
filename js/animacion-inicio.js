@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const textoUbicacion = document.getElementById("textoUbicacion");
     const cajaUbicacion = document.getElementById("estadoUbicacion");
     const elegirDestino = document.getElementById("elegirDestino");
-    const btnComenzarViaje = document.getElementById("btnComenzarViaje");
     const logo = document.getElementById("logoMiravia");
 
     const VISTA_MEXICO = { centro: [23.9, -102.5], zoom: 5 };
@@ -32,8 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let mapa = null;
     let mapaListo = false;
     let navegando = false;
-    let valorElegido = "";
     let tierraReproduciendo = false;
+    let animacionTierraActiva = true;
+    let secuenciaId = 0;
 
     /* ------------------------------------------
        ESCENA 3D · LA TIERRA
@@ -133,10 +133,12 @@ document.addEventListener("DOMContentLoaded", () => {
     escena.add(estrellas);
 
     function animar() {
-        requestAnimationFrame(animar);
-        grupoTierra.rotation.y -= 0.0018;
-        anilloMarcador.rotation.z += 0.012;
-        estrellas.rotation.y += 0.00035;
+        if (animacionTierraActiva) {
+            requestAnimationFrame(animar);
+            grupoTierra.rotation.y -= 0.0018;
+            anilloMarcador.rotation.z += 0.012;
+            estrellas.rotation.y += 0.00035;
+        }
         renderizador.render(escena, camara);
     }
     animar();
@@ -242,9 +244,9 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedorMapa.classList.add("visible");
         pantalla.classList.add("modo-elegir");
         tierraReproduciendo = false;
+        animacionTierraActiva = false;
 
-        // La frase "Bienvenido a MIRAVIA" se borra
-        // cuando aparece el mapa de México.
+        // Los textos de bienvenida se ocultan al aparecer el mapa.
         if (mensaje) {
             mensaje.style.display = "none";
         }
@@ -264,8 +266,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ------------------------------------------
        INICIO
-       Todos los accesos reproducen la animación
-       antes de mostrar el mapa de México.
+       Al terminar el acercamiento, se muestra
+       automáticamente el mapa de México.
     ------------------------------------------ */
 
     if (soloDestinos) {
@@ -276,6 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function secuencia() {
+        const idSecuencia = ++secuenciaId;
         tierraReproduciendo = true;
 
         escribirMensaje(
@@ -289,7 +292,9 @@ document.addEventListener("DOMContentLoaded", () => {
             duration: 3.2,
             ease: "power2.inOut"
         });
+        if (idSecuencia !== secuenciaId) return;
         await new Promise((resolve) => window.setTimeout(resolve, 2000));
+        if (idSecuencia !== secuenciaId) return;
 
         escribirMensaje(
             "Acercándonos a nuevos recuerdos",
@@ -304,27 +309,30 @@ document.addEventListener("DOMContentLoaded", () => {
             duration: 2.1,
             ease: "power2.inOut"
         });
-        await new Promise((resolve) => window.setTimeout(resolve, 2000));
-
-        escribirMensaje(
-            "Bienvenido a MIRAVIA",
-            "Tu próxima aventura comienza en México."
-        );
-        textoUbicacion.textContent = "Listo para comenzar";
-
-        await new Promise((resolve) => window.setTimeout(resolve, 4000));
+        if (idSecuencia !== secuenciaId) return;
         mostrarMapa();
     }
+
+    pantalla.addEventListener("click", () => {
+        if (mapaListo || !tierraReproduciendo) return;
+
+        secuenciaId += 1;
+        gsap.killTweensOf(camara.position);
+        gsap.killTweensOf(grupoTierra.quaternion);
+        mostrarMapa();
+    });
 
     /* ------------------------------------------
        LOGO MIRAVIA → REPITE LA TIERRA
     ------------------------------------------ */
 
     logo.addEventListener("click", () => {
-        if (tierraReproduciendo) {
+        if (tierraReproduciendo || !mapaListo) {
             return;
         }
         tierraReproduciendo = true;
+        animacionTierraActiva = true;
+        animar();
 
         // Aparece la Tierra y la frase de bienvenida.
         contenedorTierra.classList.remove("ocultar");
@@ -349,6 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (mensaje) {
                             mensaje.style.display = "none";
                         }
+                        animacionTierraActiva = false;
                         tierraReproduciendo = false;
                         if (mapaListo) {
                             mapa.invalidateSize();
@@ -366,46 +375,15 @@ document.addEventListener("DOMContentLoaded", () => {
     ------------------------------------------ */
 
     document.addEventListener("miravia:estado-elegido", (evento) => {
-        const { valor, nombre, coords, color } = evento.detail;
+        const { valor } = evento.detail;
 
-        if (navegando) {
-            return;
-        }
-        valorElegido = valor;
-        elegirDestino.hidden = true;
-
-        document.getElementById("estadoElegidoNombre").textContent = nombre;
-        document.getElementById("estadoElegidoChip").hidden = false;
-        const chipPunto = document.querySelector("#estadoElegidoChip .chip-punto");
-        if (chipPunto && color) {
-            chipPunto.style.background = color;
-        }
-
-        btnComenzarViaje.hidden = false;
-        gsap.from(btnComenzarViaje, { opacity: 0, y: 12, duration: 0.4 });
-
-        if (mapaListo) {
-            mapa.flyTo(coords, 7, { duration: 1.0 });
-        }
-
-        localStorage.setItem("miravia_estado", valor);
-    });
-
-    /* ------------------------------------------
-       BOTÓN "COMENZAR VIAJE"
-       → lleva a la página del estado con su mapa
-    ------------------------------------------ */
-
-    btnComenzarViaje.addEventListener("click", () => {
-        if (!valorElegido || navegando) {
+        if (navegando || !valor) {
             return;
         }
         navegando = true;
-
-        window.setTimeout(() => {
-            window.location.href =
-                `vista/estados/estado.html?estado=${encodeURIComponent(valorElegido)}`;
-        }, 900);
+        localStorage.setItem("miravia_estado", valor);
+        window.location.href =
+            `vista/estados/estado.html?estado=${encodeURIComponent(valor)}`;
     });
 
     window.addEventListener("resize", () => {

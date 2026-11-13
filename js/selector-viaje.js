@@ -156,10 +156,4 @@ document.addEventListener("DOMContentLoaded", () => {
         modoElegirPendiente = true;
     });
 
-    // Un estado ya elegido con "Comenzar viaje":
-    // bloquea más selecciones mientras navega.
-    document.addEventListener("miravia:comenzar-viaje", () => {
-        estadoElegidoBloqueado = true;
-    });
-
 });
