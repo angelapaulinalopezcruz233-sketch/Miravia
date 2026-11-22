@@ -15,7 +15,7 @@
           href="../../lib/leaflet.css">
 
     <link rel="stylesheet"
-      href="../../estilo/estado.css?v=miravia-municipios-6">
+      href="../../estilo/estado.css?v=miravia-fotos-destinos-7">
 
 </head>
 
@@ -27,10 +27,13 @@
 
     <header class="barra">
 
-        <a class="logo" href="../../index.html">
-            <span class="logo-icono">🌴</span>
-            MIRAVIA
-        </a>
+        <div class="barra-marca">
+            <a class="logo" href="../../index.html">
+                <span class="logo-icono">🌴</span>
+                MIRAVIA
+            </a>
+            <button class="btn-volver" type="button">← Volver</button>
+        </div>
 
         <nav>
             <a href="#" class="activo" id="navDestinos">Destinos</a>
@@ -51,21 +54,17 @@
 
     <section class="hero-estado">
 
-        <button class="btn-volver" type="button">← Volver</button>
+        <div class="hero-contenido">
+            <span class="etiqueta">DESCUBRE MÉXICO</span>
 
-        <span class="etiqueta">DESCUBRE MÉXICO</span>
+            <h1 id="nombreEstado">Cargando estado...</h1>
 
-        <h1 id="nombreEstado">Cargando estado...</h1>
+            <p id="descripcionEstado"></p>
 
-        <p id="descripcionEstado"></p>
-
-        <button class="btn-armar" id="btnArmar" type="button">
-            🧭 Armar mi viaje paso a paso
-        </button>
-
-        <button class="btn-armar btn-todo" id="btnTodoEstado" type="button">
-            📋 Ver todo el estado
-        </button>
+            <button class="btn-armar" id="btnArmar" type="button">
+                🧭 Armar mi viaje paso a paso
+            </button>
+        </div>
 
     </section>
 
@@ -77,12 +76,20 @@
     <div class="mapa-caja">
 
         <form class="buscador-mapa" id="formBuscarLugar" role="search">
-            <label for="buscarLugar">Buscar un lugar en el estado</label>
             <div class="buscador-mapa-campos">
+                <svg class="icono-busqueda" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
                 <input id="buscarLugar" name="lugar" type="search"
-                    placeholder="Escribe el nombre de un lugar o municipio"
+                    placeholder="Buscar en Google Maps"
+                    aria-label="Buscar un lugar en el estado"
                     autocomplete="off" required>
-                <button type="submit">Buscar</button>
+                <button type="submit" aria-label="Buscar este lugar en el mapa">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21.7 11.3 13 2.6a1.9 1.9 0 0 0-2.7 0l-1.6 1.6 4.1 4.1H4.4a1.9 1.9 0 0 0-1.9 1.9v5.6a1.9 1.9 0 0 0 1.9 1.9h8.4l-4.1 4.1 1.6 1.6a1.9 1.9 0 0 0 2.7 0l8.7-8.7a2.1 2.1 0 0 0 0-3.4ZM7.9 14.5v-5h7.8v-2l3.4 3.4-3.4 3.4v-2H7.9Z"></path>
+                    </svg>
+                </button>
             </div>
             <p class="buscador-mapa-estado" id="estadoBusquedaLugar" role="status" aria-live="polite"></p>
             <div class="resultados-busqueda-mapa" id="resultadosBusquedaLugar"></div>
@@ -237,8 +244,10 @@
         ).textContent =
             "Los imperdibles de " + datos.nombre;
 
-        document.querySelector("label[for='buscarLugar']").textContent =
-            "Buscar un lugar en " + datos.nombre;
+        document.getElementById("buscarLugar").setAttribute(
+            "aria-label",
+            "Buscar un lugar en " + datos.nombre
+        );
 
 
         /* ==========================================
@@ -988,7 +997,7 @@
                         <h3>${lugar.nombre}</h3>
                         <p>${lugar.descripcion}</p>
                         <div class="precio-fila">
-                            <span class="ubicacion">Región ${nombreRegion}</span>
+                            <span class="ubicacion">${lugar.municipio ? "Municipio " + lugar.municipio : "Región " + nombreRegion}</span>
                             <button class="btn-detalles btn-mostrar-destino" type="button">Ver en el mapa</button>
                             <button class="btn-detalles btn-visitar-destino" type="button">Visitar</button>
                         </div>
@@ -1089,19 +1098,16 @@
                         weight: nombre === nombreRegion ? 1.2 : 0,
                         fillOpacity: nombre === nombreRegion ? 0.72 : 0
                     });
-                    capa.unbindTooltip();
                     if (nombre === nombreRegion) {
+                        capa.unbindTooltip();
                         capa.bindTooltip(obtenerNombreMunicipio(capa.feature.properties), {
+                            permanent: false,
                             direction: "center",
                             sticky: true,
                             className: "tooltip-estado tooltip-municipio"
                         });
                     } else {
-                        capa.bindTooltip(nombre, {
-                            direction: "center",
-                            sticky: true,
-                            className: "tooltip-estado tooltip-region"
-                        });
+                        capa.closeTooltip();
                     }
                 });
             });
@@ -1173,7 +1179,7 @@
                 mapa.setMaxBounds(limitesEstadoMapa);
             }
             document.querySelector(".ayuda-ubicacion").textContent =
-                "🗺️ Los nombres de los municipios aparecen en el mapa. Haz clic en uno para explorar.";
+                "🗺️ Selecciona una región del mapa para ver sus municipios.";
         }
 
         btnVerRegiones.addEventListener("click", mostrarTodasLasRegiones);
@@ -1201,7 +1207,7 @@
         if (valorEstado === "oaxaca") {
             mapa.setView([17.0, -96.5], 7);
             document.querySelector(".ayuda-ubicacion").textContent =
-                "🗺️ Los nombres de los municipios aparecen en el mapa. Haz clic en uno para explorar.";
+                "🗺️ Selecciona una región del mapa para ver sus municipios.";
         }
 
         const cargarGeojsonMunicipios = function () {
@@ -1240,10 +1246,51 @@
                 const geo = resultado.geo;
                 regionesPorCodigo = resultado.regiones;
                 nombresMunicipiosPorCodigo = resultado.nombres;
+                const distinguirMunicipios =
+                    valorEstado === "baja-california" ||
+                    valorEstado === "baja-california-sur";
+                const paletaMunicipios = [
+                    "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51",
+                    "#457b9d", "#8ab17d", "#bc6c25", "#6d597a",
+                    "#b56576", "#6c9a8b", "#d9a441", "#628ca3"
+                ];
+                const coloresPorMunicipio = new Map(
+                    geo.features
+                        .map(function (caracteristica) {
+                            return caracteristica.properties.CVEGEO;
+                        })
+                        .sort()
+                        .map(function (codigo, indice) {
+                            return [codigo, paletaMunicipios[indice % paletaMunicipios.length]];
+                        })
+                );
 
-                // Con los municipios dibujados, el punto
-                // del estado ya no hace falta.
-                mapa.removeLayer(marcador);
+                function puntoDentroDelAnillo(longitud, latitud, anillo) {
+                    let dentro = false;
+                    for (let actual = 0, anterior = anillo.length - 1; actual < anillo.length; anterior = actual++) {
+                        const [lonActual, latActual] = anillo[actual];
+                        const [lonAnterior, latAnterior] = anillo[anterior];
+                        const cruza = (latActual > latitud) !== (latAnterior > latitud) &&
+                            longitud < (lonAnterior - lonActual) * (latitud - latActual) /
+                                (latAnterior - latActual) + lonActual;
+                        if (cruza) dentro = !dentro;
+                    }
+                    return dentro;
+                }
+
+                function puntoDentroDelMunicipio(lugar, geometria) {
+                    const puntoDentroDelPoligono = (poligono) =>
+                        puntoDentroDelAnillo(lugar.lon, lugar.lat, poligono[0]) &&
+                        !poligono.slice(1).some((hueco) => puntoDentroDelAnillo(lugar.lon, lugar.lat, hueco));
+
+                    if (geometria.type === "Polygon") {
+                        return puntoDentroDelPoligono(geometria.coordinates);
+                    }
+                    if (geometria.type === "MultiPolygon") {
+                        return geometria.coordinates.some(puntoDentroDelPoligono);
+                    }
+                    return false;
+                }
 
                 function abrirMunicipio(nombre, capa, nombreRegion) {
                     if (valorEstado === "oaxaca") {
@@ -1273,6 +1320,26 @@
                     const centro = capa.getBounds().getCenter();
                     centroMunicipioSeleccionado = { lat: centro.lat, lng: centro.lng };
                     cerrarPopupMapa();
+                    if (valorEstado === "oaxaca") {
+                        const destinosMunicipio = (lugaresPorRegion[nombreRegion] || [])
+                            .filter((lugar) => puntoDentroDelMunicipio(lugar, capa.feature.geometry))
+                            .map((lugar) => ({ ...lugar, municipio: nombre }));
+
+                        if (destinosMunicipio.length) {
+                            idBusqueda++;
+                            tituloRegion.textContent = "Lugares populares: " + nombre;
+                            lugaresRegionActual = destinosMunicipio;
+                            opcionesRegionExpandidas = false;
+                            actualizarLugaresRegion();
+                            seccionRegiones.hidden = false;
+                            seccionLugaresEstado.hidden = true;
+                            btnVerRegiones.hidden = false;
+                            document.querySelector(".ayuda-ubicacion").textContent =
+                                `📍 Destinos populares de ${nombre}.`;
+                            seccionRegiones.scrollIntoView({ behavior: "smooth", block: "start" });
+                            return;
+                        }
+                    }
                     abrirPanelZona(nombre, capa.getBounds(), nombre);
                 }
 
@@ -1285,6 +1352,14 @@
                                 weight: 0.35,
                                 fillColor: coloresRegiones[nombreRegion],
                                 fillOpacity: 0.84
+                            };
+                        }
+                        if (distinguirMunicipios) {
+                            return {
+                                color: "#ffffff",
+                                weight: 1.2,
+                                fillColor: coloresPorMunicipio.get(caracteristica.properties.CVEGEO),
+                                fillOpacity: 0.58
                             };
                         }
                         return {
@@ -1340,7 +1415,7 @@
                         }
 
                         capa.bindTooltip(nombreMunicipio, {
-                            permanent: true,
+                            permanent: valorEstado !== "morelos",
                             direction: "center",
                             className: "tooltip-estado tooltip-municipio"
                         });
@@ -1350,7 +1425,10 @@
                         });
 
                         capa.on("mouseout", function () {
-                            capa.setStyle({ weight: 1.2, fillOpacity: 0.3 });
+                            capa.setStyle({
+                                weight: 1.2,
+                                fillOpacity: distinguirMunicipios ? 0.58 : 0.3
+                            });
                         });
 
                         capa.on("click", function () {
@@ -1359,6 +1437,11 @@
                     }
                 }).addTo(mapa);
                 capaMunicipiosGlobal = capaMunicipios;
+                if (valorEstado === "morelos") {
+                    marcador.addTo(mapa);
+                } else {
+                    mapa.removeLayer(marcador);
+                }
 
                 // El mapa se queda SOLO en este estado:
                 // se ajusta a sus municipios y se
@@ -1392,10 +1475,8 @@
             })
             .catch(function (error) {
                 console.error("No se pudo cargar el mapa municipal de " + datos.nombre + ".", error);
-                if (valorEstado === "oaxaca") {
-                    document.querySelector(".ayuda-ubicacion").textContent =
-                        "No se pudieron cargar los límites y regiones de Oaxaca. Abre Miravia desde XAMPP e inténtalo de nuevo.";
-                }
+                document.querySelector(".ayuda-ubicacion").textContent =
+                    `No se pudieron cargar los límites municipales de ${datos.nombre}. Abre Miravia desde XAMPP e inténtalo de nuevo.`;
             });
 
 
@@ -1417,26 +1498,6 @@
                 url += "&lon=" + encodeURIComponent(centroMunicipioSeleccionado.lng);
             }
             window.location.href = url;
-        });
-
-        /* ==========================================
-           BOTÓN "VER TODO EL ESTADO"
-           (todos los lugares reales del estado:
-            la capital y todos sus municipios)
-        ========================================== */
-
-        document.getElementById("btnTodoEstado").addEventListener("click", function () {
-            if (capaMunicipiosGlobal) {
-                // Ver todo el estado: se olvida el municipio elegido.
-                municipioSeleccionado = "";
-                regionSeleccionadaMapa = "";
-                centroMunicipioSeleccionado = null;
-                abrirPanelZona(
-                    datos.nombre + " (todo el estado)",
-                    capaMunicipiosGlobal.getBounds(),
-                    ""
-                );
-            }
         });
 
         /* ==========================================

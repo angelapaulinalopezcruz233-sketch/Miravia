@@ -1,3 +1,4 @@
+-- El proyecto se conecta a esta base desde api/db.php.
 USE miraviaDB;
 
 SET @existe_prioridad_manual = (

@@ -1,6 +1,7 @@
 -- =====================================================
 -- MIRAVIA · MÓDULO DE COMISIONES
 -- =====================================================
+-- El proyecto se conecta a esta base desde api/db.php.
 USE miraviaDB;
 
 -- 1. TABLA comisiones
