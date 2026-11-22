@@ -24,13 +24,13 @@
 
         <section class="encabezado-pagina">
             <div class="encabezado-copy">
-                <span class="etiqueta">🏨 HOSPEDAJE</span>
-                <h1>Hoteles en Oaxaca de Juárez</h1>
-                <p>Encuentra el lugar ideal para hospedarte durante tu visita a Oaxaca de Juárez.</p>
+                <span class="etiqueta">🏨 ¡Vamos a buscar hospedaje!</span>
+                <h1>¿Dónde te gustaría dormir en Oaxaca?</h1>
+                <p>Elige un lugar cómodo para descansar durante tu viaje.</p>
             </div>
             <div class="resultado" aria-live="polite">
                 <strong id="conteo-hoteles">0</strong>
-                <span>alojamientos encontrados</span>
+                <span>lugares para elegir</span>
             </div>
         </section>
 
@@ -40,60 +40,60 @@
                     <div class="filtros-titulo">
                         <span class="icono-filtro">⚙️</span>
                         <div>
-                            <h2>Filtrar resultados</h2>
-                            <p>Encuentra lo que buscas</p>
+                            <h2>Elige lo que necesitas</h2>
+                            <p>¡Tú decides!</p>
                         </div>
                     </div>
-                    <button class="limpiar" type="button">Limpiar</button>
+                    <button class="limpiar" type="button">Borrar filtros</button>
                 </div>
 
                 <div class="filtro">
-                    <label for="buscar-hotel">Buscar hotel</label>
+                    <label for="buscar-hotel">¿Tienes un hotel en mente?</label>
                     <div class="input-busqueda">
                         <span aria-hidden="true">🔎</span>
-                        <input id="buscar-hotel" type="search" placeholder="Nombre del hotel...">
+                        <input id="buscar-hotel" type="search" placeholder="Escribe su nombre">
                     </div>
                 </div>
 
                 <div class="filtro">
-                    <label>Precio por noche</label>
+                    <label for="precio-maximo">¿Cuánto quieres pagar por noche?</label>
                     <div class="precios">
                         <span class="precio-minimo">$0</span>
                         <span class="precio-maximo">Sin límite</span>
                     </div>
-                    <input type="range" min="0" max="0" value="0" class="rango" disabled aria-label="Precio máximo por noche">
+                    <input id="precio-maximo" type="range" min="0" max="0" value="0" class="rango" disabled aria-label="Precio máximo por noche">
                 </div>
 
                 <div class="filtro filtro-calificacion">
-                    <label>Calificación</label>
-                    <label class="checkbox"><input type="checkbox"><span>⭐ 4.5 o más</span></label>
-                    <label class="checkbox"><input type="checkbox"><span>⭐ 4.0 o más</span></label>
-                    <label class="checkbox"><input type="checkbox"><span>⭐ 3.0 o más</span></label>
+                    <label>¿Qué tan bien calificado?</label>
+                    <label class="checkbox"><input type="checkbox"><span>⭐ 4.5 estrellas o más</span></label>
+                    <label class="checkbox"><input type="checkbox"><span>⭐ 4 estrellas o más</span></label>
+                    <label class="checkbox"><input type="checkbox"><span>⭐ 3 estrellas o más</span></label>
                 </div>
 
-                <button class="btn-aplicar" type="button">Aplicar filtros</button>
+                <button class="btn-aplicar" type="button">¡Mostrar lugares!</button>
             </aside>
 
             <section class="lista-hoteles" aria-label="Alojamientos disponibles" aria-live="polite">
                 <div class="barra-resultados">
                     <div>
-                        <strong>Hospedajes disponibles</strong>
+                        <strong>Lugares para dormir</strong>
                         <span>Oaxaca de Juárez, Oaxaca</span>
                     </div>
                     <label class="orden-label">
-                        <span>Ordenar por</span>
+                        <span>¿Cómo los ordenamos?</span>
                         <select class="ordenar" aria-label="Ordenar alojamientos">
-                            <option>Recomendados</option>
-                            <option>Precio menor</option>
-                            <option>Precio mayor</option>
-                            <option>Mejor calificación</option>
+                            <option>Los más recomendados</option>
+                            <option>Los más baratos</option>
+                            <option>Los de mayor precio</option>
+                            <option>Los mejor calificados</option>
                         </select>
                     </label>
                 </div>
                 <div class="estado-listado estado-cargando" role="status">
-                    <span class="estado-icono" aria-hidden="true">⌕</span>
-                    <strong>Buscando hospedajes</strong>
-                    <span>Mostraremos aquí los lugares registrados para este destino.</span>
+                    <span class="estado-icono" aria-hidden="true">🔎</span>
+                    <strong>¡Estamos buscando lugares!</strong>
+                    <span>En un momento verás aquí dónde puedes descansar.</span>
                 </div>
             </section>
         </section>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miravia · Perfil</title>
+    <link rel="stylesheet" href="../estilo/panel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span>Miravia</span>
+        </div>
+
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </a>
+            <a href="establecimientos.html" class="menu-item">
+                <i class="fa-solid fa-hotel"></i> Mis establecimientos
+            </a>
+            <a href="reservaciones.html" class="menu-item">
+                <i class="fa-solid fa-calendar-check"></i> Reservaciones
+            </a>
+            <a href="comisiones.html" class="menu-item">
+                <i class="fa-solid fa-percent"></i> Comisiones
+            </a>
+            <a href="estado-cuenta.html" class="menu-item">
+                <i class="fa-solid fa-file-invoice-dollar"></i> Estado de cuenta
+            </a>
+            <a href="reportes.html" class="menu-item">
+                <i class="fa-solid fa-chart-pie"></i> Reportes
+            </a>
+            <a href="perfil.html" class="menu-item active">
+                <i class="fa-solid fa-user"></i> Perfil
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="../inicio.html" class="menu-item logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+            </a>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <div>
+                <h1>Perfil</h1>
+                <p class="subtitulo">Administra tu información personal y de seguridad</p>
+            </div>
+        </header>
+
+        <!-- GRID DE FORMULARIOS -->
+        <section class="grid-perfil">
+
+            <!-- DATOS PERSONALES -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>Datos personales</h3>
+                </div>
+
+                <div class="perfil-avatar">
+                    <div class="avatar-grande">CR</div>
+                    <button class="btn-secundario btn-mini-avatar">
+                        <i class="fa-solid fa-camera"></i> Cambiar foto
+                    </button>
+                </div>
+
+                <form class="formulario" onsubmit="event.preventDefault(); alert('Datos guardados (mock)');">
+                    <div class="campo">
+                        <label>Nombre completo</label>
+                        <input type="text" class="select input-full" value="Carlos Ramírez">
+                    </div>
+                    <div class="campo">
+                        <label>Nombre de usuario</label>
+                        <input type="text" class="select input-full" value="carlosr">
+                    </div>
+                    <div class="campo">
+                        <label>Correo electrónico</label>
+                        <input type="email" class="select input-full" value="carlos@miravia.mx">
+                    </div>
+                    <div class="campo">
+                        <label>Teléfono</label>
+                        <input type="tel" class="select input-full" value="+52 55 1234 5678">
+                    </div>
+                    <button type="submit" class="btn-primario btn-full">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
+                    </button>
+                </form>
+            </div>
+
+            <!-- CAMBIAR CONTRASEÑA -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>Cambiar contraseña</h3>
+                </div>
+
+                <form class="formulario" onsubmit="event.preventDefault(); alert('Contraseña actualizada (mock)');">
+                    <div class="campo">
+                        <label>Contraseña actual</label>
+                        <input type="password" class="select input-full" placeholder="••••••••">
+                    </div>
+                    <div class="campo">
+                        <label>Nueva contraseña</label>
+                        <input type="password" class="select input-full" placeholder="••••••••">
+                    </div>
+                    <div class="campo">
+                        <label>Confirmar nueva contraseña</label>
+                        <input type="password" class="select input-full" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-primario btn-full">
+                        <i class="fa-solid fa-lock"></i> Actualizar contraseña
+                    </button>
+                </form>
+            </div>
+
+        </section>
+
+        <!-- DATOS DE LA CUENTA -->
+        <section class="panel">
+            <div class="panel-header">
+                <h3>Datos de la cuenta</h3>
+            </div>
+            <div class="grid-datos-cuenta">
+                <div>
+                    <p class="dato-label">Fecha de registro</p>
+                    <p class="dato-valor">15/01/2026</p>
+                </div>
+                <div>
+                    <p class="dato-label">Último acceso</p>
+                    <p class="dato-valor">08/10/2026 09:42</p>
+                </div>
+                <div>
+                    <p class="dato-label">Rol</p>
+                    <p class="dato-valor">Propietario</p>
+                </div>
+                <div>
+                    <p class="dato-label">Estado</p>
+                    <p class="dato-valor"><span class="badge confirmada">Activo</span></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="../js/panel-mock.js"></script>
+<script src="../js/panel-perfil.js"></script>
+</body>
+</html>

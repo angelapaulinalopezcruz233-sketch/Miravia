@@ -32,18 +32,18 @@ const cargarHotelesRegistrados = async () => {
       estadoListado.hidden = true;
     } else {
       estadoListado.classList.remove('estado-cargando');
-      estadoListado.querySelector('.estado-icono').textContent = '⌂';
-      estadoListado.querySelector('strong').textContent = 'Aún no hay hospedajes registrados';
-      estadoListado.querySelector('span:last-child').textContent = 'Cuando se agregue un alojamiento para este destino, aparecerá aquí.';
+      estadoListado.querySelector('.estado-icono').textContent = '🏡';
+      estadoListado.querySelector('strong').textContent = '¡Pronto habrá lugares para dormir!';
+      estadoListado.querySelector('span:last-child').textContent = 'Cuando agreguemos hospedajes en Oaxaca, los verás aquí.';
     }
 
     window.dispatchEvent(new Event('hoteles:cargados'));
   } catch (error) {
     console.error('No se pudieron cargar los alojamientos registrados.', error);
     estadoListado.classList.remove('estado-cargando');
-    estadoListado.querySelector('.estado-icono').textContent = '!';
-    estadoListado.querySelector('strong').textContent = 'No pudimos cargar los hospedajes';
-    estadoListado.querySelector('span:last-child').textContent = 'Verifica la conexión y vuelve a intentarlo.';
+    estadoListado.querySelector('.estado-icono').textContent = '⚠️';
+    estadoListado.querySelector('strong').textContent = '¡Ups! No pudimos cargar los hospedajes';
+    estadoListado.querySelector('span:last-child').textContent = 'Revisa tu conexión a internet e inténtalo de nuevo.';
     estadoListado.classList.add('estado-listado-error');
     estadoListado.setAttribute('role', 'alert');
   }
