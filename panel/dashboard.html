@@ -56,43 +56,83 @@
         <header class="topbar">
             <div>
                 <h1>Dashboard</h1>
-                <p class="subtitulo">Bienvenido de nuevo, <strong>Carlos Ramírez</strong></p>
+                <p class="subtitulo">Bienvenido de nuevo, <strong>Carlos Ramírez</strong>.</p>
             </div>
             <div class="topbar-actions">
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
-                <div class="avatar">CR</div>
+                <!-- MENÚ DESPLEGABLE DE PERFIL -->
+                <div class="perfil-menu-container">
+                    <div class="avatar" id="avatar-btn">CR</div>
+                    
+                    <div class="perfil-dropdown" id="perfil-dropdown">
+                        <div class="perfil-info">
+                            <p class="perfil-nombre">Carlos Ramírez</p>
+                            <p class="perfil-correo">carlos@miravia.mx</p>
+                        </div>
+                        <div class="perfil-divider"></div>
+                        <a href="perfil.html" class="perfil-item">
+                            <i class="fa-regular fa-user"></i> Mi Perfil
+                        </a>
+                        <a href="#" class="perfil-item">
+                            <i class="fa-solid fa-lock"></i> Cambiar contraseña
+                        </a>
+                        <a href="#" class="perfil-item">
+                            <i class="fa-regular fa-credit-card"></i> Métodos de pago
+                        </a>
+                        <div class="perfil-divider"></div>
+                        <a href="../inicio.html" class="perfil-item cerrar-sesion">
+                            <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+                        </a>
+                    </div>
+                </div>
             </div>
         </header>
 
         <!-- TARJETAS DE RESUMEN -->
         <section class="cards">
-            <div class="card">
+            <div class="card card-azul">
                 <div class="card-icon azul"><i class="fa-solid fa-hotel"></i></div>
                 <div>
                     <p class="card-label">Establecimientos</p>
-                    <h2 class="card-value">3</h2>
+                    <h2 class="card-value" id="kpi-establecimientos">0</h2>
                 </div>
             </div>
-            <div class="card">
+            <div class="card card-verde">
                 <div class="card-icon verde"><i class="fa-solid fa-calendar-check"></i></div>
                 <div>
                     <p class="card-label">Reservaciones (mes)</p>
-                    <h2 class="card-value">27</h2>
+                    <h2 class="card-value" id="kpi-reservaciones">0</h2>
                 </div>
             </div>
-            <div class="card">
+            <div class="card card-naranja">
                 <div class="card-icon naranja"><i class="fa-solid fa-percent"></i></div>
                 <div>
                     <p class="card-label">Comisión generada</p>
-                    <h2 class="card-value">$4,320</h2>
+                    <h2 class="card-value" id="kpi-comision">$0</h2>
                 </div>
             </div>
-            <div class="card">
+            <div class="card card-morado">
                 <div class="card-icon morado"><i class="fa-solid fa-sack-dollar"></i></div>
                 <div>
                     <p class="card-label">Ingreso neto</p>
-                    <h2 class="card-value">$49,680</h2>
+                    <h2 class="card-value" id="kpi-neto">$0</h2>
                 </div>
+            </div>
+        </section>
+
+        <!-- ACCIONES RÁPIDAS -->
+        <section class="acciones-rapidas">
+            <h3>Acciones rápidas</h3>
+            <div class="acciones-grid">
+                <a href="establecimientos.html" class="btn-accion btn-primario">
+                    <i class="fa-solid fa-plus"></i> Nuevo establecimiento
+                </a>
+                <a href="reservaciones.html" class="btn-accion">
+                    <i class="fa-regular fa-calendar"></i> Ver reservaciones pendientes
+                </a>
+                <a href="comisiones.html" class="btn-accion">
+                    <i class="fa-solid fa-chart-simple"></i> Revisar comisiones
+                </a>
             </div>
         </section>
 
@@ -105,7 +145,9 @@
                     <option>Este año</option>
                 </select>
             </div>
-            <div class="chart" id="chart"></div>
+            <div class="chart-container">
+                <div class="chart" id="chart"></div>
+            </div>
         </section>
 
         <!-- ÚLTIMAS RESERVACIONES -->
@@ -134,7 +176,6 @@
 
 </div>
 
-<script src="../js/panel-mock.js"></script>
 <script src="../js/panel-api.js"></script>
 <script src="../js/panel-dashboard.js"></script>
 </body>

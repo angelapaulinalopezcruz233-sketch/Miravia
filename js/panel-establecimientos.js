@@ -1,45 +1,34 @@
 /**
  * =====================================================================
- * LÓGICA DE "MIS ESTABLECIMIENTOS" (Conectado a BD real)
+ * LÓGICA DE "MIS ESTABLECIMIENTOS" (Conectado a BD real y Modales)
  * =====================================================================
  */
 
-// Diccionario para asignar el ícono de FontAwesome según el tipo
 const ICONOS_TIPO = {
     hotel:       'fa-hotel',
     restaurante: 'fa-utensils',
     atraccion:   'fa-ticket'
 };
 
-// Diccionario para mostrar el nombre legible del tipo
 const LABEL_TIPO = {
     hotel:       'Hotel',
     restaurante: 'Restaurante',
     atraccion:   'Atracción'
 };
 
-/**
- * Renderiza las tarjetas de establecimientos en el HTML.
- * 
- * @param {string} filtro - 'todos', 'hotel', 'restaurante' o 'atraccion'
- */
 async function renderEstablecimientos(filtro = 'todos') {
     const grid = document.getElementById('grid-establecimientos');
     if (!grid) return;
 
-    // Mostramos mensaje de carga mientras llega la respuesta
     grid.innerHTML = `<p class="vacio">Cargando establecimientos...</p>`;
 
-    // Llamamos a la API
     const datos = await obtenerEstablecimientos();
     
-    // Validación por si no hay datos o hay error
     if (!datos || !datos.establecimientos || datos.establecimientos.length === 0) {
         grid.innerHTML = `<p class="vacio">No tienes establecimientos registrados.</p>`;
         return;
     }
 
-    // Aplicamos el filtro (si es diferente a 'todos')
     const lista = filtro === 'todos'
         ? datos.establecimientos
         : datos.establecimientos.filter(e => e.tipo === filtro);
@@ -49,10 +38,8 @@ async function renderEstablecimientos(filtro = 'todos') {
         return;
     }
 
-    // Generamos el HTML de cada tarjeta
     grid.innerHTML = lista.map(e => `
         <div class="card-establecimiento">
-            <!-- Cabecera: Ícono y estado -->
             <div class="estab-header">
                 <div class="estab-icono ${e.tipo}">
                     <i class="fa-solid ${ICONOS_TIPO[e.tipo] || 'fa-map-marker-alt'}"></i>
@@ -62,7 +49,6 @@ async function renderEstablecimientos(filtro = 'todos') {
                 </span>
             </div>
 
-            <!-- Datos principales -->
             <h3 class="estab-nombre">${e.nombre}</h3>
             <p class="estab-tipo">${LABEL_TIPO[e.tipo] || e.tipo}</p>
 
@@ -71,7 +57,6 @@ async function renderEstablecimientos(filtro = 'todos') {
                 ${e.municipio ? e.municipio + ', ' : ''}${e.estado || 'Sin ubicación'}
             </p>
 
-            <!-- Datos numéricos -->
             <div class="estab-datos">
                 <div>
                     <p class="dato-label">Comisión</p>
@@ -87,31 +72,171 @@ async function renderEstablecimientos(filtro = 'todos') {
                 </div>
             </div>
 
-            <!-- Botones de acción -->
             <div class="estab-acciones">
                 <button class="btn-secundario"><i class="fa-solid fa-eye"></i> Ver</button>
-                <button class="btn-secundario"><i class="fa-solid fa-pen"></i> Editar</button>
+                <!-- Aquí pasamos los datos al hacer clic en Editar -->
+                <button class="btn-secundario" onclick="abrirModalEditar(${e.id}, '${(e.nombre||'').replace(/'/g, "\\'")}', '${e.tipo}', '${(e.direccion||'').replace(/'/g, "\\'")}', '${(e.descripcion||'').replace(/'/g, "\\'")}')">
+                    <i class="fa-solid fa-pen"></i> Editar
+                </button>
             </div>
         </div>
     `).join('');
 }
 
-/**
- * Configura los botones de filtro (chips) para que al hacer clic
- * se filtre la lista de establecimientos.
- */
 function initFiltros() {
     const chips = document.querySelectorAll('.chip');
     chips.forEach(chip => {
         chip.addEventListener('click', () => {
-            // Quitamos la clase 'active' de todos los chips
             chips.forEach(c => c.classList.remove('active'));
-            // Se la ponemos al que se hizo clic
             chip.classList.add('active');
-            // Volvemos a renderizar con el filtro seleccionado
             renderEstablecimientos(chip.dataset.filtro);
         });
     });
+}
+
+// ==========================================
+// LÓGICA DEL MODAL DE CREAR
+// ==========================================
+function initModalCrear() {
+    const btnNuevo = document.getElementById('btn-nuevo-establecimiento');
+    const modal = document.getElementById('modal-nuevo-establecimiento');
+    const btnCerrar = document.getElementById('btn-cerrar-modal');
+    const btnCancelar = document.getElementById('btn-cancelar-modal');
+    const form = document.getElementById('form-nuevo-establecimiento');
+    const btnGuardar = document.getElementById('btn-guardar');
+
+    if (!modal) return;
+
+    if (btnNuevo) btnNuevo.addEventListener('click', () => modal.classList.add('show'));
+    
+    const cerrarModal = () => {
+        modal.classList.remove('show');
+        if(form) form.reset(); 
+    };
+    
+    if (btnCerrar) btnCerrar.addEventListener('click', cerrarModal);
+    if (btnCancelar) btnCancelar.addEventListener('click', cerrarModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) cerrarModal(); });
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            btnGuardar.textContent = 'Guardando...';
+            btnGuardar.disabled = true;
+
+            const formData = new FormData();
+            formData.append('propietario_id', PROPIETARIO_ID);
+            formData.append('nombre', document.getElementById('input-nombre').value);
+            formData.append('tipo', document.getElementById('input-tipo').value);
+            formData.append('ubicacion', document.getElementById('input-ubicacion').value);
+            
+            const descInput = document.getElementById('input-descripcion');
+            if(descInput) formData.append('descripcion', descInput.value);
+
+            const imagenInput = document.getElementById('input-imagen');
+            if (imagenInput && imagenInput.files.length > 0) {
+                formData.append('imagen', imagenInput.files[0]);
+            }
+
+            try {
+                const respuesta = await fetch('../api/guardar_establecimiento.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await respuesta.json();
+
+                if (data.ok) {
+                    alert('✅ ¡Establecimiento guardado con éxito!');
+                    cerrarModal();
+                    renderEstablecimientos();
+                } else {
+                    alert('❌ Error real: \n' + JSON.stringify(data, null, 2));
+                }
+            } catch (error) {
+                console.error(error);
+                alert('❌ Error de conexión al guardar.');
+            } finally {
+                btnGuardar.textContent = 'Guardar y continuar';
+                btnGuardar.disabled = false;
+            }
+        });
+    }
+}
+
+// ==========================================
+// LÓGICA DEL MODAL DE EDITAR
+// ==========================================
+function abrirModalEditar(id, nombre, tipo, ubicacion, descripcion) {
+    const modal = document.getElementById('modal-editar-establecimiento');
+    
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-nombre').value = nombre;
+    document.getElementById('edit-tipo').value = tipo;
+    document.getElementById('edit-ubicacion').value = ubicacion;
+    document.getElementById('edit-descripcion').value = descripcion;
+
+    modal.classList.add('show');
+}
+
+function initModalEditar() {
+    const modal = document.getElementById('modal-editar-establecimiento');
+    const btnCerrar = document.getElementById('btn-cerrar-modal-editar');
+    const btnCancelar = document.getElementById('btn-cancelar-modal-editar');
+    const form = document.getElementById('form-editar-establecimiento');
+    const btnGuardar = document.getElementById('btn-guardar-editar');
+
+    if (!modal) return;
+
+    const cerrarModal = () => modal.classList.remove('show');
+    
+    if (btnCerrar) btnCerrar.addEventListener('click', cerrarModal);
+    if (btnCancelar) btnCancelar.addEventListener('click', cerrarModal);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) cerrarModal();
+    });
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            btnGuardar.textContent = 'Guardando...';
+            btnGuardar.disabled = true;
+
+            const formData = new FormData();
+            formData.append('id', document.getElementById('edit-id').value);
+            formData.append('propietario_id', PROPIETARIO_ID);
+            formData.append('nombre', document.getElementById('edit-nombre').value);
+            formData.append('tipo', document.getElementById('edit-tipo').value);
+            formData.append('ubicacion', document.getElementById('edit-ubicacion').value);
+            formData.append('descripcion', document.getElementById('edit-descripcion').value);
+
+            try {
+                const respuesta = await fetch('../api/actualizar_establecimiento.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await respuesta.json();
+
+                if (data.ok) {
+                    alert('✅ Establecimiento actualizado con éxito.');
+                    cerrarModal();
+                    renderEstablecimientos(); 
+                } else {
+                    alert('❌ Error real: \n' + JSON.stringify(data, null, 2));
+                }
+            } catch (error) {
+                console.error(error);
+                alert('❌ Error de conexión al actualizar.');
+            } finally {
+                btnGuardar.textContent = 'Guardar cambios';
+                btnGuardar.disabled = false;
+            }
+        });
+    }
 }
 
 // ==========================================
@@ -120,4 +245,6 @@ function initFiltros() {
 document.addEventListener('DOMContentLoaded', () => {
     renderEstablecimientos();
     initFiltros();
+    initModalCrear();
+    initModalEditar();
 });

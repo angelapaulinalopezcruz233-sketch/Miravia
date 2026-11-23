@@ -704,3 +704,257 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
 }
+/* ==========================================
+   ACCIONES RÁPIDAS (CORREGIDO)
+   ========================================== */
+
+.acciones-rapidas {
+    margin-bottom: 24px;
+}
+
+.acciones-rapidas h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--texto);
+}
+
+.acciones-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-accion {
+    background: var(--blanco) !important;
+    border: 1px solid var(--gris-borde) !important;
+    color: var(--gris-texto) !important;
+    padding: 10px 18px !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important; /* Quita el subrayado azul */
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-accion:hover {
+    border-color: var(--turquesa) !important;
+    color: var(--turquesa) !important;
+    background: #f0fdfa !important;
+}
+
+/* El botón principal (Nuevo establecimiento) */
+.btn-accion.btn-primario {
+    background: var(--turquesa) !important;
+    color: var(--blanco) !important;
+    border-color: var(--turquesa) !important;
+}
+
+.btn-accion.btn-primario:hover {
+    background: var(--turquesa-oscuro) !important;
+    color: var(--blanco) !important;
+}
+/* ==========================================
+   MENÚ DESPLEGABLE DE PERFIL
+   ========================================== */
+
+.perfil-menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Hacemos que el avatar se vea clicable */
+.avatar {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.avatar:hover {
+    transform: scale(1.05);
+}
+
+/* El menú flotante */
+.perfil-dropdown {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 220px;
+    background: var(--blanco);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: 1px solid var(--gris-borde);
+    z-index: 100;
+    padding: 8px 0;
+    animation: fadeIn 0.2s ease;
+}
+
+/* Clase para mostrar el menú */
+.perfil-dropdown.show {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Información del usuario arriba del menú */
+.perfil-info {
+    padding: 12px 16px;
+}
+
+.perfil-nombre {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--texto);
+}
+
+.perfil-correo {
+    font-size: 0.8rem;
+    color: var(--gris-texto);
+}
+
+.perfil-divider {
+    height: 1px;
+    background: var(--gris-borde);
+    margin: 8px 0;
+}
+
+/* Opciones del menú */
+.perfil-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: var(--texto);
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.perfil-item i {
+    color: var(--gris-texto);
+    width: 16px;
+    text-align: center;
+}
+
+.perfil-item:hover {
+    background: #f3f4f6;
+}
+
+/* Botón de cerrar sesión en rojo */
+.perfil-item.cerrar-sesion {
+    color: #dc2626;
+}
+
+.perfil-item.cerrar-sesion i {
+    color: #dc2626;
+}
+
+.perfil-item.cerrar-sesion:hover {
+    background: #fef2f2;
+}
+/* ==========================================
+   MODAL (VENTANA EMERGENTE)
+   ========================================== */
+
+.modal-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.4); /* Fondo oscuro semitransparente */
+    backdrop-filter: blur(4px); /* Efecto de desenfoque moderno */
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Clase para mostrar el modal con flexbox */
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--blanco);
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    animation: modalSlideUp 0.3s ease;
+}
+
+@keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.modal-header h2 {
+    font-size: 1.4rem;
+    color: var(--texto);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--gris-texto);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #dc2626;
+}
+
+.modal-subtitulo {
+    font-size: 0.9rem;
+    color: var(--gris-texto);
+    margin-bottom: 24px;
+}
+
+/* El aviso de privacidad (IHC) */
+.aviso-info {
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    margin-top: 10px;
+}
+
+.aviso-info i {
+    color: var(--turquesa);
+    font-size: 1.1rem;
+    margin-top: 2px;
+}
+
+.aviso-info p {
+    font-size: 0.8rem;
+    color: var(--turquesa-oscuro);
+    line-height: 1.4;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}

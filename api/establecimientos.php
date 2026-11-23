@@ -66,6 +66,7 @@ try {
                     e.tipo, 
                     e.comision_porcentaje, 
                     e.calificacion_promedio,
+                    e.imagen_principal,
                     e.activo,
                     es.nombre AS estado,
                     m.nombre AS municipio,
@@ -99,8 +100,5 @@ try {
     // ==========================================
     // Si algo falla en la BD, devolvemos un error 500 con el detalle
     http_response_code(500);
-    echo json_encode([
-        'error' => 'No se pudo consultar la base de datos.',
-        'detalle' => $error->getMessage()
-    ], JSON_UNESCAPED_UNICODE);
+   echo json_encode(['error' => 'Error: ' . $error->getMessage()], JSON_UNESCAPED_UNICODE);
 }

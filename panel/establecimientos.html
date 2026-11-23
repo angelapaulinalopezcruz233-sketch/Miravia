@@ -59,7 +59,7 @@
                 <p class="subtitulo">Gestiona tus hoteles, restaurantes y atracciones</p>
             </div>
             <div class="topbar-actions">
-                <button class="btn-primario">
+                <button class="btn-primario" id="btn-nuevo-establecimiento">
                     <i class="fa-solid fa-plus"></i> Nuevo establecimiento
                 </button>
             </div>
@@ -86,7 +86,113 @@
 
 </div>
 
-<script src="../js/panel-mock.js"></script>
+<!-- ========================================== -->
+<!-- MODAL: NUEVO ESTABLECIMIENTO -->
+<!-- ========================================== -->
+<div class="modal-overlay" id="modal-nuevo-establecimiento">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Nuevo establecimiento</h2>
+            <button type="button" class="modal-close" id="btn-cerrar-modal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <p class="modal-subtitulo">Cuéntanos lo esencial. Podrás completar los detalles y fotos después.</p>
+
+        <form id="form-nuevo-establecimiento">
+            
+            <div class="campo">
+                <label>Nombre del establecimiento</label>
+                <input type="text" id="input-nombre" class="select input-full" placeholder="Ej. Hotel Costa Azul" required>
+            </div>
+
+            <div class="campo">
+                <label>Tipo de establecimiento</label>
+                <select id="input-tipo" class="select input-full" required>
+                    <option value="">Selecciona una opción...</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="restaurante">Restaurante</option>
+                    <option value="atraccion">Atracción Turística</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Ciudad o ubicación</label>
+                <input type="text" id="input-ubicacion" class="select input-full" placeholder="Ej. Oaxaca, Oaxaca" required>
+            </div>
+
+            <div class="campo">
+                <label>Descripción breve</label>
+                <textarea id="input-descripcion" class="select input-full" placeholder="Describe tu lugar..." rows="3"></textarea>
+            </div>
+
+            <div class="campo">
+                <label>Foto principal</label>
+                <input type="file" id="input-imagen" class="select input-full" accept="image/*">
+            </div>
+
+            <div class="aviso-info">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>No te preocupes: tu establecimiento no será visible al público hasta que decidas publicarlo.</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secundario" id="btn-cancelar-modal">Cancelar</button>
+                <button type="submit" class="btn-primario" id="btn-guardar">Guardar y continuar</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL: EDITAR ESTABLECIMIENTO -->
+<!-- ========================================== -->
+<div class="modal-overlay" id="modal-editar-establecimiento">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Editar establecimiento</h2>
+            <button type="button" class="modal-close" id="btn-cerrar-modal-editar"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <p class="modal-subtitulo">Actualiza la información de tu espacio.</p>
+
+        <form id="form-editar-establecimiento">
+            
+            <input type="hidden" id="edit-id">
+
+            <div class="campo">
+                <label>Nombre del establecimiento</label>
+                <input type="text" id="edit-nombre" class="select input-full" required>
+            </div>
+
+            <div class="campo">
+                <label>Tipo de establecimiento</label>
+                <select id="edit-tipo" class="select input-full" required>
+                    <option value="hotel">Hotel</option>
+                    <option value="restaurante">Restaurante</option>
+                    <option value="atraccion">Atracción Turística</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label>Ciudad o ubicación</label>
+                <input type="text" id="edit-ubicacion" class="select input-full" required>
+            </div>
+
+            <div class="campo">
+                <label>Descripción breve</label>
+                <textarea id="edit-descripcion" class="select input-full" rows="3"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-secundario" id="btn-cancelar-modal-editar">Cancelar</button>
+                <button type="submit" class="btn-primario" id="btn-guardar-editar">Guardar cambios</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
 <script src="../js/panel-api.js"></script>
 <script src="../js/panel-establecimientos.js"></script>
 </body>

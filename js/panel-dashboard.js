@@ -52,17 +52,29 @@ async function renderChart() {
     const datos = await obtenerComisionesPorMes();
     const porMes = (datos && datos.por_mes) ? datos.por_mes : [];
 
+    // Si no hay datos, mostramos el mensaje amigable
     if (porMes.length === 0) {
-        chart.innerHTML = `<p style="text-align:center;color:#6b7280;padding:40px;">No hay datos para mostrar.</p>`;
+        chart.innerHTML = `
+            <div style="text-align: center; padding: 40px; width: 100%;">
+                <i class="fa-solid fa-chart-line" style="font-size: 2.5rem; color: #cbd5e1; margin-bottom: 15px;"></i>
+                <h4 style="color: var(--texto); font-size: 1.1rem; margin-bottom: 5px;">Aún no hay comisiones registradas</h4>
+                <p style="color: var(--gris-texto); font-size: 0.9rem; margin-bottom: 15px;">
+                    Cuando tus establecimientos generen reservas, verás aquí el resumen mensual.
+                </p>
+                <a href="comisiones.html" class="btn-accion btn-primario" style="display: inline-flex;">
+                    Ver comisiones
+                </a>
+            </div>
+        `;
         return;
     }
 
+    // Si hay datos, dibujamos las barras
     const valores = porMes.map(m => parseFloat(m.total_comision) || 0);
     const max = Math.max(...valores);
 
     chart.innerHTML = porMes.map(m => {
         const valor = parseFloat(m.total_comision) || 0;
-        // Si solo hay una barra o todas iguales, la dejamos al 70% para que se vea bien
         const altura = max > 0 ? Math.max((valor / max) * 70, 15) : 15;
         return `
             <div class="barra" style="height: ${altura}%" data-valor="$${formatearMonto(valor)}">
@@ -101,10 +113,33 @@ async function renderUltimasReservaciones() {
         </tr>
     `).join('');
 }
+// ==========================================
+// LÓGICA DEL MENÚ DE PERFIL
+// ==========================================
+function initMenuPerfil() {
+    const avatarBtn = document.getElementById('avatar-btn');
+    const dropdown = document.getElementById('perfil-dropdown');
+
+    if (!avatarBtn || !dropdown) return;
+
+    // Al dar clic en el avatar, abrir/cerrar el menú
+    avatarBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evita que el clic se propague al documento
+        dropdown.classList.toggle('show');
+    });
+
+    // Si el usuario da clic en cualquier parte de la pantalla, cerrar el menú
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target) && e.target !== avatarBtn) {
+            dropdown.classList.remove('show');
+        }
+    });
+}
 
 // ============================================
 // Inicializar
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     renderDashboard();
+    initMenuPerfil(); // <-- Agrega esta línea
 });
